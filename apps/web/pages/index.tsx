@@ -1,10 +1,5 @@
-import { Button } from "ui";
+import type { NextPage } from 'next';
 
-export default function Web() {
-  return (
-    <div>
-      <h1>Web</h1>
-      <Button />
-    </div>
-  );
-}
+const Home: NextPage = () => <h1>Hello World</h1>;
+
+export default Home;

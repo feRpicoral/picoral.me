@@ -1,6 +1,6 @@
 {
-  "name": "turborepo-basic-shared",
-  "version": "0.0.0",
+  "name": "picoral.me",
+  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -17,8 +17,7 @@
     "turbo": "latest"
   },
   "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
+    "node": "^16"
   },
   "packageManager": "yarn@1.22.17"
 }
