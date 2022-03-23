@@ -8,13 +8,6 @@ const config = {
         browser: true
     },
     plugins: ['react', '@next/eslint-plugin-next'],
-    parserOptions: {
-        root: true,
-        project: './tsconfig.json',
-        ecmaFeatures: {
-            jsx: true
-        }
-    },
     rules: {
         '@typescript-eslint/strict-boolean-expressions': 'off'
     },
