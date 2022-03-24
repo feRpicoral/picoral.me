@@ -1,5 +1,9 @@
+import Navbar from '@components/navbar.component';
+import LaptopBlobRaw from '@icons/blobs/laptop.svg';
+import TopLeftBlobRaw from '@icons/blobs/top-left.svg';
+import LaptopRaw from '@icons/computer.svg';
 import { NextPage } from 'next';
-import TopLeftBlobRaw from 'src/icons/blobs/top-left.svg';
+import Head from 'next/head';
 import styled from 'styled-components';
 
 const TopLeftBlob = styled(TopLeftBlobRaw)`
@@ -9,24 +13,46 @@ const TopLeftBlob = styled(TopLeftBlobRaw)`
     z-index: -1;
 `;
 
-const HelloWorld = styled.h1`
-    ${props => props.theme.text.title.lg.bold}
-    text-transform: uppercase;
+const LaptopBlob = styled(LaptopBlobRaw)`
+    position: absolute;
+    right: 0;
+    z-index: -2;
+`;
+
+const Laptop = styled(LaptopRaw)`
+    width: 500px;
+    margin-top: 60%;
+`;
+
+const LaptopContainer = styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
 `;
 
 const ContentWrapper = styled.div`
-    margin: 95px 110px;
+    margin: 95px auto;
+    max-width: 1220px;
 `;
 
-const Home: NextPage = () => {
-    const x = 1;
+const Home: NextPage = () => (
+    <>
+        <Head>
+            <title>&#128187; &nbsp; Picoral</title>
+        </Head>
 
-    return (
         <ContentWrapper>
-            <HelloWorld>Hello World!</HelloWorld>
-            <TopLeftBlob />
+            <Navbar />
         </ContentWrapper>
-    );
-};
+
+        <TopLeftBlob />
+
+        <LaptopContainer>
+            <LaptopBlob />
+            <Laptop />
+        </LaptopContainer>
+    </>
+);
 
 export default Home;

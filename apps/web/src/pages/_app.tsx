@@ -1,4 +1,4 @@
-import lightTheme from '@themes/light';
+import lightTheme from '@themes/light.theme';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import smoothscroll from 'smoothscroll-polyfill';
