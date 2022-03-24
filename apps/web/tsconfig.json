@@ -26,7 +26,19 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "incremental": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@icons/*": [
+        "./src/icons/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@themes/*": [
+        "./src/themes/*"
+      ]
+    }
   },
   "include": [
     "src"

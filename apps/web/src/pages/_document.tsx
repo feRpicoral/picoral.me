@@ -38,7 +38,30 @@ export default class MyDocument extends Document {
     override render() {
         return (
             <Html lang="en">
-                <Head />
+                <Head>
+                    <meta
+                        name="description"
+                        content="Fernando Picoral's portfolio website. I'm a full stack web developer with experience in React, Angular & Javascript"
+                    />
+                    <meta name="robots" content="notranslate" />
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.googleapis.com"
+                    />
+                    <link rel="preconnect" href="https://fonts.gstatic.com" />
+                    <link
+                        href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap"
+                        rel="stylesheet"
+                    />
+                    <link
+                        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap"
+                        rel="stylesheet"
+                    />
+                    <link
+                        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;700&display=swap"
+                        rel="stylesheet"
+                    />
+                </Head>
                 <body>
                     <Main />
                     <NextScript />

@@ -1,7 +1,8 @@
+import lightTheme from '@themes/light';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import smoothscroll from 'smoothscroll-polyfill';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   html, 
@@ -12,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     box-sizing: border-box; 
-  } 
+  }
 `;
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -21,9 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
     }, []);
 
     return (
-        <>
+        <ThemeProvider theme={lightTheme}>
             <GlobalStyle />
             <Component {...pageProps} />
-        </>
+        </ThemeProvider>
     );
 }
