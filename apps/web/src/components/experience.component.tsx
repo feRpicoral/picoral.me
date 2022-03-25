@@ -32,19 +32,19 @@ const Experience: React.FC = () => {
         },
         {
             date: new Date(2021, 5),
-            description: 'Joined Poatek'
+            description: 'Joined\nPoatek'
         },
         {
             date: new Date(2022, 1),
-            description: 'Stepped down as CEO of Stockvio'
+            description: 'Stepped\ndown as CEO\nof Stockvio'
         },
         {
             date: new Date(2022, 5),
-            description: 'Left Poatek'
+            description: 'Left\nPoatek'
         },
         {
             date: new Date(2022, 7),
-            description: 'Started studying at CU Boulder'
+            description: 'Started\nstudying at\nCU Boulder'
         }
     ];
 

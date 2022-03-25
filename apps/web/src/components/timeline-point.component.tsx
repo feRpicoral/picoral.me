@@ -13,6 +13,10 @@ const Wrapper = styled.div`
     text-align: center;
 `;
 
+const IconWrapper = styled.div`
+    position: relative;
+`;
+
 const Month = styled.span`
     ${props => props.theme.text.body.sm.xlight}
     display: inline-block;
@@ -25,17 +29,40 @@ const Description = styled.span`
     white-space: pre-line;
 `;
 
-const TimelinePoint: React.FC<{ item: TimelineItem }> = ({ item }) => {
+const Line = styled.div`
+    position: absolute;
+    top: 45%;
+    left: 65%;
+    min-width: 200px;
+    border-bottom: 1px solid black;
+`;
+
+export interface TimelinePointProps {
+    item: TimelineItem;
+    nextItem?: TimelineItem;
+}
+
+const TimelinePoint: React.FC<TimelinePointProps> = ({ item, nextItem }) => {
     const month = item.date.toLocaleString('en-us', { month: 'long' });
+
+    const daysToNextItem =
+        nextItem !== undefined
+            ? // @ts-ignore Date.prototype.valueOf() is called by JS for use here
+              Math.abs((item.date - nextItem.date) / 86_400_000)
+            : undefined;
 
     return (
         <Wrapper>
-            <Image
-                src={'/timeline-point.svg'}
-                width={30}
-                height={30}
-                alt={''}
-            />
+            <IconWrapper>
+                <Image
+                    src={'/timeline-point.svg'}
+                    width={30}
+                    height={30}
+                    alt={''}
+                />
+                <Line />
+            </IconWrapper>
+
             <Month>
                 {month} {item.date.getFullYear()}
             </Month>
