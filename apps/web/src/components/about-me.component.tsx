@@ -45,7 +45,9 @@ const AboutMe: React.FC = () => {
         const el = ref.current;
         const offset = window.innerHeight - el.getBoundingClientRect().y;
 
-        el.style.paddingTop = `${offset}px`;
+        // TODO: Uncomment this and fix bug where scroll is added on top of current
+        //  scroll if the user refreshes the page
+        // el.style.paddingTop = `${offset}px`;
     }, []);
 
     return (
