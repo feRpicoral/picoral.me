@@ -8,22 +8,21 @@ import ContentWrapper from './content-wrapper.component';
 import SectionTitle from './section-title.component';
 
 const RelativeWrapper = styled.div`
-    //margin-top: -100px;
     position: relative;
+    margin-top: 160px;
 `;
 
 const Blob = styled(ExperienceBlob)`
     position: absolute;
     z-index: -1;
     right: 0;
+    top: -250px;
 `;
 
 const Title = styled.div`
-    span {
-        margin-top: 250px;
-        float: right;
-    }
+    text-align: right;
 `;
+
 const Experience: React.FC = () => {
     const items: TimelineItem[] = [
         {

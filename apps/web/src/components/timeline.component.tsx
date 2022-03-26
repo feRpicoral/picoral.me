@@ -7,6 +7,9 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
     display: flex;
     align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 100px;
 `;
 
 const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {

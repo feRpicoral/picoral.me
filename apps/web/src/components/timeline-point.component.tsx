@@ -60,7 +60,7 @@ const TimelinePoint: React.FC<TimelinePointProps> = ({ item, nextItem }) => {
                     height={30}
                     alt={''}
                 />
-                <Line />
+                {/* <Line />*/}
             </IconWrapper>
 
             <Month>
