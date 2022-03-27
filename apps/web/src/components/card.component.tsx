@@ -5,7 +5,8 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
     padding: 20px;

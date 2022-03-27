@@ -29,6 +29,7 @@ const Description = styled.span`
     white-space: pre-line;
 `;
 
+// TODO: Add lines between points in the timeline
 const Line = styled.div`
     position: absolute;
     top: 45%;
@@ -47,7 +48,7 @@ const TimelinePoint: React.FC<TimelinePointProps> = ({ item, nextItem }) => {
 
     const daysToNextItem =
         nextItem !== undefined
-            ? // @ts-ignore Date.prototype.valueOf() is called by JS for use here
+            ? // @ts-ignore Date.prototype.valueOf() is called by JS for us here
               Math.abs((item.date - nextItem.date) / 86_400_000)
             : undefined;
 

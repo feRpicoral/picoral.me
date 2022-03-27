@@ -7,10 +7,6 @@ import styled from 'styled-components';
 import ContentWrapper from './content-wrapper.component';
 import Navbar from './navbar.component';
 
-const Wrapper = styled(ContentWrapper)`
-    margin-top: 95px;
-`;
-
 const TitleWrapper = styled.div`
     margin-top: 200px;
 `;
@@ -55,7 +51,7 @@ const LaptopContainer = styled.div`
 `;
 
 const Home: React.FC = () => (
-    <Wrapper>
+    <ContentWrapper>
         <Navbar />
         <TitleWrapper>
             <Title>Hi, I&apos;m Picoral</Title>
@@ -68,7 +64,7 @@ const Home: React.FC = () => (
             <LaptopBlob />
             <Laptop />
         </LaptopContainer>
-    </Wrapper>
+    </ContentWrapper>
 );
 
 export default Home;
