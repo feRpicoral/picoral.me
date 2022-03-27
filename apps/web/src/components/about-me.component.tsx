@@ -27,12 +27,8 @@ const Text = styled.p`
     }
 `;
 
-// for some reason styled(SectionTitle) is not working
-// thus I went with this wrapper for now
-const Title = styled.div`
-    span {
-        margin-bottom: 50px;
-    }
+const Title = styled(SectionTitle)`
+    margin-bottom: 50px;
 `;
 
 const AboutMe: React.FC = () => {
@@ -53,9 +49,7 @@ const AboutMe: React.FC = () => {
     return (
         <RelativeWrapper>
             <ContentWrapper>
-                <Title ref={ref}>
-                    <SectionTitle>About Me</SectionTitle>
-                </Title>
+                <Title ref={ref}>About Me</Title>
 
                 <Text>
                     I’m a Brazilian full-stack web developer with vast

@@ -1,13 +1,12 @@
-import Card, { CardProps } from '@components/card.component';
-import SliderArrow from '@components/slider-arrow.component';
 import RawBlob from '@icons/blobs/technologies.svg';
-import Image from 'next/image';
 import React from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
+import Card, { CardProps } from './card.component';
 import ContentWrapper from './content-wrapper.component';
 import SectionTitle from './section-title.component';
+import SliderArrow from './slider-arrow.component';
 
 const RelativeWrapper = styled.div`
     position: relative;
@@ -16,6 +15,7 @@ const RelativeWrapper = styled.div`
 const Blob = styled(RawBlob)`
     position: absolute;
     left: 0;
+    top: 0;
     z-index: -1;
 `;
 

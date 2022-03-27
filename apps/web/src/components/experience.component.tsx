@@ -1,11 +1,11 @@
-import Timeline from '@components/timeline.component';
-import { TimelineItem } from '@components/timeline-point.component';
 import ExperienceBlob from '@icons/blobs/experience.svg';
 import React from 'react';
 import styled from 'styled-components';
 
 import ContentWrapper from './content-wrapper.component';
 import SectionTitle from './section-title.component';
+import Timeline from './timeline.component';
+import { TimelineItem } from './timeline-point.component';
 
 const RelativeWrapper = styled.div`
     position: relative;
@@ -19,8 +19,9 @@ const Blob = styled(ExperienceBlob)`
     top: -250px;
 `;
 
-const Title = styled.div`
+const Title = styled(SectionTitle)`
     text-align: right;
+    width: 100%;
 `;
 
 const Experience: React.FC = () => {
@@ -50,9 +51,7 @@ const Experience: React.FC = () => {
     return (
         <RelativeWrapper>
             <ContentWrapper>
-                <Title>
-                    <SectionTitle>Experience</SectionTitle>
-                </Title>
+                <Title>Experience</Title>
 
                 <Timeline items={items} />
             </ContentWrapper>
