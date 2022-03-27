@@ -13,6 +13,7 @@ const Wrapper = styled.div`
     text-align: center;
     width: 250px;
     height: 277px;
+    background: white;
 `;
 
 const Title = styled.span`

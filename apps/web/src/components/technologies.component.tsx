@@ -119,7 +119,7 @@ const Technologies: React.FC = () => {
 
     return (
         <RelativeWrapper>
-            <ContentWrapper>
+            <ContentWrapper id={'technologies'}>
                 <SectionTitle>Technologies</SectionTitle>
                 <StyledSlider
                     centerMode={true}

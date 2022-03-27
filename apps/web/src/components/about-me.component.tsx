@@ -48,7 +48,7 @@ const AboutMe: React.FC = () => {
 
     return (
         <RelativeWrapper>
-            <ContentWrapper>
+            <ContentWrapper id={'about-me'}>
                 <Title ref={ref}>About Me</Title>
 
                 <Text>

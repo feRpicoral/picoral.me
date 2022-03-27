@@ -50,7 +50,7 @@ const Experience: React.FC = () => {
 
     return (
         <RelativeWrapper>
-            <ContentWrapper>
+            <ContentWrapper id={'experience'}>
                 <Title>Experience</Title>
 
                 <Timeline items={items} />

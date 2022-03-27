@@ -1,4 +1,5 @@
 import AboutMe from '@components/about-me.component';
+import Contact from '@components/contact.component';
 import Experience from '@components/experience.component';
 import Home from '@components/home.component';
 import Technologies from '@components/technologies.component';
@@ -15,6 +16,7 @@ const Index: NextPage = () => (
         <AboutMe />
         <Experience />
         <Technologies />
+        <Contact />
     </>
 );
 

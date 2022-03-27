@@ -8,7 +8,7 @@ const Wrapper = styled.div`
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
-    margin: 100px 0 100px 0;
+    margin: 200px 0;
 `;
 
 const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => (
