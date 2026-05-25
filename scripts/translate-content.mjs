@@ -29,6 +29,7 @@ import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import { translateSnippets } from './translate/anthropic.mjs';
 import { COLLECTIONS, SOURCE_LOCALE, TARGET_LOCALES } from './translate/config.mjs';
+import { loadEnvFiles } from './translate/env.mjs';
 import { getHandler } from './translate/handlers.mjs';
 import { computeSourceHash } from './translate/hash.mjs';
 import {
@@ -39,6 +40,10 @@ import {
   structuralFingerprint,
 } from './translate/mdx.mjs';
 import { compareStructuralFingerprints, validateTranslations } from './translate/validate.mjs';
+
+// Imported modules read process.env lazily inside their functions, so populating
+// process.env here (after all imports finish hoisting) is sufficient.
+loadEnvFiles();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
