@@ -104,15 +104,7 @@ export default function MobileNav({ items, labels }: Props) {
           role="dialog"
           aria-modal="true"
           aria-label="Navigation"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 100,
-            display: 'flex',
-            flexDirection: 'column',
-            background: 'var(--color-bg)',
-            padding: '1.25rem',
-          }}
+          className="mobile-nav-dialog"
         >
           <div
             style={{
