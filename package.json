@@ -42,10 +42,18 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.98.0",
     "@astrojs/check": "^0.9.4",
     "@biomejs/biome": "^1.9.4",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.7.0"
+    "gray-matter": "^4.0.3",
+    "remark-frontmatter": "^5.0.0",
+    "remark-mdx": "^3.1.1",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "typescript": "^5.7.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
   }
 }
