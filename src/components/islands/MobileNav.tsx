@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface NavLink {
   label: string;
@@ -16,9 +17,18 @@ interface Props {
 
 export default function MobileNav({ items, labels }: Props) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+
+  // Guard the portal target — `document.body` is only available client-side.
+  // Without this, the dialog renders inside the <header>, which has
+  // `backdrop-filter` and thereby establishes a containing block for fixed
+  // descendants. The result was the dialog being clipped to the header's box.
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) {
@@ -97,7 +107,7 @@ export default function MobileNav({ items, labels }: Props) {
           <line x1="4" x2="20" y1="18" y2="18" />
         </svg>
       </button>
-      {open && (
+      {open && mounted && createPortal(
         <div
           ref={dialogRef}
           id="mobile-nav-dialog"
@@ -105,6 +115,16 @@ export default function MobileNav({ items, labels }: Props) {
           aria-modal="true"
           aria-label="Navigation"
           className="mobile-nav-dialog"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '1.25rem',
+            overflowY: 'auto',
+            overscrollBehavior: 'contain',
+          }}
         >
           <div
             style={{
@@ -187,7 +207,8 @@ export default function MobileNav({ items, labels }: Props) {
               ))}
             </ul>
           </nav>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

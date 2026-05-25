@@ -144,30 +144,6 @@
     margin: 0;
   }
 
-  /* Mobile nav dialog (React island styles — needs to be in global so the
-     background reliably resolves even before the island's inline styles
-     hydrate; also explicitly opaque to defeat any parent stacking context). */
-  .mobile-nav-dialog {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    padding: 1.25rem;
-    background-color: var(--color-bg);
-    /* Fallback if the theme variable hasn't resolved yet (e.g. before hydration). */
-    background-color: light-dark(oklch(99% 0.005 95), oklch(14% 0.012 280));
-    color: var(--color-fg);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-  [data-theme='light'] .mobile-nav-dialog {
-    background-color: oklch(99% 0.005 95);
-  }
-  [data-theme='dark'] .mobile-nav-dialog {
-    background-color: oklch(14% 0.012 280);
-  }
-
   /* Skip link */
   .skip-link {
     position: absolute;
@@ -275,6 +251,19 @@
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
+}
+
+/* Mobile-nav dialog backgrounds — kept OUTSIDE @layer so they win over any
+   utility class. Layout for the dialog is set inline on the React island
+   (position/inset/etc.); this rule only enforces an opaque theme-aware
+   background so the menu can never look transparent. */
+.mobile-nav-dialog {
+  background-color: oklch(99% 0.005 95) !important;
+  color: oklch(20% 0.015 280);
+}
+[data-theme='dark'] .mobile-nav-dialog {
+  background-color: oklch(14% 0.012 280) !important;
+  color: oklch(96% 0.008 95);
 }
 
 @layer utilities {
