@@ -27,8 +27,6 @@ export const ui = {
     'page.notFound.title': "Page not found",
     'page.notFound.body': "The page you're looking for doesn't exist or has been moved.",
     'page.notFound.cta': 'Back home',
-    'page.translationMissing':
-      'This page is not yet translated. Showing the English version.',
     'home.hero.eyebrow': 'Brazilian, based in NYC',
     'home.hero.title': '/ˌpē-kōˈräl/',
     'home.hero.lead':
@@ -116,8 +114,6 @@ export const ui = {
     'page.notFound.title': 'Página não encontrada',
     'page.notFound.body': 'A página que você procura não existe ou foi movida.',
     'page.notFound.cta': 'Voltar para o início',
-    'page.translationMissing':
-      'Esta página ainda não foi traduzida. Mostrando a versão em inglês.',
     'home.hero.eyebrow': 'Brasileiro, baseado em Nova York',
     'home.hero.title': '/ˌpē-kōˈräl/',
     'home.hero.lead':
@@ -205,8 +201,6 @@ export const ui = {
     'page.notFound.title': 'Página no encontrada',
     'page.notFound.body': 'La página que buscas no existe o fue movida.',
     'page.notFound.cta': 'Volver al inicio',
-    'page.translationMissing':
-      'Esta página aún no está traducida. Mostrando la versión en inglés.',
     'home.hero.eyebrow': 'Brasileño, basado en Nueva York',
     'home.hero.title': '/ˌpē-kōˈräl/',
     'home.hero.lead':

@@ -42,9 +42,8 @@ const t = useTranslations(locale);
 const { slug } = Astro.params;
 if (!slug) return Astro.redirect('/404', 404);
 
-const result = await getLocalizedEntry('projects', locale, slug);
-if (!result) return Astro.redirect('/404', 404);
-const { entry, translated } = result;
+const entry = await getLocalizedEntry('projects', locale, slug);
+if (!entry) return Astro.redirect('/404', 404);
 const { Content } = await render(entry);
 const { data } = entry;
 
@@ -90,9 +89,6 @@ if (data.faq && data.faq.length > 0) {
         links={data.links}
         locale={locale}
       />
-      {!translated && (
-        <p class="missing">{t('page.translationMissing')}</p>
-      )}
       <div class="prose">
         <Content />
       </div>
@@ -110,15 +106,6 @@ if (data.faq && data.faq.length > 0) {
 </Page>
 
 <style>
-  .missing {
-    background: var(--color-bg-subtle);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-    color: var(--color-fg-muted);
-    margin-bottom: 2rem;
-  }
   .faq-wrap {
     margin-top: 4rem;
     padding-top: 3rem;
