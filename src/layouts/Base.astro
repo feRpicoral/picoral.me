@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import Seo from '~/components/seo/Seo.astro';
 import { SITE } from '~/config/site.ts';
 import { bcp47, getLocaleFromUrl, useTranslations } from '~/i18n/utils.ts';
@@ -96,5 +97,6 @@ const lang = bcp47(locale);
     </script>
 
     <Analytics />
+    <SpeedInsights />
   </body>
 </html>
