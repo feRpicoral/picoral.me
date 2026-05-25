@@ -1,0 +1,35 @@
+---
+slug: visible-referral-bot
+title: Visible Referral Bot
+tagline: >-
+  Bot de GitHub Actions que posta automaticamente um código de indicação do
+  Visible no megathread quinzenal do r/Visible, de forma agendada e idempotente.
+summary: >-
+  Automação open-source com GitHub Actions que encontra o megathread quinzenal
+  de indicações do r/Visible no Reddit e posta um código configurado, de forma
+  agendada e idempotente. Duas variantes — uma baseada em PRAW, outra em
+  Chromium headless — para lidar com mudanças de autenticação do Reddit.
+status: live
+role: 'Solo — Python, Playwright, GitHub Actions'
+period:
+  start: 2025-09
+stack:
+  - Python
+  - PRAW
+  - Playwright
+  - GitHub Actions
+links:
+  repo: 'https://github.com/feRpicoral/visible-referral-bot'
+order: 20
+featured: false
+hasCaseStudy: false
+seo:
+  description: Visible referral bot — automação com GitHub Actions por Fernando Picoral.
+_source:
+  hash: 8ae3ab7f009416d8
+  locale: en
+  translatedAt: '2026-05-25T19:46:42.715Z'
+---
+Um utilitário open-source pequeno que criei para resolver um problema meu. O r/Visible tem um megathread quinzenal onde os usuários postam códigos de indicação; o meu ficava expirando antes do prazo. O bot resolve esse atrito com um GitHub Action agendado via cron.
+
+Duas variantes — uma usando PRAW, outra usando um navegador Chromium headless via Playwright para os casos em que o fluxo de autenticação do Reddit bloqueia tokens de API. As duas gravam um arquivo de estado para rastrear o último thread postado, garantindo idempotência entre reinicializações.
