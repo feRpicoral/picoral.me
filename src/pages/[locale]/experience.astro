@@ -1,0 +1,90 @@
+---
+import EducationList from '~/components/sections/EducationList.astro';
+import ExperienceTimeline from '~/components/sections/ExperienceTimeline.astro';
+import Container from '~/components/ui/Container.astro';
+import Eyebrow from '~/components/ui/Eyebrow.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE, type Locale } from '~/config/site.ts';
+import { useTranslations } from '~/i18n/utils.ts';
+import { getLocalizedCollection } from '~/lib/content.ts';
+import { breadcrumbSchema } from '~/lib/schema.ts';
+
+export function getStaticPaths() {
+  return SITE.locales
+    .filter((l) => l !== SITE.defaultLocale)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+const entries = await getLocalizedCollection('experience', locale);
+
+const jsonLd = [
+  breadcrumbSchema([
+    { name: 'Home', url: `${SITE.url}/${locale}` },
+    { name: t('experience.title'), url: `${SITE.url}/${locale}/experience` },
+  ]),
+];
+---
+
+<Page
+  title={t('experience.title')}
+  description={t('experience.lead')}
+  canonicalPath="/experience"
+  jsonLd={jsonLd}
+>
+  <Section spacing="md">
+    <Container size="content">
+      <Eyebrow>{t('experience.title')}</Eyebrow>
+      <h1 class="display-serif page-title">{t('experience.title')}</h1>
+      <p class="lead text-pretty">{t('experience.lead')}</p>
+
+      <div class="block">
+        <h2 class="block-title">{t('experience.education.title')}</h2>
+        <div class="timeline-wrap">
+          <EducationList locale={locale} />
+        </div>
+      </div>
+
+      <div class="block">
+        <h2 class="block-title">{t('experience.work.title')}</h2>
+        <div class="timeline-wrap">
+          <ExperienceTimeline entries={entries} locale={locale} />
+        </div>
+      </div>
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin: 0.75rem 0 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .lead {
+    font-size: 1.125rem;
+    color: var(--color-fg-muted);
+    line-height: 1.6;
+    margin: 0 0 3.5rem;
+    max-width: 42rem;
+  }
+  .timeline-wrap {
+    max-width: 48rem;
+  }
+  .block + .block {
+    margin-top: 4rem;
+  }
+  .block-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-fg-subtle);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+</style>

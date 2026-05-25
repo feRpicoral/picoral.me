@@ -1,0 +1,57 @@
+---
+slug: recurra
+title: Recurra
+tagline: Proyecto personal — andamiaje de cobros recurrentes para negocios de servicios locales. Construido como excusa para aprender Nx, AWS CDK y la capa aburrida de billing de punta a punta.
+summary: Un experimento de cobros por suscripción para negocios de servicios con clientes recurrentes — citas recurrentes, cargos automáticos, self-serve del cliente. Backend en NestJS, web en React Router 7, mobile en Expo, infra en AWS CDK y un cliente Android Kotlin para integración con Clover POS.
+status: in-development
+role: Solo — backend, web, mobile, infra
+period:
+  start: '2025-02'
+stack:
+  - NestJS
+  - React Router 7
+  - Expo
+  - Kotlin (Clover POS)
+  - PostgreSQL
+  - Prisma
+  - AWS CDK
+  - LocalStack
+  - Nx monorepo
+links:
+  live: https://recurra.app
+featured: true
+order: 4
+hasCaseStudy: true
+seo:
+  description: Proyecto personal. Andamiaje de cobros recurrentes para negocios de servicios locales — NestJS, React Router 7, Expo, Clover POS en Kotlin, AWS CDK, todo en un solo monorepo Nx.
+faq:
+  - q: ¿Qué es Recurra?
+    a: "Recurra es una plataforma de cobros recurrentes para negocios de servicios locales — el tagline es 'repeat business, on repeat'. Maneja citas recurrentes, cargos automáticos vía Stripe, self-serve de suscripciones del cliente y una integración Clover POS para checkout presencial."
+  - q: ¿Por qué un monorepo multi-app para Recurra?
+    a: Un negocio necesita tres superficies — admin web del dueño, mobile del dueño, POS de cara al cliente — compartiendo un backend, un modelo de auth y un sistema de cobros. El monorepo Nx con @recurra/shared mantiene tipos, validación y lógica de negocio en exactamente un lugar entre React Router, Expo y el cliente Kotlin POS.
+---
+
+## Qué hace
+
+Recurra es una plataforma de cobros recurrentes para negocios de servicios locales — repeat business, on repeat. El dueño maneja servicios, agenda y clientes desde un dashboard React o un app mobile Expo. El cliente hace self-serve de suscripciones desde un portal hospedado. Stripe maneja los cargos. Una integración Clover POS escrita en Kotlin permite checkout presencial pulling la suscripción activa del cliente.
+
+## Por qué lo construí
+
+Noté que la infraestructura de cobros por suscripción para negocios de servicios locales (clínicas, salones, baño-y-peluquería, clases) es consistentemente mala — o injertada en un SaaS horizontal que no entiende el workflow, o construida en un POS vertical que no te deja cambiar precios sin llamar al soporte. Recurra es la versión que un dueño de negocio de servicios realmente elegiría.
+
+## Cómo funciona
+
+Monorepo Nx con NPM workspaces. Seis apps:
+
+- `backend` — NestJS con Prisma contra PostgreSQL en RDS, desplegado a App Runner.
+- `web` — SPA React Router 7 en build/client/, hospedada en S3 + CloudFront.
+- `mobile` — Expo.
+- `clover-pos` — Android Kotlin para Clover Mini.
+- `infra` — AWS CDK con seis stacks: Network, Dns, Database, Backend, Web, Email.
+- `backend-e2e` — tests e2e Jest.
+
+Los tipos compartidos y esquemas Zod viven en `@recurra/shared` y son importados por toda app. Los stacks CDK usan SSM Parameter Store para secretos y un entrypoint script que arma la URL de la base desde el JSON del Secrets Manager.
+
+## Estado
+
+En desarrollo activo. Backend, admin web e infra están listos; el app Clover POS y el app mobile del dueño son los siguientes.

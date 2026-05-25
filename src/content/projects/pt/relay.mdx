@@ -1,0 +1,82 @@
+---
+slug: relay
+title: Relay
+tagline: Projeto pessoal explorando voz com IA em tempo real. O caso de uso é um recepcionista de clínica; o ponto real foi bater um orçamento de latência percebida sub-segundo com instrumentação completa por etapa.
+summary: Um agente de voz com IA que atende ligações inbound 24/7 — qualificando, agendando via Cal.com, transferindo para humano quando preciso — com latência de resposta sub-segundo e dashboard ao vivo mostrando waveform, transcrição em streaming e latência por etapa.
+status: live
+role: Solo — arquitetura, pipeline de voz, frontend, deploy
+period:
+  start: '2025-11'
+stack:
+  - Next.js 16
+  - TypeScript
+  - LiveKit Cloud
+  - Twilio
+  - Deepgram
+  - Claude Haiku 4.5
+  - Cartesia Sonic-3
+  - Cal.com
+  - Inngest
+  - Supabase
+  - PostgreSQL
+  - Prisma
+  - Tailwind v4
+links:
+  live: https://relay-five-peach.vercel.app
+  repo: https://github.com/feRpicoral/relay
+featured: true
+order: 2
+hasCaseStudy: true
+seo:
+  description: Projeto pessoal. Agente de voz com IA em LiveKit + Deepgram + Claude Haiku 4.5 + Cartesia + Twilio, batendo latência percebida sub-segundo.
+faq:
+  - q: O que é o Relay?
+    a: Relay é um recepcionista por voz com IA multi-tenant para negócios de serviços como clínicas. Atende ligações inbound 24/7, qualifica leads, agenda consultas via Cal.com e transfere para humano quando preciso. Operadores assistem cada ligação ao vivo no dashboard com waveform, transcrição em streaming e medidor de latência por etapa.
+  - q: Qual é o orçamento de latência do Relay?
+    a: A meta é p95 ≤ 900ms de resposta percebida pelo usuário, medido do fim da fala do usuário ao início do áudio do agente. Cada etapa é instrumentada separadamente — STT finalize, LLM TTFT, LLM total, TTS TTFA, tool total, end-to-end — e exposta como um medidor ao vivo colorido em vermelho quando qualquer etapa estoura o orçamento.
+  - q: Por que LiveKit + Deepgram + Cartesia em vez de um único provedor?
+    a: Cada etapa é best-of-breed e substituível individualmente. LiveKit cuida da terminação SIP do Twilio e da sala de áudio. O STT em streaming da Deepgram empacota VAD e turn detection em uma só API, eliminando a variância de 150–300ms de pipelines separados com VAD + silence-timer. O Sonic-3 da Cartesia é TTS genuinamente faster-than-realtime, o que é o que viabiliza o orçamento sub-segundo.
+  - q: Como funciona o isolamento multi-tenant no Relay?
+    a: Três camadas — escopo de linha por organizationId no Postgres, guards na camada de aplicação em toda server action e credenciais de sub-conta Twilio por organização. O worker do LiveKit lê a organização dos headers SIP de modo que uma rota mal configurada nunca pode bridgear para a sala de outro tenant.
+---
+
+## O que faz
+
+Um admin de clínica se cadastra, cria uma organização e configura um agente — prompt de persona, voz, horário comercial, base de FAQ. Aponta um número Twilio para o trunk SIP e está pronto.
+
+Um cliente liga. Cerca de meio segundo após terminar de falar, o agente responde em voz natural. Enquanto a ligação acontece:
+
+1. Um waveform ao vivo pulsa com o áudio entrante.
+2. A transcrição preenche token-por-token com labels de quem fala em cada turn.
+3. Um medidor de latência mostra STT, LLM TTFT, TTS TTFA e end-to-end p95 em tempo real, com cada etapa em vermelho quando passa do orçamento.
+4. Qualquer tool que o agente invocar — `check_availability`, `lookup_kb`, `book_appointment`, `transfer_to_human` — aparece numa timeline inline com input, output, duração.
+
+O operador pode assumir a ligação pelo dashboard a qualquer momento.
+
+Quando a ligação encerra, um job Inngest puxa a gravação, pede ao Claude Sonnet 4.6 um summary estruturado, classifica o desfecho (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), pontua sentimento e extrai tópicos. A página de detalhe mostra a gravação num player scrub-ável com a transcrição destacando o segmento atualmente falado.
+
+O mesmo dashboard inclui campanhas outbound (upload CSV, respeito a horário comercial, retries com cooldown), uma página de analytics (volume, conversão, latência p95, heatmap por dia-da-semana × hora) e integração Cal.com para agendar consultas no meio da ligação.
+
+## Por que construí
+
+Queria construir a experiência de IA voltada-ao-usuário mais difícil que conseguia pensar — voz — em qualidade de produção, num stack onde o orçamento de latência é a feature headline. Negócios de serviços (clínicas, consultórios) são o usuário canônico certo porque têm volume real, receita real em jogo em ligações perdidas e não se importam com novidade pela novidade.
+
+## Como funciona
+
+### Pipeline de voz em tempo real
+
+- Twilio termina a ligação PSTN e bridgea para LiveKit Cloud via SIP.
+- Um worker Node de longa duração entra na sala LiveKit e roda o loop da conversa. O worker é deployado separadamente do app Next.js — funções Vercel não conseguem segurar um websocket aberto por 10 minutos.
+- Deepgram lida com STT, VAD e turn-detection numa API em streaming. Eventos de end-of-turn disparam o LLM, eliminando a variância de 150–300ms de pipelines separados com VAD + silence-timer.
+- Claude Haiku 4.5 conduz a conversa. Tokens streamados são divididos sentence-by-sentence e entregues ao Cartesia Sonic-3 para o áudio começar a tocar antes do LLM terminar de gerar.
+- Tool use é nativo na chamada do Anthropic SDK. Quatro tools disponíveis durante a ligação: `check_availability`, `book_appointment`, `lookup_kb`, `transfer_to_human`. Cada tool é validada por Zod, gravada com input/output/duração, e o LLM segue com o resultado da tool como um turn normal.
+- Interrupção / barge-in adaptativos cancelam geração LLM em voo e descartam a fila de áudio TTS no momento em que o usuário começa a falar.
+- Latência é instrumentada por etapa e gravada no banco para o medidor ao vivo e o dashboard de analytics.
+
+### Multi-tenant B2B
+
+Três camadas de isolamento — escopo de linha no Postgres, guards na camada de aplicação em toda server action e credenciais de sub-conta Twilio por organização. O worker LiveKit lê a org dos headers SIP de modo que uma rota mal configurada nunca pode bridgear para a sala de outro tenant.
+
+## Status
+
+Demo ao vivo em [relay-five-peach.vercel.app](https://relay-five-peach.vercel.app). Loom walkthrough e case study completo a seguir.

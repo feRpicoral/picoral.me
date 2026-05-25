@@ -1,0 +1,26 @@
+---
+slug: vpn-guard-macos
+title: VPN Guard macOS
+tagline: Three-layer macOS utility blocking domains unless verified to exit through a specific VPN IP. Fail-safe LaunchDaemon.
+summary: A macOS utility I wrote for myself. Blocks a configured set of domains at three layers (/etc/hosts, /etc/resolver, pf packet filter) unless outgoing traffic is verified to exit through a specific VPN IP. Runs as a LaunchDaemon that fails safe — if any check breaks, traffic is blocked, not leaked.
+status: live
+role: Solo — Shell, pf, launchd
+period:
+  start: '2026-04'
+stack:
+  - Shell
+  - macOS launchd
+  - pf packet filter
+  - dnsmasq
+links:
+  repo: https://github.com/feRpicoral/vpn-guard-macos
+order: 21
+featured: false
+hasCaseStudy: false
+seo:
+  description: VPN Guard macOS — three-layer domain-blocking utility tied to VPN IP verification. By Fernando Picoral.
+---
+
+A small macOS utility for verifying VPN routing. Three independent layers — /etc/hosts entries, /etc/resolver DNS shaping, and a pf packet-filter rule — that all need to pass before the configured domains resolve. A LaunchDaemon runs the verification periodically and fails safe: if any check breaks, the domains stop resolving rather than leaking.
+
+Wrote it because the off-the-shelf solutions either depended on a single layer (defeated by a misconfigured resolver) or were Windows-only.

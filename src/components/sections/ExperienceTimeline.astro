@@ -1,0 +1,172 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Pill from '~/components/ui/Pill.astro';
+import { type Locale } from '~/config/site.ts';
+import { formatPeriodDate } from '~/lib/format.ts';
+import { useTranslations } from '~/i18n/utils.ts';
+import type { UiKey } from '~/i18n/ui.ts';
+
+interface Props {
+  entries: CollectionEntry<'experience'>[];
+  locale: Locale;
+}
+const { entries, locale } = Astro.props;
+const t = useTranslations(locale);
+
+const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
+---
+
+<ol class="timeline">
+  {sorted.map((entry) => {
+    const { company, role, location, period, summary, highlights, tech, type, link } = entry.data;
+    const start = formatPeriodDate(period.start, locale);
+    const end = period.end ? formatPeriodDate(period.end, locale) : t('experience.present');
+    const typeLabel = t(`experience.type.${type}` as UiKey);
+    return (
+      <li class="item">
+        <div class="head">
+          <div class="title-row">
+            <h3 class="role">{role}</h3>
+            <Pill variant="muted">{typeLabel}</Pill>
+          </div>
+          <p class="company">
+            {link ? (
+              <a href={link} target="_blank" rel="noopener noreferrer">{company}</a>
+            ) : (
+              company
+            )}
+            <span class="dot" aria-hidden="true">·</span>
+            <span class="loc">{location}</span>
+          </p>
+          <p class="dates">
+            <time>{start}</time> → <time>{end}</time>
+          </p>
+        </div>
+        <p class="summary text-pretty">{summary}</p>
+        <ul class="highlights">
+          {highlights.map((h) => <li>{h}</li>)}
+        </ul>
+        {tech && tech.length > 0 && (
+          <ul class="tech" aria-label="Technologies">
+            {tech.map((t) => <li>{t}</li>)}
+          </ul>
+        )}
+      </li>
+    );
+  })}
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .item {
+    padding-left: 1.75rem;
+    position: relative;
+    border-left: 1px solid var(--color-border);
+  }
+  .item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0.6rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-fg);
+  }
+  .item:first-child::before {
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-accent) 18%, transparent);
+  }
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.25rem;
+  }
+  .role {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .company {
+    margin: 0 0 0.25rem;
+    color: var(--color-fg-muted);
+    font-size: 0.9375rem;
+  }
+  .company a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 0.2em;
+  }
+  .company a:hover {
+    color: var(--color-accent);
+  }
+  .dot {
+    margin: 0 0.375rem;
+    color: var(--color-fg-subtle);
+  }
+  .loc {
+    color: var(--color-fg-subtle);
+  }
+  .dates {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 1rem;
+  }
+  .summary {
+    margin: 0 0 1rem;
+    color: var(--color-fg);
+    line-height: 1.6;
+  }
+  .highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .highlights li {
+    position: relative;
+    padding-left: 1.25rem;
+    color: var(--color-fg-muted);
+    line-height: 1.55;
+    font-size: 0.9375rem;
+  }
+  .highlights li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+  .tech {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .tech li {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-fg-subtle);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+  }
+</style>

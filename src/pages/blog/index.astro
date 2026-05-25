@@ -1,0 +1,123 @@
+---
+import Container from '~/components/ui/Container.astro';
+import Eyebrow from '~/components/ui/Eyebrow.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE } from '~/config/site.ts';
+import { isEnabled } from '~/config/sections.ts';
+import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts';
+import { getLocalizedCollection } from '~/lib/content.ts';
+import { breadcrumbSchema } from '~/lib/schema.ts';
+import { formatLongDate } from '~/lib/format.ts';
+
+if (!isEnabled('blog')) {
+  return Astro.redirect('/404', 404);
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const posts = (await getLocalizedCollection('blog', locale))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const jsonLd = [
+  breadcrumbSchema([
+    { name: 'Home', url: SITE.url },
+    { name: t('nav.blog'), url: `${SITE.url}/blog` },
+  ]),
+];
+---
+
+<Page
+  title={t('nav.blog')}
+  description="Long-form writing on AI engineering, multi-agent systems, voice AI, and shipping production software."
+  canonicalPath="/blog"
+  jsonLd={jsonLd}
+>
+  <Section spacing="md">
+    <Container size="content">
+      <Eyebrow>{t('nav.blog')}</Eyebrow>
+      <h1 class="display-serif page-title">{t('nav.blog')}</h1>
+
+      {posts.length === 0 ? (
+        <p class="empty">No posts yet.</p>
+      ) : (
+        <ul class="posts">
+          {posts.map((post) => {
+            const slug = post.id.split('/').pop()!;
+            return (
+              <li>
+                <a href={localizePath(`/blog/${slug}`, locale)}>
+                  <time datetime={post.data.publishedAt.toISOString()}>
+                    {formatLongDate(post.data.publishedAt, locale)}
+                  </time>
+                  <h2>{post.data.title}</h2>
+                  <p>{post.data.description}</p>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin: 0.75rem 0 3rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .empty {
+    color: var(--color-fg-muted);
+    font-size: 1rem;
+  }
+  .posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .posts li a {
+    display: block;
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-border);
+    text-decoration: none;
+    color: var(--color-fg);
+    transition: padding-left 200ms ease;
+  }
+  .posts li:last-child a {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .posts li a:hover {
+    padding-left: 0.75rem;
+  }
+  .posts li a:hover h2 {
+    color: var(--color-accent);
+  }
+  .posts time {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-fg-subtle);
+    margin-bottom: 0.5rem;
+  }
+  .posts h2 {
+    font-size: 1.5rem;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.625rem;
+    transition: color 150ms ease;
+  }
+  .posts p {
+    color: var(--color-fg-muted);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

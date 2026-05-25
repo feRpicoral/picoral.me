@@ -1,0 +1,161 @@
+---
+import FAQ from '~/components/sections/FAQ.astro';
+import Hero from '~/components/sections/Hero.astro';
+import ProjectCard from '~/components/sections/ProjectCard.astro';
+import SectionHeader from '~/components/sections/SectionHeader.astro';
+import Container from '~/components/ui/Container.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE, type Locale } from '~/config/site.ts';
+import { localizePath, useTranslations } from '~/i18n/utils.ts';
+import { getLocalizedCollection } from '~/lib/content.ts';
+import { faqPageSchema, personSchema, websiteSchema } from '~/lib/schema.ts';
+
+export function getStaticPaths() {
+  return SITE.locales
+    .filter((l) => l !== SITE.defaultLocale)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+
+const allProjects = await getLocalizedCollection('projects', locale);
+const featured = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+const faqItems = [
+  {
+    q:
+      locale === 'pt'
+        ? 'Quem é Fernando Picoral?'
+        : '¿Quién es Fernando Picoral?',
+    a:
+      locale === 'pt'
+        ? 'Fernando Picoral é um engenheiro de software brasileiro baseado em Nova York. Acabou de se formar em Ciência da Computação pela University of Colorado Boulder (maio de 2026, GPA 3.9) e entra no Google em tempo integral como Software Engineer em setembro de 2026, depois de três estágios na empresa em Kirkland, Sunnyvale e Nova York.'
+        : 'Fernando Picoral es un ingeniero de software brasileño basado en Nueva York. Acaba de graduarse en Ciencias de la Computación de la University of Colorado Boulder (mayo de 2026, GPA 3.9) y se une a Google a tiempo completo como Software Engineer en septiembre de 2026, tras tres pasantías con la empresa en Kirkland, Sunnyvale y Nueva York.',
+  },
+  {
+    q:
+      locale === 'pt'
+        ? 'Em que Fernando está trabalhando agora?'
+        : '¿En qué está trabajando Fernando ahora?',
+    a:
+      locale === 'pt'
+        ? 'Alguns projetos pessoais em IA — voz, multi-agente, RAG e cobrança recorrente. Existem apenas como lugares para aprender a próxima coisa. Em setembro de 2026 começa no Google em tempo integral.'
+        : 'Algunos proyectos personales en IA — voz, multi-agente, RAG y cobros recurrentes. Existen solo como lugares para aprender lo siguiente. En septiembre de 2026 empieza en Google a tiempo completo.',
+  },
+  {
+    q:
+      locale === 'pt'
+        ? 'Como entrar em contato com Fernando?'
+        : '¿Cómo contactar a Fernando?',
+    a:
+      locale === 'pt'
+        ? `O caminho mais rápido é por e-mail (veja a página de contato). Também pode encontrá-lo no GitHub (@feRpicoral) e no LinkedIn (/in/picoral).`
+        : `La forma más rápida es por correo (ver la página de contacto). También puedes encontrarlo en GitHub (@feRpicoral) y LinkedIn (/in/picoral).`,
+    aHtml:
+      locale === 'pt'
+        ? `O caminho mais rápido é por e-mail (veja a <a href="${localizePath('/contact', locale)}">página de contato</a>). Também pode encontrá-lo no <a href="${SITE.socials.github}" target="_blank" rel="noopener noreferrer">GitHub</a> (@feRpicoral) e no <a href="${SITE.socials.linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a> (/in/picoral).`
+        : `La forma más rápida es por correo (ver la <a href="${localizePath('/contact', locale)}">página de contacto</a>). También puedes encontrarlo en <a href="${SITE.socials.github}" target="_blank" rel="noopener noreferrer">GitHub</a> (@feRpicoral) y <a href="${SITE.socials.linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a> (/in/picoral).`,
+  },
+  {
+    q:
+      locale === 'pt'
+        ? 'Que idiomas Fernando fala?'
+        : '¿Qué idiomas habla Fernando?',
+    a:
+      locale === 'pt'
+        ? 'Português (nativo), inglês (fluente) e espanhol (proficiência de trabalho). Este site está disponível nos três idiomas.'
+        : 'Portugués (nativo), inglés (fluido) y español (proficiencia de trabajo). Este sitio está disponible en los tres idiomas.',
+  },
+];
+
+const jsonLd = [
+  personSchema(),
+  websiteSchema(locale),
+  faqPageSchema(faqItems),
+];
+---
+
+<Page
+  title={SITE.name}
+  description={SITE.description}
+  canonicalPath="/"
+  jsonLd={jsonLd}
+>
+  <Hero
+    eyebrow={t('home.hero.eyebrow')}
+    title={t('home.hero.title')}
+    lead={t('home.hero.lead')}
+    ctaPrimary={{ label: t('home.hero.ctaProjects'), href: localizePath('/projects', locale) }}
+    ctaSecondary={{ label: t('home.hero.ctaAbout'), href: localizePath('/about', locale) }}
+  />
+
+  {featured.length > 0 && (
+    <Section spacing="md" id="featured">
+      <Container size="wide">
+        <SectionHeader
+          eyebrow={t('projects.featured')}
+          title={t('home.projects.title')}
+          lead={t('home.projects.lead')}
+        />
+        <div class="grid">
+          {featured.map((project) => (
+            <ProjectCard
+              href={localizePath(`/projects/${project.data.slug}`, locale)}
+              title={project.data.title}
+              tagline={project.data.tagline}
+              status={project.data.status}
+              stack={project.data.stack}
+              locale={locale}
+            />
+          ))}
+        </div>
+        <div class="all">
+          <a href={localizePath('/projects', locale)} class="all-link">
+            {t('home.projects.allCta')}
+          </a>
+        </div>
+      </Container>
+    </Section>
+  )}
+
+  <Section spacing="md" id="faq">
+    <Container size="content">
+      <SectionHeader title={t('home.faq.title')} />
+      <FAQ items={faqItems} />
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .all {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+  .all-link {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    transition: all 150ms ease;
+  }
+  .all-link:hover {
+    color: var(--color-accent);
+  }
+</style>

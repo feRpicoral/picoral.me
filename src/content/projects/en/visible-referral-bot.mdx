@@ -1,0 +1,26 @@
+---
+slug: visible-referral-bot
+title: Visible Referral Bot
+tagline: GitHub Actions bot that auto-posts a Visible mobile referral code to r/Visible's biweekly megathread, on schedule, idempotently.
+summary: Open-source GitHub Actions automation that finds Reddit's biweekly r/Visible referral megathread and posts a configured referral code, on schedule, with idempotence. Two variants — one PRAW-based, one headless-Chromium-based — to cope with Reddit's auth changes.
+status: live
+role: Solo — Python, Playwright, GitHub Actions
+period:
+  start: '2025-09'
+stack:
+  - Python
+  - PRAW
+  - Playwright
+  - GitHub Actions
+links:
+  repo: https://github.com/feRpicoral/visible-referral-bot
+order: 20
+featured: false
+hasCaseStudy: false
+seo:
+  description: Visible referral bot — GitHub Actions automation by Fernando Picoral.
+---
+
+A small open-source utility I built to scratch my own itch. r/Visible runs a biweekly megathread where users drop referral codes; mine kept aging out before it would expire. The bot solves the friction with a cron-scheduled GitHub Action.
+
+Two variants — one using PRAW, one using a headless Chromium browser via Playwright for cases where Reddit's auth flow blocks API tokens. Both write a state file to track the last-posted thread so they're idempotent across restarts.

@@ -1,0 +1,85 @@
+---
+slug: sonar
+title: Sonar
+tagline: Personal project exploring multi-agent orchestration. The use case is sales-call review; the actual point was learning Anthropic tool use, prompt caching, and persisted agent state.
+summary: A multi-agent pipeline that turns a sales-call recording into research, analysis, a recommended next step, and a follow-up email draft with citations linking back to the transcript. Built on Claude Sonnet 4.6 + Haiku 4.5, Groq Whisper, and Tavily.
+status: in-development
+role: Solo — design, engineering, deployment
+period:
+  start: '2025-09'
+stack:
+  - Next.js 16
+  - TypeScript
+  - Claude Sonnet 4.6
+  - Claude Haiku 4.5
+  - Groq Whisper Large v3
+  - Tavily
+  - Supabase Storage
+  - PostgreSQL
+  - Prisma
+  - Tailwind v4
+  - shadcn/ui
+links:
+  repo: https://github.com/feRpicoral/sonar
+featured: true
+order: 1
+hasCaseStudy: true
+seo:
+  description: A personal project. Multi-agent pipeline turning sales-call recordings into research, analysis, next-step, and citation-grounded follow-up drafts.
+  keywords:
+    - multi-agent
+    - AI sales enablement
+    - Claude Sonnet 4.6
+    - Anthropic prompt caching
+    - Whisper transcription
+    - Tavily
+faq:
+  - q: What is Sonar?
+    a: Sonar is a multi-agent AI workspace for sales teams. A rep uploads a recorded sales call; ~20 seconds later they have prospect research, structured call analysis, a recommended next step, and a follow-up email draft with citations linking each claim back to a specific transcript segment.
+  - q: How does Sonar's multi-agent orchestration work?
+    a: Four sequential agent nodes — research, analysis, strategy, writer — each returning structured output through Anthropic tool use with Zod schemas. Every step writes an AgentRunStep row to Postgres; the run pauses at AWAITING_APPROVAL after the writer step for human review. The writer can be regenerated with reviewer feedback without re-running upstream nodes.
+  - q: Why does Sonar use Anthropic prompt caching?
+    a: System messages are cached on every node. On repeat runs against the same workspace, this cuts input tokens roughly 70%, which directly compounds into latency and cost wins as the corpus of workspace context grows.
+---
+
+## What it does
+
+A sales rep uploads a call recording. About twenty seconds later, Sonar returns:
+
+1. Research on the prospect's company (Tavily + Claude Haiku 4.5)
+2. Structured analysis of the call — topics, pain points, objections, action items, sentiment (Claude Sonnet 4.6)
+3. A recommended next step with talking points and urgency (Claude Sonnet 4.6)
+4. A follow-up email draft with bracketed citations linking back to transcript segments (Claude Sonnet 4.6)
+
+The reviewer sees a split-view UI: email on the left, transcript on the right. Hovering a citation highlights the matching segment. The reviewer can approve, edit the body in place, or regenerate the writer with feedback. Regeneration reuses the prior research, analysis, and strategy state; only the writer runs again.
+
+## Why I built it
+
+Not a product — a personal project. I wanted one codebase that exercised the modern AI stack end to end: multi-agent orchestration with persistent state, real audio handling, structured tool use, prompt caching, and the multi-tenant B2B shape. Sales-call review was the domain because the workflow is genuinely linear-with-rollback, which is the sweet spot for agent graphs.
+
+## How it works
+
+### Multi-agent orchestration
+
+- Four sequential nodes (research → transcription → analysis → strategy → writer)
+- Every node returns structured output via Anthropic tool use + a Zod schema. No free-text outputs.
+- Each step writes an `AgentRunStep` row. The run pauses at `AWAITING_APPROVAL` after the writer step.
+- Anthropic prompt caching is enabled on system messages — ~70% input-token reduction on repeat runs.
+- Writer regeneration reuses upstream state.
+- Background execution via Next.js 16's `after()` route handler (`maxDuration = 300`).
+
+### Audio processing
+
+- Drag-drop upload goes browser → Supabase Storage via signed URL. Server is not in the upload path.
+- Groq Whisper Large v3 transcribes with segment-level timestamps.
+- MIME type and 100 MB cap enforced both on the server action and bucket policy.
+- The writer receives transcript segments tagged with bracketed indices; citations reference those indices.
+- The split-view UI scrolls the cited segment into view on hover.
+
+### Multi-tenant B2B
+
+Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), invites, API keys, audit log. Three isolation layers — Postgres row-level scoping, application-layer guards on every server action, and Supabase Storage bucket policies keyed by workspace ID.
+
+## Status
+
+Under active development. The agent pipeline + workspace tenancy are working; UI polish and the live demo are in progress.

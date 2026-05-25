@@ -1,0 +1,63 @@
+---
+slug: recurra
+title: Recurra
+tagline: Personal project — recurring-billing scaffolding for local service businesses. Built as an excuse to learn Nx, AWS CDK, and the boring billing layer end to end.
+summary: A subscription-billing experiment for service businesses with repeat customers — recurring appointments, automated charges, customer self-serve. Backend in NestJS, web in React Router 7, mobile in Expo, infra in AWS CDK, and a Kotlin Android client for a Clover POS integration.
+status: in-development
+role: Solo — backend, web, mobile, infra
+period:
+  start: '2025-02'
+stack:
+  - NestJS
+  - React Router 7
+  - Expo
+  - Kotlin (Clover POS)
+  - PostgreSQL
+  - Prisma
+  - AWS CDK
+  - LocalStack
+  - Nx monorepo
+links:
+  live: https://recurra.app
+featured: true
+order: 4
+hasCaseStudy: true
+seo:
+  description: A personal project. Recurring-billing scaffolding for local service businesses — NestJS, React Router 7, Expo, Clover POS in Kotlin, AWS CDK, all in one Nx monorepo.
+  keywords:
+    - subscription billing
+    - recurring business
+    - Nx monorepo
+    - AWS CDK
+    - Clover POS
+faq:
+  - q: What is Recurra?
+    a: "Recurra is a recurring-billing platform for local service businesses — the tagline is 'repeat business, on repeat.' It handles recurring appointments, automated charges via Stripe, customer self-serve subscriptions, and a Clover POS integration for in-person checkout."
+  - q: Why a multi-app monorepo for Recurra?
+    a: One business needs three surfaces — owner web admin, owner mobile, customer-facing POS — sharing one backend, one auth model, and one billing system. The Nx monorepo with @recurra/shared keeps types, validation, and business logic in exactly one place across React Router, Expo, and the Kotlin POS client.
+---
+
+## What it does
+
+Recurra is a recurring-billing platform for local service businesses — repeat business, on repeat. The owner manages services, schedules, and customers from a React admin dashboard or an Expo mobile app. The customer self-serves subscriptions from a hosted portal. Stripe handles the charges. A Clover POS integration written in Kotlin allows in-person checkout that pulls the customer's active subscription.
+
+## Why I built it
+
+Not a product — a personal project. I had been wanting to build something across web + mobile + POS + AWS infrastructure in a single monorepo, partly to learn Nx and CDK properly, partly because subscription-billing for local service businesses is a domain I find genuinely interesting (and consistently underserved).
+
+## How it works
+
+Nx monorepo with NPM workspaces. Six apps:
+
+- `backend` — NestJS with Prisma against PostgreSQL on RDS, deployed to App Runner.
+- `web` — React Router 7 SPA in build/client/, hosted on S3 + CloudFront.
+- `mobile` — Expo.
+- `clover-pos` — Kotlin Android for Clover Mini.
+- `infra` — AWS CDK with six stacks: Network, Dns, Database, Backend, Web, Email.
+- `backend-e2e` — Jest e2e tests.
+
+Shared types and Zod schemas live in `@recurra/shared` and are imported by every app. The CDK stacks use SSM Parameter Store for secrets and an entrypoint script that builds the database URL from Secrets Manager JSON.
+
+## Status
+
+Under active development. The backend, admin web, and infra are in place; the Clover POS app and mobile owner app are next.

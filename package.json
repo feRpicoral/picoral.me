@@ -1,27 +1,50 @@
 {
   "name": "picoral.me",
-  "version": "1.0.0",
+  "type": "module",
+  "version": "4.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "engines": {
-    "node": "^16"
-  },
-  "packageManager": "yarn@1.22.17",
+  "description": "Fernando Picoral's personal website",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix"
+    "dev": "astro dev",
+    "build": "node scripts/build-llms-txt.mjs && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "dependencies": {
+    "@astrojs/mdx": "^4.2.0",
+    "@astrojs/react": "^4.2.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@astrojs/vercel": "^8.0.0",
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/jetbrains-mono": "^5.1.0",
+    "@fontsource/instrument-serif": "^5.1.0",
+    "@fontsource/inter": "^5.2.8",
+    "@iconify-json/lucide": "^1.2.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/vite": "^4.0.0",
+    "@vercel/analytics": "^1.4.0",
+    "astro": "^5.1.0",
+    "astro-icon": "^1.1.5",
+    "cmdk": "^1.0.0",
+    "focus-trap": "^7.6.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "satori": "^0.12.0",
+    "tailwindcss": "^4.0.0",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
-    "prettier": "^2.5.1",
-    "simple-git-hooks": "^2.7.0",
-    "turbo": "latest"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "yarn lint:fix"
+    "@astrojs/check": "^0.9.4",
+    "@biomejs/biome": "^1.9.4",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
   }
 }

@@ -1,0 +1,92 @@
+---
+import { render } from 'astro:content';
+import SocialLinks from '~/components/sections/SocialLinks.astro';
+import Container from '~/components/ui/Container.astro';
+import Eyebrow from '~/components/ui/Eyebrow.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE } from '~/config/site.ts';
+import { getLocaleFromUrl, useTranslations } from '~/i18n/utils.ts';
+import { getLocalizedEntry } from '~/lib/content.ts';
+import { breadcrumbSchema, personSchema, websiteSchema } from '~/lib/schema.ts';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const result = await getLocalizedEntry('pages', locale, 'about');
+if (!result) return Astro.redirect('/404', 404);
+const { entry, translated } = result;
+const { Content } = await render(entry);
+
+const jsonLd = [
+  personSchema(),
+  websiteSchema(locale),
+  breadcrumbSchema([
+    { name: 'Home', url: SITE.url },
+    { name: t('about.title'), url: `${SITE.url}/about` },
+  ]),
+];
+---
+
+<Page
+  title={t('about.title')}
+  description={t('about.lead')}
+  canonicalPath="/about"
+  jsonLd={jsonLd}
+>
+  <Section spacing="md">
+    <Container size="prose">
+      <Eyebrow>{t('about.title')}</Eyebrow>
+      <h1 class="display-serif title">{SITE.name}</h1>
+      <p class="lead text-pretty">{t('about.lead')}</p>
+      {!translated && (
+        <p class="missing">{t('page.translationMissing')}</p>
+      )}
+      <div class="prose">
+        <Content />
+      </div>
+      <div class="socials">
+        <p class="socials-label">{t('contact.social.title')}</p>
+        <SocialLinks />
+      </div>
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin: 0.75rem 0 1.5rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--color-fg-muted);
+    line-height: 1.6;
+    margin: 0 0 3rem;
+  }
+  .missing {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-fg-muted);
+    margin-bottom: 2rem;
+  }
+  .socials {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .socials-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-fg-subtle);
+    margin: 0 0 1rem;
+  }
+</style>

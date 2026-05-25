@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .bg { fill: oklch(99% 0.005 95); }
+      .fg { fill: oklch(20% 0.015 280); }
+      .dot { fill: oklch(58% 0.18 250); }
+      @media (prefers-color-scheme: dark) {
+        .bg { fill: oklch(14% 0.012 280); }
+        .fg { fill: oklch(96% 0.008 95); }
+        .dot { fill: oklch(72% 0.16 250); }
+      }
+    </style>
+  </defs>
+  <rect class="bg" width="32" height="32" rx="6" />
+  <text class="fg" x="5" y="22" font-family="-apple-system, system-ui, sans-serif" font-weight="700" font-size="17" letter-spacing="-1">p</text>
+  <circle class="dot" cx="22" cy="22" r="2.5" />
+</svg>

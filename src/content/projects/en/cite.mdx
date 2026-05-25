@@ -1,0 +1,48 @@
+---
+slug: cite
+title: Cite
+tagline: Personal project exploring agentic RAG. Every answer is grounded by inline citations; clicking one opens the source document at the exact region that produced it.
+summary: A retrieval-augmented chat app where every model answer is backed by inline citations. Clicking a citation opens the source document at the exact region — page, paragraph, or token span — that produced the answer. Built to learn agentic retrieval and synchronized document-viewer UX.
+status: in-development
+role: Solo — design, engineering
+period:
+  start: '2026-03'
+stack:
+  - Next.js 16
+  - TypeScript
+  - Tailwind v4
+  - shadcn/ui (Radix Nova)
+  - Anthropic SDK
+  - PostgreSQL with pgvector
+  - Yarn 4
+links:
+  repo: https://github.com/feRpicoral/cite
+featured: true
+order: 3
+hasCaseStudy: true
+seo:
+  description: A personal project. Agentic RAG with clickable inline citations and a synchronized document viewer that jumps to the exact source region.
+  keywords:
+    - agentic RAG
+    - retrieval-augmented generation
+    - citation grounding
+    - document viewer
+    - pgvector
+faq:
+  - q: What is Cite?
+    a: Cite is an agentic retrieval-augmented chat application. Teams upload their documents and ask questions in natural language. Every answer is grounded by inline citations — clicking one opens the source document at the exact region that produced the answer, with the relevant span highlighted.
+  - q: How is Cite different from a typical RAG chatbot?
+    a: Two things. First, the retrieval step is agentic — the model can plan and iterate retrievals before answering, rather than a single top-k similarity lookup. Second, the citation is the user interface, not a footnote. Citations are clickable handles that synchronously scroll the document viewer to the cited span, so verification is one click instead of a search.
+---
+
+## What it does
+
+Teams upload their documents — PDFs, Word, Markdown, transcripts — and chat with them in natural language. Every answer is grounded by inline citations. Clicking a citation opens the source document at the exact region that produced the answer, with the relevant span highlighted.
+
+## Why I built it
+
+Not a product — a personal project. RAG chatbots without citation are unfalsifiable. Citation grounding makes the model's output checkable, which is the whole point of using a retrieval system. I also wanted to design a UI where the citation is the primary interaction, not a footnote — the document viewer is co-equal with the chat.
+
+## Status
+
+Under active development. The retrieval pipeline and chat UI are working end-to-end; the document viewer's region-anchor logic is the current focus.

@@ -1,0 +1,42 @@
+---
+slug: cite
+title: Cite
+tagline: Projeto pessoal explorando RAG agêntico. Toda resposta é fundamentada por citações inline; clicar numa abre o documento de origem na região exata que a produziu.
+summary: App de chat com RAG onde toda resposta do modelo é apoiada por citações inline. Clicar numa citação abre o documento de origem na região exata — página, parágrafo ou span de tokens — que produziu a resposta. Construído para aprender retrieval agêntico e UX de viewer de documento sincronizado.
+status: in-development
+role: Solo — design, engenharia
+period:
+  start: '2026-03'
+stack:
+  - Next.js 16
+  - TypeScript
+  - Tailwind v4
+  - shadcn/ui (Radix Nova)
+  - Anthropic SDK
+  - PostgreSQL com pgvector
+  - Yarn 4
+links:
+  repo: https://github.com/feRpicoral/cite
+featured: true
+order: 3
+hasCaseStudy: true
+seo:
+  description: Projeto pessoal. RAG agêntico com citações inline clicáveis e visualizador de documento sincronizado que pula para a região exata da fonte.
+faq:
+  - q: O que é o Cite?
+    a: Cite é uma aplicação de chat com retrieval-augmented generation agêntico. Times fazem upload de documentos e perguntam em linguagem natural. Toda resposta é fundamentada por citações inline — clicar numa abre o documento de origem na região exata que produziu a resposta, com o span relevante destacado.
+  - q: Em que o Cite é diferente de um chatbot RAG típico?
+    a: Duas coisas. Primeiro, o retrieval é agêntico — o modelo pode planejar e iterar buscas antes de responder, em vez de um único lookup top-k de similaridade. Segundo, a citação É a interface, não uma nota de rodapé. Citações são handles clicáveis que sincronamente fazem scroll do visualizador para o span citado, então verificação é um clique em vez de uma busca.
+---
+
+## O que faz
+
+Times fazem upload de documentos — PDFs, Word, Markdown, transcrições — e fazem perguntas em linguagem natural. Toda resposta é fundamentada por citações inline. Clicar numa citação abre o documento de origem na região exata que produziu a resposta, com o span relevante destacado.
+
+## Por que construí
+
+Chatbots RAG sem citação são infalsificáveis. Fundamentação por citação torna o output do modelo verificável, que é todo o ponto de usar um sistema de retrieval. Também queria desenhar uma UI onde a citação é a interação primária, não uma nota de rodapé — o visualizador de documento é co-igual ao chat.
+
+## Status
+
+Em desenvolvimento ativo. O pipeline de retrieval e a UI de chat funcionam end-to-end; a lógica de region-anchor do visualizador é o foco atual.

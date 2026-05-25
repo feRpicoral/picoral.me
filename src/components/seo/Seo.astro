@@ -1,0 +1,68 @@
+---
+import { SITE } from '~/config/site.ts';
+import { bcp47, getAlternates, getLocaleFromUrl } from '~/i18n/utils.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description, canonicalPath, ogImage, jsonLd, noindex } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const lang = bcp47(locale);
+
+const localePathPrefix = locale === SITE.defaultLocale ? '' : `/${locale}`;
+const canonicalUrl = new URL(`${localePathPrefix}${canonicalPath === '/' ? '' : canonicalPath}`, SITE.url).toString();
+const ogImageUrl = ogImage ? new URL(ogImage, SITE.url).toString() : new URL('/og/default.png', SITE.url).toString();
+
+const alternates = getAlternates(canonicalPath);
+const otherLocaleAlternates = alternates.filter((a) => a.locale !== locale && a.locale !== 'x-default');
+
+const fullTitle = title === SITE.name ? `${SITE.name} — Software Engineer` : `${title} — ${SITE.name}`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content={SITE.name} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+
+<link rel="canonical" href={canonicalUrl} />
+
+{alternates.map(({ locale: alt, href }) => (
+  <link rel="alternate" hreflang={alt === 'en' ? 'en' : alt === 'pt' ? 'pt-BR' : alt === 'es' ? 'es' : 'x-default'} href={href} />
+))}
+
+{/* Open Graph */}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${title} — ${SITE.name}`} />
+<meta property="og:locale" content={lang.replace('-', '_')} />
+{otherLocaleAlternates.map(({ locale: alt }) => (
+  <meta property="og:locale:alternate" content={alt === 'en' ? 'en_US' : alt === 'pt' ? 'pt_BR' : 'es_ES'} />
+))}
+
+{/* Twitter Card */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+{/* Preload primary font weights */}
+<link rel="preload" href="/_astro/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+{jsonLd?.map((payload) => (
+  <script type="application/ld+json" set:html={JSON.stringify(payload)} />
+))}
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="alternate" type="application/rss+xml" title={`${SITE.name} — RSS`} href="/rss.xml" />

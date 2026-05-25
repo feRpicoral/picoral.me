@@ -1,0 +1,137 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import Breadcrumbs from '~/components/nav/Breadcrumbs.astro';
+import Container from '~/components/ui/Container.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE } from '~/config/site.ts';
+import { isEnabled } from '~/config/sections.ts';
+import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts';
+import { getCanonicalSlug, getLocalizedEntry } from '~/lib/content.ts';
+import { blogPostingSchema, breadcrumbSchema } from '~/lib/schema.ts';
+import { formatLongDate } from '~/lib/format.ts';
+
+export async function getStaticPaths() {
+  if (!isEnabled('blog')) return [];
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const seen = new Set<string>();
+  const result: { params: { slug: string }; props: { entry: CollectionEntry<'blog'> } }[] = [];
+  for (const entry of posts) {
+    const slug = getCanonicalSlug(entry.id);
+    if (!entry.id.startsWith('en/')) continue;
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    result.push({ params: { slug }, props: { entry } });
+  }
+  return result;
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/404', 404);
+
+const result = await getLocalizedEntry('blog', locale, slug);
+if (!result) return Astro.redirect('/404', 404);
+const { entry, translated } = result;
+const { Content } = await render(entry);
+const { data } = entry;
+
+const jsonLd = [
+  breadcrumbSchema([
+    { name: 'Home', url: SITE.url },
+    { name: t('nav.blog'), url: `${SITE.url}/blog` },
+    { name: data.title, url: `${SITE.url}/blog/${slug}` },
+  ]),
+  blogPostingSchema({
+    title: data.title,
+    description: data.description,
+    url: `${SITE.url}/blog/${slug}`,
+    image: `${SITE.url}/og/blog/${slug}.png`,
+    publishedAt: data.publishedAt,
+    updatedAt: data.updatedAt,
+    locale,
+  }),
+];
+---
+
+<Page
+  title={data.title}
+  description={data.description}
+  canonicalPath={`/blog/${slug}`}
+  ogImage={`/og/blog/${slug}.png`}
+  jsonLd={jsonLd}
+>
+  <Section spacing="md">
+    <Container size="prose">
+      <Breadcrumbs
+        items={[
+          { label: t('nav.blog'), href: localizePath('/blog', locale) },
+          { label: data.title },
+        ]}
+      />
+      <article>
+        <header class="post-header">
+          <h1>{data.title}</h1>
+          <p class="lead">{data.description}</p>
+          <p class="meta">
+            <time datetime={data.publishedAt.toISOString()}>{formatLongDate(data.publishedAt, locale)}</time>
+            {data.updatedAt && data.updatedAt.getTime() !== data.publishedAt.getTime() && (
+              <>
+                <span class="sep">·</span>
+                <span>updated {formatLongDate(data.updatedAt, locale)}</span>
+              </>
+            )}
+          </p>
+        </header>
+        {!translated && (
+          <p class="missing">{t('page.translationMissing')}</p>
+        )}
+        <div class="prose">
+          <Content />
+        </div>
+      </article>
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .post-header {
+    margin: 1.5rem 0 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .post-header h1 {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .post-header .lead {
+    font-size: 1.125rem;
+    color: var(--color-fg-muted);
+    line-height: 1.6;
+  }
+  .post-header .meta {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .post-header .sep {
+    margin: 0 0.5rem;
+  }
+  .missing {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-fg-muted);
+    margin-bottom: 2rem;
+  }
+</style>

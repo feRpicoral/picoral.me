@@ -1,0 +1,40 @@
+---
+interface Props {
+  id?: string;
+  as?: keyof HTMLElementTagNameMap;
+  /** Vertical padding scale (default: lg = py-24 md:py-32) */
+  spacing?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+const { id, as: Tag = 'section', spacing = 'lg', class: className = '' } = Astro.props;
+---
+
+<Tag id={id} class={`section section--${spacing} ${className}`}>
+  <slot />
+</Tag>
+
+<style>
+  .section {
+    width: 100%;
+  }
+  .section--sm {
+    padding-block: 3rem;
+  }
+  .section--md {
+    padding-block: 4rem;
+  }
+  .section--lg {
+    padding-block: 5rem;
+  }
+  @media (min-width: 768px) {
+    .section--sm {
+      padding-block: 4rem;
+    }
+    .section--md {
+      padding-block: 6rem;
+    }
+    .section--lg {
+      padding-block: 8rem;
+    }
+  }
+</style>

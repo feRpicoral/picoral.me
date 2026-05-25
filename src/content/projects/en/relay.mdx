@@ -1,0 +1,91 @@
+---
+slug: relay
+title: Relay
+tagline: Personal project exploring real-time voice AI. The use case is a clinic receptionist; the actual point was hitting a sub-second user-perceived latency budget with full per-leg instrumentation.
+summary: A voice-AI agent that takes inbound phone calls 24/7 — qualifying, scheduling via Cal.com, transferring to a human when needed — with sub-second response latency and a live operator dashboard showing waveform, streaming transcript, and per-leg latency.
+status: live
+role: Solo — architecture, voice pipeline, frontend, deploy
+period:
+  start: '2025-11'
+stack:
+  - Next.js 16
+  - TypeScript
+  - LiveKit Cloud
+  - Twilio
+  - Deepgram
+  - Claude Haiku 4.5
+  - Cartesia Sonic-3
+  - Cal.com
+  - Inngest
+  - Supabase
+  - PostgreSQL
+  - Prisma
+  - Tailwind v4
+links:
+  live: https://relay-five-peach.vercel.app
+  repo: https://github.com/feRpicoral/relay
+featured: true
+order: 2
+hasCaseStudy: true
+seo:
+  description: A personal project. Voice-AI agent on LiveKit + Deepgram + Claude Haiku 4.5 + Cartesia + Twilio, hitting sub-second user-perceived latency.
+  keywords:
+    - voice AI
+    - LiveKit
+    - Deepgram
+    - Claude Haiku 4.5
+    - Cartesia
+    - Twilio
+    - voice receptionist
+    - real-time AI
+faq:
+  - q: What is Relay?
+    a: Relay is a multi-tenant voice AI receptionist for service businesses like clinics. It answers inbound calls 24/7, qualifies leads, schedules appointments via Cal.com, and transfers to a human when needed. Operators watch each call live in the dashboard with waveform, streaming transcript, and per-leg latency meter.
+  - q: What is Relay's latency budget?
+    a: The target is p95 ≤ 900ms user-perceived response, measured from end-of-user-speech to start-of-agent-audio. Each leg is instrumented separately — STT finalize, LLM TTFT, LLM total, TTS TTFA, tool total, end-to-end — and exposed as a live meter colored red when any leg exceeds its budget.
+  - q: Why LiveKit + Deepgram + Cartesia instead of a single provider?
+    a: Each leg is best-of-breed and individually replaceable. LiveKit handles SIP termination from Twilio and the audio room. Deepgram's streaming STT bundles VAD and turn detection in one API, eliminating the 150–300ms variance of separate VAD + silence-timer pipelines. Cartesia's Sonic-3 is genuinely faster-than-realtime TTS, which is what makes the sub-second budget possible.
+  - q: How does multi-tenant isolation work in Relay?
+    a: Three layers — Postgres row-level scoping by organizationId, application-layer guards on every server action, and Twilio sub-account credentials per organization. The LiveKit worker reads the organization from the SIP headers so a misconfigured route can never bridge into another tenant's room.
+---
+
+## What it does
+
+A clinic admin signs up, creates an organization, and configures an agent — persona prompt, voice, business hours, FAQ knowledge base. They point a Twilio number at the SIP trunk and they're done.
+
+A caller dials in. Roughly half a second after they finish speaking, the agent responds in a natural voice. While the call is in progress:
+
+1. A live waveform pulses to incoming audio.
+2. The transcript fills in token-by-token with speaker labels per turn.
+3. A latency meter shows STT, LLM TTFT, TTS TTFA, and end-to-end p95 in real time, with each leg colored red when over budget.
+4. Any tool the agent invokes — `check_availability`, `lookup_kb`, `book_appointment`, `transfer_to_human` — appears in an inline timeline with input, output, duration.
+
+The operator can take over the call from the dashboard at any moment.
+
+When the call hangs up, an Inngest job pulls the recording, asks Claude Sonnet 4.6 to produce a structured summary, classifies the outcome (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), scores sentiment, and extracts topics. The detail page shows the recording in a scrub-able player with the transcript highlighting the currently-spoken segment.
+
+The same dashboard ships outbound campaigns (CSV upload, working-hour respect, retries with cooldown), an analytics page (volume, conversion, latency p95, weekday-by-hour heatmap), and a Cal.com integration for booking appointments mid-call.
+
+## Why I built it
+
+Not a product — a personal project. I wanted to build the hardest end-user-facing AI experience I could think of (voice) on a stack where the latency budget is the headline constraint. The clinic-receptionist use case is the canonical example because it has real volume and real consequences for missed calls, which makes the latency target meaningful instead of academic.
+
+## How it works
+
+### Real-time voice pipeline
+
+- Twilio terminates the PSTN call and bridges it into LiveKit Cloud over SIP.
+- A long-lived Node worker joins the LiveKit room and runs the conversation loop. The worker is deployed separately from the Next.js app — Vercel functions cannot hold a websocket open for a 10-minute call.
+- Deepgram handles STT, VAD, and turn-detection in one streaming API. End-of-turn events fire the LLM, eliminating the 150–300ms variance of separate VAD + silence-timer pipelines.
+- Claude Haiku 4.5 runs the conversation. Streamed tokens are split sentence-by-sentence and handed to Cartesia Sonic-3 so audio starts playing before the LLM finishes generating.
+- Tool use is native to the Anthropic SDK call. Four tools are available during the call: `check_availability`, `book_appointment`, `lookup_kb`, `transfer_to_human`. Each tool is Zod-validated, recorded with input/output/duration, and the LLM continues with the tool result as a normal turn.
+- Adaptive interruption / barge-in cancels in-flight LLM generation and flushes the TTS audio queue the moment the user starts speaking.
+- Latency is instrumented per leg and written to the database for the live meter and the analytics dashboard.
+
+### Multi-tenant B2B
+
+Three layers of tenant isolation — Postgres row-level scoping, application-layer guards on every server action, and Twilio sub-account credentials per organization. The LiveKit worker reads the org from SIP headers so a misconfigured route can never bridge into another tenant's room.
+
+## Status
+
+Live demo at [relay-five-peach.vercel.app](https://relay-five-peach.vercel.app). Loom walkthrough and full case study are next.

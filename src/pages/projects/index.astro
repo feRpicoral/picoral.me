@@ -1,0 +1,121 @@
+---
+import ProjectCard from '~/components/sections/ProjectCard.astro';
+import Container from '~/components/ui/Container.astro';
+import Eyebrow from '~/components/ui/Eyebrow.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE } from '~/config/site.ts';
+import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts';
+import { getLocalizedCollection } from '~/lib/content.ts';
+import { breadcrumbSchema } from '~/lib/schema.ts';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const all = await getLocalizedCollection('projects', locale);
+const featured = all.filter((p) => p.data.featured).sort((a, b) => a.data.order - b.data.order);
+const other = all.filter((p) => !p.data.featured).sort((a, b) => a.data.order - b.data.order);
+
+const jsonLd = [
+  breadcrumbSchema([
+    { name: 'Home', url: SITE.url },
+    { name: t('projects.title'), url: `${SITE.url}/projects` },
+  ]),
+];
+---
+
+<Page
+  title={t('projects.title')}
+  description={t('projects.lead')}
+  canonicalPath="/projects"
+  jsonLd={jsonLd}
+>
+  <Section spacing="md">
+    <Container size="wide">
+      <Eyebrow>{t('projects.title')}</Eyebrow>
+      <h1 class="display-serif page-title">{t('projects.title')}</h1>
+      <p class="lead text-pretty">{t('projects.lead')}</p>
+
+      {featured.length > 0 && (
+        <>
+          <p class="group-label">{t('projects.featured')}</p>
+          <div class="grid">
+            {featured.map((project) => (
+              <ProjectCard
+                href={localizePath(`/projects/${project.data.slug}`, locale)}
+                title={project.data.title}
+                tagline={project.data.tagline}
+                status={project.data.status}
+                stack={project.data.stack}
+                locale={locale}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {other.length > 0 && (
+        <>
+          <p class="group-label">{t('projects.other')}</p>
+          <div class="grid">
+            {other.map((project) => {
+              const href = project.data.hasCaseStudy
+                ? localizePath(`/projects/${project.data.slug}`, locale)
+                : project.data.links?.repo ?? project.data.links?.live;
+              const external = Boolean(href && /^https?:\/\//.test(href));
+              return (
+                <ProjectCard
+                  href={href}
+                  external={external}
+                  title={project.data.title}
+                  tagline={project.data.tagline}
+                  status={project.data.status}
+                  stack={project.data.stack}
+                  locale={locale}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin: 0.75rem 0 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .lead {
+    font-size: 1.125rem;
+    color: var(--color-fg-muted);
+    line-height: 1.6;
+    margin: 0 0 3.5rem;
+    max-width: 42rem;
+  }
+  .group-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-fg-subtle);
+    margin: 0 0 1.25rem;
+  }
+  .group-label:not(:first-of-type) {
+    margin-top: 3rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

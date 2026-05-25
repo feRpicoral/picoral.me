@@ -1,0 +1,40 @@
+---
+import Footer from '~/components/nav/Footer.astro';
+import Header from '~/components/nav/Header.astro';
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description, canonicalPath, ogImage, jsonLd, noindex } = Astro.props;
+---
+
+<Base
+  title={title}
+  description={description}
+  canonicalPath={canonicalPath}
+  ogImage={ogImage}
+  jsonLd={jsonLd}
+  noindex={noindex}
+>
+  <div class="shell">
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</Base>
+
+<style>
+  .shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+</style>

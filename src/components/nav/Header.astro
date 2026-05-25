@@ -1,0 +1,165 @@
+---
+import LocaleSwitcher from '~/components/islands/LocaleSwitcher.tsx';
+import MobileNav from '~/components/islands/MobileNav.tsx';
+import ThemeToggle from '~/components/islands/ThemeToggle.tsx';
+import Container from '~/components/ui/Container.astro';
+import { NAV_ITEMS } from '~/config/nav.ts';
+import { SITE, type Locale } from '~/config/site.ts';
+import { getLocaleFromUrl, localizePath, stripLocale, swapLocale, useTranslations } from '~/i18n/utils.ts';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const canonicalPath = stripLocale(Astro.url.pathname);
+
+const items = NAV_ITEMS.map((item) => ({
+  href: localizePath(item.href, locale),
+  label: t(item.labelKey as Parameters<typeof t>[0]),
+  current: canonicalPath === item.href || canonicalPath.startsWith(`${item.href}/`),
+}));
+
+const alternates: Record<Locale, string> = {
+  en: swapLocale(Astro.url.pathname, 'en'),
+  pt: swapLocale(Astro.url.pathname, 'pt'),
+  es: swapLocale(Astro.url.pathname, 'es'),
+};
+---
+
+<header class="site-header">
+  <Container size="wide">
+    <div class="bar">
+      <a href={localizePath('/', locale)} class="brand" aria-label={SITE.name}>
+        <span class="brand-mark">picoral</span>
+        <span class="brand-dot">.</span>
+        <span class="brand-tld">me</span>
+      </a>
+      <nav class="primary" aria-label={t('nav.primary')}>
+        <ul>
+          {items.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.current ? 'page' : undefined} class={item.current ? 'is-current' : ''}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="actions">
+        <div class="desktop-only">
+          <LocaleSwitcher
+            client:idle
+            current={locale}
+            alternates={alternates}
+            labels={{
+              label: t('locale.label'),
+              en: t('locale.en'),
+              pt: t('locale.pt'),
+              es: t('locale.es'),
+            }}
+          />
+        </div>
+        <ThemeToggle
+          client:load
+          labels={{
+            toggle: t('theme.toggle'),
+            switchToDark: t('theme.switchToDark'),
+            switchToLight: t('theme.switchToLight'),
+          }}
+        />
+        <div class="mobile-only">
+          <MobileNav
+            client:media="(max-width: 768px)"
+            items={items}
+            labels={{ open: t('nav.openMenu'), close: t('nav.closeMenu') }}
+          />
+        </div>
+      </div>
+    </div>
+  </Container>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklch, var(--color-bg) 88%, transparent);
+    backdrop-filter: saturate(150%) blur(10px);
+    -webkit-backdrop-filter: saturate(150%) blur(10px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 4rem;
+  }
+  .brand {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+  }
+  .brand-dot {
+    color: var(--color-accent);
+  }
+  .brand-tld {
+    color: var(--color-fg-muted);
+    font-weight: 400;
+  }
+  .primary {
+    display: none;
+  }
+  .primary ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.25rem;
+    align-items: center;
+  }
+  .primary a {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all 150ms ease;
+  }
+  .primary a:hover {
+    color: var(--color-fg);
+    background: var(--color-bg-subtle);
+  }
+  .primary a.is-current {
+    color: var(--color-fg);
+    background: var(--color-bg-subtle);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .desktop-only {
+    display: none;
+  }
+  .mobile-only {
+    display: block;
+  }
+  @media (min-width: 768px) {
+    .primary {
+      display: block;
+    }
+    .desktop-only {
+      display: block;
+    }
+    .mobile-only {
+      display: none;
+    }
+  }
+</style>

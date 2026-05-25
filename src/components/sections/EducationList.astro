@@ -1,0 +1,89 @@
+---
+import { EDUCATION, type Locale } from '~/config/site.ts';
+import { formatPeriodDate } from '~/lib/format.ts';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<ol class="edu">
+  {EDUCATION.map((item) => {
+    const start = formatPeriodDate(item.period.start, locale);
+    const end = formatPeriodDate(item.period.end, locale);
+    return (
+      <li>
+        <div class="row">
+          <h3 class="degree">{item.degree}</h3>
+          <p class="dates">
+            <time>{start}</time> → <time>{end}</time>
+          </p>
+        </div>
+        <p class="school">
+          {item.school}
+          <span class="dot" aria-hidden="true">·</span>
+          <span class="loc">{item.location}</span>
+        </p>
+        <p class="detail">{item.detail}</p>
+      </li>
+    );
+  })}
+</ol>
+
+<style>
+  .edu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  li {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-subtle);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.375rem;
+  }
+  .degree {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .dates {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .school {
+    margin: 0 0 0.25rem;
+    color: var(--color-fg-muted);
+    font-size: 0.9375rem;
+  }
+  .dot {
+    margin: 0 0.375rem;
+    color: var(--color-fg-subtle);
+  }
+  .loc {
+    color: var(--color-fg-subtle);
+  }
+  .detail {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-fg-subtle);
+  }
+</style>

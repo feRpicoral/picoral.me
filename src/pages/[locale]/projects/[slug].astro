@@ -1,0 +1,141 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import Breadcrumbs from '~/components/nav/Breadcrumbs.astro';
+import CaseStudyHeader from '~/components/sections/CaseStudyHeader.astro';
+import FAQ from '~/components/sections/FAQ.astro';
+import SectionHeader from '~/components/sections/SectionHeader.astro';
+import Container from '~/components/ui/Container.astro';
+import Section from '~/components/ui/Section.astro';
+import Page from '~/layouts/Page.astro';
+import { SITE, type Locale } from '~/config/site.ts';
+import { isEnabled } from '~/config/sections.ts';
+import { localizePath, useTranslations } from '~/i18n/utils.ts';
+import { getCanonicalSlug, getLocalizedEntry } from '~/lib/content.ts';
+import {
+  breadcrumbSchema,
+  faqPageSchema,
+  softwareApplicationSchema,
+} from '~/lib/schema.ts';
+
+export async function getStaticPaths() {
+  if (!isEnabled('projectCaseStudies')) return [];
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  const slugSet = new Set<string>();
+  for (const entry of projects) {
+    const slug = getCanonicalSlug(entry.id);
+    const isEn = entry.id.startsWith('en/');
+    if (!isEn) continue;
+    if (entry.data.hasCaseStudy) slugSet.add(slug);
+  }
+  const result: { params: { locale: string; slug: string } }[] = [];
+  for (const locale of SITE.locales) {
+    if (locale === SITE.defaultLocale) continue;
+    for (const slug of slugSet) {
+      result.push({ params: { locale, slug } });
+    }
+  }
+  return result;
+}
+
+const locale = Astro.params.locale as Locale;
+const t = useTranslations(locale);
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/404', 404);
+
+const result = await getLocalizedEntry('projects', locale, slug);
+if (!result) return Astro.redirect('/404', 404);
+const { entry, translated } = result;
+const { Content } = await render(entry);
+const { data } = entry;
+
+const jsonLd: Record<string, unknown>[] = [
+  breadcrumbSchema([
+    { name: 'Home', url: `${SITE.url}/${locale}` },
+    { name: t('projects.title'), url: `${SITE.url}/${locale}/projects` },
+    { name: data.title, url: `${SITE.url}/${locale}/projects/${slug}` },
+  ]),
+  softwareApplicationSchema({
+    name: data.title,
+    description: data.seo.description,
+    url: data.links?.live,
+  }),
+];
+if (data.faq && data.faq.length > 0) {
+  jsonLd.push(faqPageSchema(data.faq));
+}
+---
+
+<Page
+  title={data.title}
+  description={data.seo.description}
+  canonicalPath={`/projects/${slug}`}
+  ogImage={`/og/projects/${slug}.png`}
+  jsonLd={jsonLd}
+>
+  <Section spacing="md">
+    <Container size="prose">
+      <Breadcrumbs
+        items={[
+          { label: t('nav.projects'), href: localizePath('/projects', locale) },
+          { label: data.title },
+        ]}
+      />
+      <CaseStudyHeader
+        title={data.title}
+        tagline={data.tagline}
+        status={data.status}
+        role={data.role}
+        period={data.period}
+        stack={data.stack}
+        links={data.links}
+        locale={locale}
+      />
+      {!translated && (
+        <p class="missing">{t('page.translationMissing')}</p>
+      )}
+      <div class="prose">
+        <Content />
+      </div>
+      {data.faq && data.faq.length > 0 && (
+        <div class="faq-wrap">
+          <SectionHeader title={t('projects.faq')} />
+          <FAQ items={data.faq} />
+        </div>
+      )}
+      <p class="back">
+        <a href={localizePath('/projects', locale)}>{t('projects.backToList')}</a>
+      </p>
+    </Container>
+  </Section>
+</Page>
+
+<style>
+  .missing {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-fg-muted);
+    margin-bottom: 2rem;
+  }
+  .faq-wrap {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .back {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+  .back a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+  }
+  .back a:hover {
+    color: var(--color-accent);
+  }
+</style>

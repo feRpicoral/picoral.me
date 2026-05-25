@@ -1,0 +1,90 @@
+---
+import Button from '~/components/ui/Button.astro';
+import Container from '~/components/ui/Container.astro';
+import Eyebrow from '~/components/ui/Eyebrow.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  /** Optional. Shown right under the title as a small phonetic gloss, e.g. `picoral /ˌpē-kōˈräl/`. */
+  pronunciation?: { name: string; ipa: string };
+  lead: string;
+  ctaPrimary: { label: string; href: string };
+  ctaSecondary?: { label: string; href: string };
+}
+const { eyebrow, title, pronunciation, lead, ctaPrimary, ctaSecondary } = Astro.props;
+---
+
+<section class="hero">
+  <Container size="content">
+    <Eyebrow class="eyebrow">{eyebrow}</Eyebrow>
+    <h1 class="title display-serif text-balance">{title}</h1>
+    {pronunciation && (
+      <p class="pronunciation" aria-label={`Pronunciation of ${pronunciation.name}: ${pronunciation.ipa}`}>
+        <span class="pron-name">{pronunciation.name}</span>
+        <span class="pron-sep" aria-hidden="true">·</span>
+        <span class="pron-ipa">{pronunciation.ipa}</span>
+      </p>
+    )}
+    <p class="lead text-pretty">{lead}</p>
+    <div class="ctas">
+      <Button href={ctaPrimary.href} variant="primary">{ctaPrimary.label}</Button>
+      {ctaSecondary && <Button href={ctaSecondary.href} variant="ghost">{ctaSecondary.label}</Button>}
+    </div>
+  </Container>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(4rem, 12vh, 8rem);
+  }
+  .eyebrow {
+    margin-bottom: 1.25rem;
+  }
+  .title {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    color: var(--color-fg);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .pronunciation {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-fg-subtle);
+    padding: 0.25rem 0.625rem;
+    margin: 0 0 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    background: var(--color-bg-subtle);
+    letter-spacing: 0;
+  }
+  .pron-name {
+    color: var(--color-fg-muted);
+    text-transform: lowercase;
+    font-weight: 500;
+  }
+  .pron-sep {
+    color: var(--color-fg-subtle);
+  }
+  .pron-ipa {
+    color: var(--color-fg);
+    font-variant-ligatures: none;
+  }
+  .lead {
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    color: var(--color-fg-muted);
+    line-height: 1.6;
+    max-width: 38rem;
+    margin: 0 0 2.5rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

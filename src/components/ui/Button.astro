@@ -1,0 +1,86 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'ghost';
+  size?: 'sm' | 'md';
+  external?: boolean;
+  class?: string;
+  type?: 'button' | 'submit';
+  'aria-label'?: string;
+}
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  class: className = '',
+  type = 'button',
+  'aria-label': ariaLabel,
+} = Astro.props;
+
+const isLink = Boolean(href);
+const targetProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{isLink ? (
+  <a
+    href={href}
+    class={`btn btn--${variant} btn--${size} ${className}`}
+    aria-label={ariaLabel}
+    {...targetProps}
+  >
+    <slot />
+    {external && (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M7 7h10v10" />
+        <path d="M7 17 17 7" />
+      </svg>
+    )}
+  </a>
+) : (
+  <button type={type} class={`btn btn--${variant} btn--${size} ${className}`} aria-label={ariaLabel}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 150ms ease;
+    border: 1px solid transparent;
+    line-height: 1;
+    font-family: inherit;
+  }
+  .btn--sm {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  .btn--md {
+    padding: 0.75rem 1.125rem;
+    font-size: 0.9375rem;
+  }
+  .btn--primary {
+    background: var(--color-fg);
+    color: var(--color-bg);
+  }
+  .btn--primary:hover {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-fg);
+    border-color: var(--color-border);
+  }
+  .btn--ghost:hover {
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border-strong);
+    color: var(--color-fg);
+  }
+</style>

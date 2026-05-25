@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /og/
+
+Sitemap: https://picoral.me/sitemap-index.xml
