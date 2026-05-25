@@ -24,7 +24,6 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'never',
   adapter: vercel({
-    webAnalytics: { enabled: true },
     imageService: true,
   }),
   i18n: {

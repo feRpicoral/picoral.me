@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
 import Seo from '~/components/seo/Seo.astro';
 import { SITE } from '~/config/site.ts';
 import { bcp47, getLocaleFromUrl, useTranslations } from '~/i18n/utils.ts';
@@ -93,5 +94,7 @@ const lang = bcp47(locale);
         document.addEventListener('astro:page-load', wireEmails);
       })();
     </script>
+
+    <Analytics />
   </body>
 </html>
