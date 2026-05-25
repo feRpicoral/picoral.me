@@ -49,10 +49,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
 const CONTENT_DIR = join(REPO_ROOT, 'src', 'content');
 
+const DEFAULT_CONCURRENCY = 8;
+
 function parseArgs(argv) {
   const args = {
     check: false,
     force: false,
+    concurrency: DEFAULT_CONCURRENCY,
     collections: COLLECTIONS,
     locales: TARGET_LOCALES,
   };
@@ -63,9 +66,15 @@ function parseArgs(argv) {
       args.collections = arg.slice('--collection='.length).split(',');
     } else if (arg.startsWith('--locale=')) {
       args.locales = arg.slice('--locale='.length).split(',');
+    } else if (arg.startsWith('--concurrency=')) {
+      const n = Number.parseInt(arg.slice('--concurrency='.length), 10);
+      if (!Number.isInteger(n) || n < 1) {
+        throw new Error(`Invalid --concurrency value: must be a positive integer.`);
+      }
+      args.concurrency = n;
     } else if (arg === '--help' || arg === '-h') {
       console.log(
-        'Usage: translate-content.mjs [--check] [--force] [--collection=a,b] [--locale=pt,es]',
+        'Usage: translate-content.mjs [--check] [--force] [--collection=a,b] [--locale=pt,es] [--concurrency=N]',
       );
       process.exit(0);
     } else {
@@ -73,6 +82,24 @@ function parseArgs(argv) {
     }
   }
   return args;
+}
+
+/**
+ * Run async `fn` over `items` with at most `limit` calls in flight at once.
+ * Tasks consume from a shared cursor — no chunking, so a slow task never blocks
+ * faster siblings. Errors from `fn` should be caught inside `fn`; an uncaught
+ * throw will reject one worker but leave the rest running until the cursor is
+ * exhausted, then `Promise.all` will reject.
+ */
+async function runPool(items, limit, fn) {
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const idx = cursor++;
+      await fn(items[idx]);
+    }
+  });
+  await Promise.all(workers);
 }
 
 async function listSourceFiles(collection) {
@@ -189,39 +216,44 @@ async function main() {
   const args = parseArgs(process.argv);
 
   console.log(
-    `${args.check ? 'Checking' : 'Translating'} collections=[${args.collections.join(',')}] locales=[${args.locales.join(',')}]`,
+    `${args.check ? 'Checking' : 'Translating'} collections=[${args.collections.join(',')}] locales=[${args.locales.join(',')}] concurrency=${args.concurrency}`,
   );
 
-  const results = [];
+  const tasks = [];
   for (const collection of args.collections) {
     const sources = await listSourceFiles(collection);
     for (const sourcePath of sources) {
       for (const locale of args.locales) {
-        const rel = relative(REPO_ROOT, sourcePath);
-        try {
-          const r = await processOne({
-            collection,
-            sourcePath,
-            locale,
-            check: args.check,
-            force: args.force,
-          });
-          results.push({ collection, sourcePath, locale, ...r });
-          if (r.status === 'stale') {
-            console.error(`  stale   ${locale}  ${rel}  — ${r.message}`);
-          } else if (r.status === 'locked-stale') {
-            console.warn(`  locked  ${locale}  ${rel}  — ${r.message}`);
-          } else if (r.status === 'translated') {
-            console.log(`  wrote   ${locale}  ${rel}`);
-          }
-        } catch (e) {
-          results.push({ collection, sourcePath, locale, status: 'error', error: e });
-          console.error(`  error   ${locale}  ${rel}`);
-          console.error(`          ${e.message}`);
-        }
+        tasks.push({ collection, sourcePath, locale });
       }
     }
   }
+
+  const results = [];
+  await runPool(tasks, args.concurrency, async ({ collection, sourcePath, locale }) => {
+    const rel = relative(REPO_ROOT, sourcePath);
+    try {
+      const r = await processOne({
+        collection,
+        sourcePath,
+        locale,
+        check: args.check,
+        force: args.force,
+      });
+      results.push({ collection, sourcePath, locale, ...r });
+      if (r.status === 'stale') {
+        console.error(`  stale   ${locale}  ${rel}  — ${r.message}`);
+      } else if (r.status === 'locked-stale') {
+        console.warn(`  locked  ${locale}  ${rel}  — ${r.message}`);
+      } else if (r.status === 'translated') {
+        console.log(`  wrote   ${locale}  ${rel}`);
+      }
+    } catch (e) {
+      results.push({ collection, sourcePath, locale, status: 'error', error: e });
+      console.error(`  error   ${locale}  ${rel}`);
+      console.error(`          ${e.message}`);
+    }
+  });
 
   const stale = results.filter((r) => r.status === 'stale').length;
   const errors = results.filter((r) => r.status === 'error').length;
