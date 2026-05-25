@@ -15,8 +15,15 @@ interface Props {
   };
 }
 
+/**
+ * Matches the CSS animation duration in `.mobile-nav-dialog.is-closing`.
+ * Used to delay unmount so the close animation can play out.
+ */
+const CLOSE_ANIMATION_MS = 220;
+
 export default function MobileNav({ items, labels }: Props) {
   const [open, setOpen] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [mounted, setMounted] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);
@@ -30,41 +37,51 @@ export default function MobileNav({ items, labels }: Props) {
     setMounted(true);
   }, []);
 
+  // Open/close lifecycle. On open: mount immediately, lock body scroll, wire
+  // up key handlers. On close: keep the dialog mounted long enough for the
+  // close animation to play, then unmount + release scroll lock.
   useEffect(() => {
-    if (!open) {
-      document.body.style.overflow = '';
-      return;
-    }
-    document.body.style.overflow = 'hidden';
-    firstLinkRef.current?.focus();
+    if (open) {
+      setShouldRender(true);
+      document.body.style.overflow = 'hidden';
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setOpen(false);
-        openerRef.current?.focus();
-      }
-      if (e.key === 'Tab' && dialogRef.current) {
-        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-          'a, button, [tabindex]:not([tabindex="-1"])',
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setOpen(false);
+          openerRef.current?.focus();
         }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('keydown', onKey);
+        if (e.key === 'Tab' && dialogRef.current) {
+          const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+            'a, button, [tabindex]:not([tabindex="-1"])',
+          );
+          if (focusable.length === 0) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      };
+      document.addEventListener('keydown', onKey);
+      return () => document.removeEventListener('keydown', onKey);
+    }
+
+    // open just flipped false — let the exit animation play, then unmount.
+    const t = setTimeout(() => {
+      setShouldRender(false);
       document.body.style.overflow = '';
-    };
+    }, CLOSE_ANIMATION_MS);
+    return () => clearTimeout(t);
   }, [open]);
+
+  // Focus the first link once the dialog is on screen.
+  useEffect(() => {
+    if (shouldRender && open) firstLinkRef.current?.focus();
+  }, [shouldRender, open]);
 
   return (
     <>
@@ -107,14 +124,14 @@ export default function MobileNav({ items, labels }: Props) {
           <line x1="4" x2="20" y1="18" y2="18" />
         </svg>
       </button>
-      {open && mounted && createPortal(
+      {shouldRender && mounted && createPortal(
         <div
           ref={dialogRef}
           id="mobile-nav-dialog"
           role="dialog"
           aria-modal="true"
           aria-label="Navigation"
-          className="mobile-nav-dialog"
+          className={`mobile-nav-dialog ${open ? 'is-open' : 'is-closing'}`}
           style={{
             position: 'fixed',
             inset: 0,
