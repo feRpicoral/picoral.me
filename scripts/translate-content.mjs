@@ -49,7 +49,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
 const CONTENT_DIR = join(REPO_ROOT, 'src', 'content');
 
-const DEFAULT_CONCURRENCY = 8;
+/**
+ * Picked to fit Anthropic tier-1 output-tokens-per-minute (~8k for Sonnet 4.6).
+ * At avg ~2k output tokens per file × 4 concurrent ≈ 8k, sitting at the limit
+ * but rarely tripping it. Bump via `--concurrency=N` once on a higher tier.
+ */
+const DEFAULT_CONCURRENCY = 4;
 
 function parseArgs(argv) {
   const args = {

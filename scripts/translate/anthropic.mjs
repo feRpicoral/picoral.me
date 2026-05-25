@@ -16,7 +16,11 @@ function getClient() {
         'ANTHROPIC_API_KEY is not set. Translation requires the env var; add it to your shell or .env.local for local runs.',
       );
     }
-    client = new Anthropic({ apiKey });
+    // SDK default is 2 retries. Tier-1 output-tokens-per-minute is tight
+    // (~8k for Sonnet 4.6) and a per-minute window can easily exceed 2 retries
+    // worth of exponential-backoff wait. 5 buys headroom without making real
+    // errors hang forever.
+    client = new Anthropic({ apiKey, maxRetries: 5 });
   }
   return client;
 }

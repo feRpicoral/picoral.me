@@ -41,6 +41,8 @@ pnpm translate:check   # exit non-zero if any translation is stale (no API call)
 
 Translation requires `ANTHROPIC_API_KEY` in the environment. CI only ever runs `--check`, so the key is needed locally, not on Vercel.
 
+`pnpm translate` runs through a worker pool (default `--concurrency=4`) tuned for Anthropic's tier-1 output-tokens-per-minute limit on Sonnet 4.6. On higher tiers, pass `--concurrency=8` or more to go faster. The SDK retries 429s up to 5 times with exponential backoff; if a file still errors out, rerun `pnpm translate` and the cache will skip everything that succeeded and only retry the failed file in isolation.
+
 ## Architecture notes
 
 ### Section feature flags
