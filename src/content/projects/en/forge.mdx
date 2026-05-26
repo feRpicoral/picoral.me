@@ -1,0 +1,77 @@
+---
+slug: forge
+title: Forge
+tagline: Personal project — a reproducible benchmark suite and cost-vs-quality study for self-hosted Llama 3.1 8B (AWQ-INT4 on vLLM) against commercial APIs. Not a SaaS, a portfolio piece.
+summary: A serving + optimization study comparing self-hosted, AWQ-INT4-quantized Llama 3.1 8B on vLLM against GPT-4o and Claude on throughput, latency, quality, and cost per million tokens. Deliverable is a methodology doc, committed benchmark JSON, and a defensible $/1M-tokens chart — reproducible from a rented GPU.
+status: in-development
+role: Solo — Python, vLLM, benchmarking, infra
+period:
+  start: '2026-05'
+stack:
+  - Python 3.12
+  - vLLM
+  - AutoAWQ
+  - lm-evaluation-harness
+  - Prometheus
+  - Grafana
+  - Docker
+  - RunPod
+  - Ruff
+  - mypy
+  - pytest
+links:
+  repo: https://github.com/feRpicoral/forge
+featured: false
+order: 6
+hasCaseStudy: true
+seo:
+  description: A personal project. Production-grade LLM inference serving and optimization study — vLLM, AWQ-INT4, throughput/latency benchmarks, and a self-hosted vs. commercial-API cost model.
+  keywords:
+    - LLM inference
+    - vLLM
+    - AWQ quantization
+    - Llama 3.1
+    - benchmark
+    - cost analysis
+    - lm-evaluation-harness
+faq:
+  - q: What is Forge?
+    a: Forge is a portfolio piece demonstrating that an open-source LLM can be served and optimized in production. The deliverable is a reproducible benchmark suite — throughput, TTFT, TPOT under concurrency — plus a quality eval (MMLU, GSM8K, HellaSwag) and a $/1M-tokens cost study comparing self-hosted Llama 3.1 8B against GPT-4o and Claude.
+  - q: Why AWQ-INT4 on vLLM?
+    a: AWQ-INT4 with vLLM-native Marlin kernels is currently the best documented quality-vs-throughput trade for an 8B model on a single GPU. vLLM gives continuous batching, KV cache, and an OpenAI-compatible streaming API — the stack a real product would use, not a synthetic benchmark.
+  - q: How is the methodology kept defensible?
+    a: Methodology, hardware, model SHAs, and exact vLLM version live in docs/methodology.md and are committed alongside the benchmark JSON. The full pipeline is rehearsed locally on a base-M1 MacBook against a tiny model (Qwen 2.5 0.5B) before any paid GPU rental, so the harness is debugged on free hardware.
+---
+
+## What it is
+
+A study, not a product. The shipped artifact is:
+
+- A vLLM serving config with continuous batching, KV cache, and an OpenAI-compatible streaming API.
+- An AWQ-INT4 quantization recipe.
+- A benchmark harness measuring throughput, TTFT (p50/p95), and TPOT (p50/p95) under realistic concurrency.
+- A quality eval wrapping `lm-evaluation-harness` (MMLU, GSM8K, HellaSwag) and reporting the full-precision-vs-quantized delta.
+- A cost model producing $/1M tokens self-hosted vs. commercial APIs.
+- Prometheus metrics + a Grafana dashboard for the serving leg.
+
+## Why I built it
+
+To demonstrate I can serve and optimize an open-source LLM end-to-end — not just call a hosted API. The interesting question isn't "can vLLM run Llama 3.1 8B" (yes, the docs cover that) — it's "what does the defensible $/1M-tokens number look like once you account for utilization, p95 latency, and quality regression from quantization?" That's what Forge measures.
+
+## How it works
+
+### Local development on commodity hardware
+
+The full pipeline runs on a base-model M1 MacBook Pro against a tiny model (`Qwen/Qwen2.5-0.5B-Instruct`) before any paid GPU rental. The vLLM CPU build, the benchmark harness, the cost-model parsers, and the chart generator are all debugged locally for free. Only the final reproduction run consumes GPU minutes.
+
+### Reproducibility
+
+Methodology, hardware, model SHAs, exact vLLM version, and AWQ recipe live in `docs/methodology.md`. Benchmark output JSON is committed under `results/`. Anyone with the methodology doc and a rented GPU can reproduce the numbers — that's the point of the deliverable.
+
+### CI
+
+GitHub Actions runs Ruff (lint + format), mypy, and pytest on every PR and push to main. No GPU jobs in CI — benchmark reproduction is a manual, methodology-driven step on rented hardware.
+
+## Status
+
+Scaffolding. The serving layer, quantization recipe, benchmark harness, and cost model land across phases 1–8 of the implementation plan; the impact lead, full benchmark run, and charts land in phase 9.

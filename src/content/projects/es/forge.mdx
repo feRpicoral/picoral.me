@@ -1,0 +1,107 @@
+---
+slug: forge
+title: Forge
+tagline: >-
+  Proyecto personal — un conjunto de benchmarks reproducibles y un estudio de
+  costo vs. calidad para Llama 3.1 8B autoalojado (AWQ-INT4 en vLLM) frente a
+  APIs comerciales. No es un SaaS, es una pieza de portafolio.
+summary: >-
+  Un estudio de serving y optimización que compara Llama 3.1 8B autoalojado con
+  cuantización AWQ-INT4 en vLLM contra GPT-4o y Claude en throughput, latencia,
+  calidad y costo por millón de tokens. El entregable es un doc de metodología,
+  un benchmark JSON commiteado y un gráfico defensible de $/1M tokens —
+  reproducible desde una GPU rentada.
+status: in-development
+role: 'Solo — Python, vLLM, benchmarking, infra'
+period:
+  start: 2026-05
+stack:
+  - Python 3.12
+  - vLLM
+  - AutoAWQ
+  - lm-evaluation-harness
+  - Prometheus
+  - Grafana
+  - Docker
+  - RunPod
+  - Ruff
+  - mypy
+  - pytest
+links:
+  repo: 'https://github.com/feRpicoral/forge'
+featured: false
+order: 6
+hasCaseStudy: true
+seo:
+  description: >-
+    Un proyecto personal. Estudio de serving y optimización de inferencia LLM a
+    nivel producción — vLLM, AWQ-INT4, benchmarks de throughput/latencia y un
+    modelo de costos autoalojado vs. API comercial.
+  keywords:
+    - LLM inference
+    - vLLM
+    - AWQ quantization
+    - Llama 3.1
+    - benchmark
+    - cost analysis
+    - lm-evaluation-harness
+faq:
+  - q: ¿Qué es Forge?
+    a: >-
+      Forge es una pieza de portafolio que demuestra que un LLM de código
+      abierto puede servirse y optimizarse en producción. El entregable es un
+      conjunto de benchmarks reproducibles — throughput, TTFT, TPOT bajo
+      concurrencia — más una evaluación de calidad (MMLU, GSM8K, HellaSwag) y un
+      estudio de costos en $/1M tokens comparando Llama 3.1 8B autoalojado
+      contra GPT-4o y Claude.
+  - q: ¿Por qué AWQ-INT4 en vLLM?
+    a: >-
+      AWQ-INT4 con los kernels Marlin nativos de vLLM es actualmente el mejor
+      trade documentado de calidad vs. throughput para un modelo 8B en una sola
+      GPU. vLLM ofrece continuous batching, KV cache y una API de streaming
+      compatible con OpenAI — el stack que usaría un producto real, no un
+      benchmark sintético.
+  - q: ¿Cómo se mantiene la metodología defendible?
+    a: >-
+      La metodología, el hardware, los SHAs del modelo y la versión exacta de
+      vLLM viven en docs/methodology.md y se commitean junto al benchmark JSON.
+      El pipeline completo se ensaya localmente en una MacBook M1 base contra un
+      modelo pequeño (Qwen 2.5 0.5B) antes de rentar cualquier GPU paga, así el
+      harness se depura en hardware gratuito.
+_source:
+  hash: deb0dda15c6bdba2
+  locale: en
+  translatedAt: '2026-05-26T21:23:51.748Z'
+---
+## Qué es
+
+Un estudio, no un producto. El artefacto entregado es:
+
+- Una configuración de serving en vLLM con continuous batching, KV cache y una API de streaming compatible con OpenAI.
+- Una receta de cuantización AWQ-INT4.
+- Un harness de benchmark que mide throughput, TTFT (p50/p95) y TPOT (p50/p95) bajo concurrencia realista.
+- Una evaluación de calidad que envuelve `lm-evaluation-harness` (MMLU, GSM8K, HellaSwag) y reporta el delta entre precisión completa y cuantizado.
+- Un modelo de costos que produce $/1M tokens autoalojado vs. APIs comerciales.
+- Métricas de Prometheus + un dashboard de Grafana para la capa de serving.
+
+## Por qué lo construí
+
+Para demostrar que puedo servir y optimizar un LLM de código abierto de punta a punta — no solo llamar a una API hosteada. La pregunta interesante no es "¿puede vLLM correr Llama 3.1 8B?" (sí, la documentación lo cubre) — es "¿cómo queda el número defensible de $/1M tokens una vez que se consideran la utilización, la latencia p95 y la regresión de calidad por cuantización?" Eso es lo que Forge mide.
+
+## Cómo funciona
+
+### Desarrollo local en hardware de consumo
+
+El pipeline completo corre en una MacBook Pro M1 base contra un modelo pequeño (`Qwen/Qwen2.5-0.5B-Instruct`) antes de rentar cualquier GPU paga. El build de vLLM para CPU, el harness de benchmark, los parsers del modelo de costos y el generador de gráficos se depuran todos localmente y de forma gratuita. Solo la corrida final de reproducción consume minutos de GPU.
+
+### Reproducibilidad
+
+La metodología, el hardware, los SHAs del modelo, la versión exacta de vLLM y la receta AWQ viven en `docs/methodology.md`. El JSON de salida del benchmark se commitea en `results/`. Cualquiera con el doc de metodología y una GPU rentada puede reproducir los números — ese es el punto del entregable.
+
+### CI
+
+GitHub Actions ejecuta Ruff (lint + format), mypy y pytest en cada PR y push a main. Sin jobs de GPU en CI — la reproducción del benchmark es un paso manual, guiado por la metodología, en hardware rentado.
+
+## Estado
+
+Scaffolding. La capa de serving, la receta de cuantización, el harness de benchmark y el modelo de costos se incorporan en las fases 1–8 del plan de implementación; el impact lead, la corrida completa de benchmark y los gráficos llegan en la fase 9.

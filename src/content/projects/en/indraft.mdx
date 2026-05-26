@@ -1,0 +1,104 @@
+---
+slug: indraft
+title: InDraft
+tagline: Personal project — a config-driven LinkedIn drafting engine. Drafts in your voice on a cron, you review on your phone, nothing publishes without a passkey assertion.
+summary: Open-source engine that watches RSS feeds and your GitHub activity, drafts LinkedIn posts in your voice on a schedule, lets you edit them conversationally on mobile, and publishes only after a verified WebAuthn assertion. Fork it, point `config.yml` at your profile, deploy on Vercel.
+status: live
+role: Solo — engineering, deploy
+period:
+  start: '2026-05'
+stack:
+  - Next.js 16
+  - TypeScript
+  - Vercel KV
+  - Vercel Cron
+  - OpenRouter
+  - Claude Opus 4.7
+  - Claude Haiku 4.5
+  - WebAuthn (passkeys)
+  - Resend
+  - Pexels
+  - Tailwind v4
+links:
+  live: https://indraft.dev
+  repo: https://github.com/feRpicoral/indraft
+featured: true
+order: 5
+hasCaseStudy: true
+seo:
+  description: A personal project. Config-driven LinkedIn drafting engine on Next.js + Vercel KV + OpenRouter, with a passkey-gated publish path and an anti-AI-tell linter.
+  keywords:
+    - LinkedIn automation
+    - LinkedIn post generator
+    - WebAuthn
+    - passkey
+    - Vercel KV
+    - OpenRouter
+    - Claude Opus 4.7
+    - Next.js 16
+faq:
+  - q: What is InDraft?
+    a: InDraft is an open-source LinkedIn drafting engine. A scheduled job pulls fresh items from your RSS feeds and GitHub activity, picks one, and drafts a post in your voice. You review on mobile, edit conversationally, and the post only goes live after a WebAuthn passkey assertion bound to that exact draft.
+  - q: Why a passkey for publishing?
+    a: There's no automatic publish path in the codebase. Every published post passes through a WebAuthn assertion bound to a sha256 of the draft id, version, and body — so a captured assertion can't be replayed against an edited draft. The state machine in src/lib/state/drafts.ts is the single writer of draft status and proves the property at the type level.
+  - q: How does InDraft preserve voice?
+    a: A free-text profile block in config.yml is the model's primary grounding. The drafting model is Claude Opus 4.7 via OpenRouter BYOK because the anti-AI-tell quality bar degrades on weaker models. A separate linter rejects em-dash spam, "let's dive in", and other tells before the draft hits the review UI.
+  - q: Why omit the link by default?
+    a: 2026 LinkedIn algorithm research shows body-link posts get up to a 60% reach hit and the older "link in first comment" workaround gets up to 80%. InDraft's default is link_placement = "none" — the source URL is surfaced inside the review UI instead. You can override per post.
+---
+
+## What it does
+
+You fork the repo, fill in `config.yml` with your profile paragraph, RSS feeds, posting schedule, and content pillars, and `yarn setup` deploys it on Vercel. From then on, a daily cron fires at 14:00 UTC, filters down to your configured days and local hour, pulls a fresh item from your sources, drafts a post in your voice, and emails you a magic link.
+
+You open the review page on your phone. You can chat-edit the draft until you're happy with it, then tap "Post" — Face ID or Touch ID, and it's live on LinkedIn.
+
+## Why I built it
+
+LinkedIn post quality is a function of voice and timeliness. Most automation tools kill both: they generate generic AI prose and they post on a schedule that has nothing to do with what's actually happening that day. InDraft tries to preserve them — your voice is the model's primary grounding, the schedule is keyed off fresh sources, and a human is always in the loop before anything publishes.
+
+It's also a generic, config-driven engine, not a SaaS. Nothing personal — voice, sources, credentials — lives in the repo. Fork it, point your config at your stuff, deploy.
+
+## How it works
+
+### Architecture
+
+```
+Vercel Cron (daily 14:00 UTC)
+   ↓ day/hour filter
+Collector: RSS + GitHub
+   ↓
+Generator + anti-AI-tell linter
+   ↓
+Media: Pexels or owner upload
+   ↓
+Vercel KV
+   ↓
+Resend: magic-link email to /review
+   ↓
+Conversational chat edits
+   ↓
+WebAuthn passkey assertion
+   ↓
+LinkedIn Posts API
+```
+
+The state machine in `src/lib/state/drafts.ts` is the single writer of draft status and the load-bearing safety boundary. The only way to reach the LinkedIn Posts API is through a verified WebAuthn assertion — no scheduled or automatic path posts. An e2e test in `tests/e2e/publish-guard.test.ts` proves this at the state-machine level: a non-`PENDING_REVIEW` draft can never transition to `PUBLISHED`, and a captured assertion can't be replayed against an edited draft because the challenge is bound to the draft version.
+
+### Key defaults
+
+- **`link_placement: "none"`** — current LinkedIn-algorithm research shows external links suppress reach. InDraft surfaces the source URL inside the review UI instead. Override per post if you want.
+- **Frontier model for drafting, cheap model for ranking** — Claude Opus 4.7 drafts because the anti-AI-tell bar degrades on weaker models; Claude Haiku 4.5 handles source ranking and mechanical tasks. Both routed through OpenRouter BYOK.
+- **60-day LinkedIn token, no refresh** — self-serve LinkedIn apps issue 60-day tokens with no refresh path. InDraft stores `issued_at` in KV, emails a reauth ping ~7 days before expiry, and shows a "reconnect LinkedIn" banner in the review UI.
+
+### Security model
+
+- The only publish path is a click → WebAuthn assertion → server transition with a derived `publishProof`. The assertion challenge is `sha256(draft.id || draft.version || draft.body)`, so a captured assertion can't be replayed.
+- Magic links are HMAC-signed, single-use (nonce stored in KV with a TTL), and expire after 24 hours by default.
+- The public `/access` endpoint always emails the configured `NOTIFY_TO_ADDRESS` only — never an attacker-supplied target.
+- Sessions are HttpOnly, Secure, SameSite=Lax cookies bound to a specific draft id.
+- `.gitignore` excludes `config.yml`, `.env*`, and `.vercel/`. The setup script flows secrets `prompt → vercel env add` only — never to disk.
+
+## Status
+
+Engine is feature-complete and MIT-licensed. The repo is the deliverable; my personal deployment lives at [indraft.dev](https://indraft.dev).
