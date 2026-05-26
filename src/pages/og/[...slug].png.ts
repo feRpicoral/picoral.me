@@ -43,15 +43,28 @@ export async function getStaticPaths() {
   }
 
   const projects = await getCollection('projects', ({ data }) => !data.draft);
-  const seen = new Set<string>();
+  const seenProject = new Set<string>();
   for (const entry of projects) {
     if (!entry.id.startsWith('en/')) continue;
     const slug = getCanonicalSlug(entry.id);
-    if (seen.has(slug)) continue;
-    seen.add(slug);
+    if (seenProject.has(slug)) continue;
+    seenProject.add(slug);
     result.push({
       params: { slug: `projects/${slug}` },
       props: { slug, title: entry.data.title, subtitle: entry.data.tagline },
+    });
+  }
+
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const seenPost = new Set<string>();
+  for (const entry of posts) {
+    if (!entry.id.startsWith('en/')) continue;
+    const slug = getCanonicalSlug(entry.id);
+    if (seenPost.has(slug)) continue;
+    seenPost.add(slug);
+    result.push({
+      params: { slug: `blog/${slug}` },
+      props: { slug, title: entry.data.title, subtitle: entry.data.description },
     });
   }
 

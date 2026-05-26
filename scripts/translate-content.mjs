@@ -36,6 +36,7 @@ import { computeSourceHash } from './translate/hash.mjs';
 import {
   extractBodySnippets,
   injectBodyTranslations,
+  localizeInternalLinks,
   parseMdx,
   serializeMdx,
   structuralFingerprint,
@@ -161,6 +162,7 @@ async function translateOneFile({ collection, sourceRaw, locale, expectedHash })
   }
 
   injectBodyTranslations(leaves, byId);
+  localizeInternalLinks(tree, locale, SOURCE_LOCALE, [SOURCE_LOCALE, ...TARGET_LOCALES]);
 
   const translatedFingerprint = structuralFingerprint(tree);
   const structIssues = compareStructuralFingerprints(sourceFingerprint, translatedFingerprint);

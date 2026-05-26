@@ -3,10 +3,13 @@ import { test } from 'node:test';
 import {
   extractBodySnippets,
   injectBodyTranslations,
+  localizeInternalLinks,
   parseMdx,
   serializeMdx,
   structuralFingerprint,
 } from './mdx.mjs';
+
+const ALL_LOCALES = ['en', 'pt', 'es'];
 
 test('extractBodySnippets returns one snippet per paragraph', () => {
   const tree = parseMdx('First paragraph.\n\nSecond paragraph.\n');
@@ -126,6 +129,39 @@ test('structuralFingerprint counts MDX JSX and ESM nodes', () => {
   assert.equal(fp.mdxjsEsm, 1);
   assert.equal(fp.mdxJsxFlow, 1);
   assert.equal(fp.mdxJsxText, 1);
+});
+
+test('localizeInternalLinks prefixes site-internal hrefs for non-default locales', () => {
+  const tree = parseMdx('See [projects](/projects) and [contact](/contact).');
+  localizeInternalLinks(tree, 'pt', 'en', ALL_LOCALES);
+  const out = serializeMdx(tree).trim();
+  assert.equal(out, 'See [projects](/pt/projects) and [contact](/pt/contact).');
+});
+
+test('localizeInternalLinks is a no-op for the default locale', () => {
+  const tree = parseMdx('See [projects](/projects).');
+  localizeInternalLinks(tree, 'en', 'en', ALL_LOCALES);
+  assert.equal(serializeMdx(tree).trim(), 'See [projects](/projects).');
+});
+
+test('localizeInternalLinks leaves external, mailto, tel, and anchor URLs alone', () => {
+  const src =
+    'A [external](https://example.com), [protocol-relative](//cdn.x.com/a), ' +
+    '[mailto](mailto:a@b.com), [tel](tel:+1234567890), and [anchor](#foo).';
+  const tree = parseMdx(src);
+  localizeInternalLinks(tree, 'pt', 'en', ALL_LOCALES);
+  const out = serializeMdx(tree).trim();
+  assert.ok(out.includes('(https://example.com)'));
+  assert.ok(out.includes('(//cdn.x.com/a)'));
+  assert.ok(out.includes('(mailto:a@b.com)'));
+  assert.ok(out.includes('(tel:+1234567890)'));
+  assert.ok(out.includes('(#foo)'));
+});
+
+test('localizeInternalLinks does not double-prefix an already-prefixed path', () => {
+  const tree = parseMdx('See [contact](/pt/contact).');
+  localizeInternalLinks(tree, 'pt', 'en', ALL_LOCALES);
+  assert.equal(serializeMdx(tree).trim(), 'See [contact](/pt/contact).');
 });
 
 test('identity inject preserves structural fingerprint', () => {

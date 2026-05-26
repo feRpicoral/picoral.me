@@ -122,6 +122,31 @@ export function extractBodySnippets(tree) {
 }
 
 /**
+ * Walk a tree and rewrite internal `link` href values so they carry the
+ * target locale prefix. URLs starting with `http(s)://`, `//`, `mailto:`,
+ * `tel:`, `#`, or an existing locale prefix are left untouched. Only used
+ * for non-default locales; passing the default locale is a no-op.
+ */
+export function localizeInternalLinks(tree, locale, defaultLocale, allLocales) {
+  if (locale === defaultLocale) return;
+  const localePrefixes = new Set(allLocales.map((l) => `/${l}`));
+  const walk = (node) => {
+    if (node.type === 'link' && typeof node.url === 'string') {
+      const url = node.url;
+      if (
+        url.startsWith('/') &&
+        !url.startsWith('//') &&
+        ![...localePrefixes].some((p) => url === p || url.startsWith(`${p}/`))
+      ) {
+        node.url = `/${locale}${url === '/' ? '' : url}`;
+      }
+    }
+    for (const child of node.children ?? []) walk(child);
+  };
+  walk(tree);
+}
+
+/**
  * Mutate the tree in place by replacing leaf children with translated phrasing.
  */
 export function injectBodyTranslations(leaves, byId) {
