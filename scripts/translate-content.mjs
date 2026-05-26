@@ -26,6 +26,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Command, InvalidArgumentError } from 'commander';
 import matter from 'gray-matter';
 import { translateSnippets } from './translate/anthropic.mjs';
 import { COLLECTIONS, SOURCE_LOCALE, TARGET_LOCALES } from './translate/config.mjs';
@@ -56,37 +57,52 @@ const CONTENT_DIR = join(REPO_ROOT, 'src', 'content');
  */
 const DEFAULT_CONCURRENCY = 4;
 
-function parseArgs(argv) {
-  const args = {
-    check: false,
-    force: false,
-    concurrency: DEFAULT_CONCURRENCY,
-    collections: COLLECTIONS,
-    locales: TARGET_LOCALES,
-  };
-  for (const arg of argv.slice(2)) {
-    if (arg === '--check') args.check = true;
-    else if (arg === '--force') args.force = true;
-    else if (arg.startsWith('--collection=')) {
-      args.collections = arg.slice('--collection='.length).split(',');
-    } else if (arg.startsWith('--locale=')) {
-      args.locales = arg.slice('--locale='.length).split(',');
-    } else if (arg.startsWith('--concurrency=')) {
-      const n = Number.parseInt(arg.slice('--concurrency='.length), 10);
-      if (!Number.isInteger(n) || n < 1) {
-        throw new Error(`Invalid --concurrency value: must be a positive integer.`);
-      }
-      args.concurrency = n;
-    } else if (arg === '--help' || arg === '-h') {
-      console.log(
-        'Usage: translate-content.mjs [--check] [--force] [--collection=a,b] [--locale=pt,es] [--concurrency=N]',
-      );
-      process.exit(0);
-    } else {
-      throw new Error(`Unknown arg: ${arg}`);
-    }
+function parsePositiveInt(value) {
+  const n = Number.parseInt(value, 10);
+  if (!Number.isInteger(n) || n < 1) {
+    throw new InvalidArgumentError('must be a positive integer.');
   }
-  return args;
+  return n;
+}
+
+function parseList(value) {
+  return value.split(',').map((s) => s.trim()).filter(Boolean);
+}
+
+function parseArgs(argv) {
+  const program = new Command()
+    .name('translate-content')
+    .description('Generate locale translations of src/content/*/en/* via the Anthropic API.')
+    .option('--check', 'exit non-zero if anything is stale or missing (never calls the API)', false)
+    .option('--force', 'regenerate all translations even on cache hit', false)
+    .option(
+      '--concurrency <n>',
+      'max in-flight API requests',
+      parsePositiveInt,
+      DEFAULT_CONCURRENCY,
+    )
+    .option(
+      '--collection <list>',
+      'comma-separated collection names',
+      parseList,
+      [...COLLECTIONS],
+    )
+    .option(
+      '--locale <list>',
+      'comma-separated target locales',
+      parseList,
+      [...TARGET_LOCALES],
+    )
+    .parse(argv);
+
+  const opts = program.opts();
+  return {
+    check: opts.check,
+    force: opts.force,
+    concurrency: opts.concurrency,
+    collections: opts.collection,
+    locales: opts.locale,
+  };
 }
 
 /**
