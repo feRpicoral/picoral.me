@@ -6,7 +6,12 @@ interface Props {
   class?: string;
 }
 const { size = 'content', as: Tag = 'div', class: className = '' } = Astro.props;
-const maxWidth = size === 'prose' ? 'var(--container-prose)' : size === 'wide' ? 'var(--container-wide)' : 'var(--container-content)';
+const maxWidth =
+  size === 'prose'
+    ? 'var(--container-prose)'
+    : size === 'wide'
+      ? 'var(--container-wide)'
+      : 'var(--container-content)';
 ---
 
 <Tag class={`container ${className}`} style={`--container-max:${maxWidth}`}>

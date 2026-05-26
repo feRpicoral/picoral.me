@@ -1,7 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk';
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import Anthropic from '@anthropic-ai/sdk';
 import { LOCALE_NAMES, LOCALE_STYLE, TRANSLATOR_MODEL } from './config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

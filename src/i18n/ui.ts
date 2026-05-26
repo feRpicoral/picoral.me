@@ -24,7 +24,7 @@ export const ui = {
     'footer.builtWith': 'Built with',
     'footer.copyright': '© {year} Fernando Picoral',
     'footer.sourceCode': 'Source code',
-    'page.notFound.title': "Page not found",
+    'page.notFound.title': 'Page not found',
     'page.notFound.body': "The page you're looking for doesn't exist or has been moved.",
     'page.notFound.cta': 'Back home',
     'home.hero.eyebrow': 'Brazilian, based in NYC',
@@ -67,8 +67,7 @@ export const ui = {
     'projects.faq': 'Questions',
     'projects.backToList': '← All projects',
     'experience.title': 'Experience',
-    'experience.lead':
-      'Where I have studied and worked, and what I shipped while there.',
+    'experience.lead': 'Where I have studied and worked, and what I shipped while there.',
     'experience.present': 'Present',
     'experience.education.title': 'Education',
     'experience.work.title': 'Work',
@@ -154,8 +153,7 @@ export const ui = {
     'projects.faq': 'Perguntas',
     'projects.backToList': '← Todos os projetos',
     'experience.title': 'Experiência',
-    'experience.lead':
-      'Onde estudei e trabalhei, e o que entreguei em cada lugar.',
+    'experience.lead': 'Onde estudei e trabalhei, e o que entreguei em cada lugar.',
     'experience.present': 'Atual',
     'experience.education.title': 'Formação',
     'experience.work.title': 'Trabalho',
@@ -241,8 +239,7 @@ export const ui = {
     'projects.faq': 'Preguntas',
     'projects.backToList': '← Todos los proyectos',
     'experience.title': 'Experiencia',
-    'experience.lead':
-      'Dónde estudié y trabajé, y qué entregué en cada lugar.',
+    'experience.lead': 'Dónde estudié y trabajé, y qué entregué en cada lugar.',
     'experience.present': 'Actual',
     'experience.education.title': 'Educación',
     'experience.work.title': 'Trabajo',

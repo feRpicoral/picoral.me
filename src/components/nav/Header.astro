@@ -4,8 +4,14 @@ import MobileNav from '~/components/islands/MobileNav.tsx';
 import ThemeToggle from '~/components/islands/ThemeToggle.tsx';
 import Container from '~/components/ui/Container.astro';
 import { NAV_ITEMS } from '~/config/nav.ts';
-import { SITE, type Locale } from '~/config/site.ts';
-import { getLocaleFromUrl, localizePath, stripLocale, swapLocale, useTranslations } from '~/i18n/utils.ts';
+import { type Locale, SITE } from '~/config/site.ts';
+import {
+  getLocaleFromUrl,
+  localizePath,
+  stripLocale,
+  swapLocale,
+  useTranslations,
+} from '~/i18n/utils.ts';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);

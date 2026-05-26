@@ -2,13 +2,13 @@
 import Container from '~/components/ui/Container.astro';
 import Eyebrow from '~/components/ui/Eyebrow.astro';
 import Section from '~/components/ui/Section.astro';
-import Page from '~/layouts/Page.astro';
-import { SITE, type Locale } from '~/config/site.ts';
 import { isEnabled } from '~/config/sections.ts';
+import { type Locale, SITE } from '~/config/site.ts';
 import { localizePath, useTranslations } from '~/i18n/utils.ts';
+import Page from '~/layouts/Page.astro';
 import { getLocalizedCollection } from '~/lib/content.ts';
-import { breadcrumbSchema } from '~/lib/schema.ts';
 import { formatLongDate } from '~/lib/format.ts';
+import { breadcrumbSchema } from '~/lib/schema.ts';
 
 export function getStaticPaths() {
   if (!isEnabled('blog')) return [];
@@ -19,8 +19,9 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as Locale;
 const t = useTranslations(locale);
-const posts = (await getLocalizedCollection('blog', locale))
-  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+const posts = (await getLocalizedCollection('blog', locale)).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+);
 
 const jsonLd = [
   breadcrumbSchema([

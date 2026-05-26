@@ -1,4 +1,4 @@
-import { SITE, type Locale } from '~/config/site.ts';
+import { type Locale, SITE } from '~/config/site.ts';
 import { type UiKey, ui } from './ui.ts';
 
 const isLocale = (value: string): value is Locale =>
@@ -42,7 +42,9 @@ export function stripLocale(pathname: string): string {
 }
 
 /** Build hreflang alternates for a given canonical (EN-shaped) path. */
-export function getAlternates(canonicalPath: string): Array<{ locale: Locale | 'x-default'; href: string }> {
+export function getAlternates(
+  canonicalPath: string,
+): Array<{ locale: Locale | 'x-default'; href: string }> {
   return [
     ...SITE.locales.map((locale) => ({
       locale,

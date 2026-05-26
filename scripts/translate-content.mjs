@@ -66,7 +66,10 @@ function parsePositiveInt(value) {
 }
 
 function parseList(value) {
-  return value.split(',').map((s) => s.trim()).filter(Boolean);
+  return value
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 function parseArgs(argv) {
@@ -81,18 +84,8 @@ function parseArgs(argv) {
       parsePositiveInt,
       DEFAULT_CONCURRENCY,
     )
-    .option(
-      '--collection <list>',
-      'comma-separated collection names',
-      parseList,
-      [...COLLECTIONS],
-    )
-    .option(
-      '--locale <list>',
-      'comma-separated target locales',
-      parseList,
-      [...TARGET_LOCALES],
-    )
+    .option('--collection <list>', 'comma-separated collection names', parseList, [...COLLECTIONS])
+    .option('--locale <list>', 'comma-separated target locales', parseList, [...TARGET_LOCALES])
     .parse(argv);
 
   const opts = program.opts();
@@ -294,7 +287,9 @@ async function main() {
     return;
   }
 
-  console.log(`\nWrote: ${wrote}. Fresh (skipped): ${fresh}. Locked-stale: ${lockedStale}. Errors: ${errors}.`);
+  console.log(
+    `\nWrote: ${wrote}. Fresh (skipped): ${fresh}. Locked-stale: ${lockedStale}. Errors: ${errors}.`,
+  );
   if (errors > 0) process.exit(1);
 }
 
