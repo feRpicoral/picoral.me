@@ -1,4 +1,5 @@
 ---
+import { isEnabled } from '~/config/sections.ts';
 import { SITE } from '~/config/site.ts';
 import { bcp47, getAlternates, getLocaleFromUrl } from '~/i18n/utils.ts';
 
@@ -65,12 +66,11 @@ const fullTitle =
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
 
-{/* Preload primary font weights */}
-<link rel="preload" href="/_astro/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-
 {jsonLd?.map((payload) => (
   <script type="application/ld+json" set:html={JSON.stringify(payload)} />
 ))}
 
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="alternate" type="application/rss+xml" title={`${SITE.name} — RSS`} href="/rss.xml" />
+{isEnabled('blog') && (
+  <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — RSS`} href="/rss.xml" />
+)}
