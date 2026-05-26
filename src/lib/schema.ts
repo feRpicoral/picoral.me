@@ -1,4 +1,4 @@
-import { SITE, type Locale } from '~/config/site.ts';
+import { type Locale, SITE } from '~/config/site.ts';
 
 export function personSchema(): Record<string, unknown> {
   return {
@@ -78,9 +78,7 @@ export function breadcrumbSchema(
   };
 }
 
-export function faqPageSchema(
-  faq: Array<{ q: string; a: string }>,
-): Record<string, unknown> {
+export function faqPageSchema(faq: Array<{ q: string; a: string }>): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -131,8 +129,7 @@ export function blogPostingSchema(input: {
     dateModified: (input.updatedAt ?? input.publishedAt).toISOString(),
     author: { '@type': 'Person', name: SITE.name, url: SITE.url },
     publisher: { '@type': 'Person', name: SITE.name, url: SITE.url },
-    inLanguage:
-      input.locale === 'en' ? 'en-US' : input.locale === 'pt' ? 'pt-BR' : 'es',
+    inLanguage: input.locale === 'en' ? 'en-US' : input.locale === 'pt' ? 'pt-BR' : 'es',
     mainEntityOfPage: { '@type': 'WebPage', '@id': input.url },
   };
 }

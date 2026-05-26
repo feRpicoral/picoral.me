@@ -133,10 +133,7 @@ test('identity inject preserves structural fingerprint', () => {
   const tree = parseMdx(src);
   const before = structuralFingerprint(tree);
   const { snippets, leaves } = extractBodySnippets(tree);
-  injectBodyTranslations(
-    leaves,
-    Object.fromEntries(snippets.map((s) => [s.id, s.text])),
-  );
+  injectBodyTranslations(leaves, Object.fromEntries(snippets.map((s) => [s.id, s.text])));
   const after = structuralFingerprint(tree);
   assert.deepEqual(before, after);
 });

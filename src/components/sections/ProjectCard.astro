@@ -1,8 +1,8 @@
 ---
 import Pill from '~/components/ui/Pill.astro';
 import { type Locale } from '~/config/site.ts';
-import { useTranslations } from '~/i18n/utils.ts';
 import type { UiKey } from '~/i18n/ui.ts';
+import { useTranslations } from '~/i18n/utils.ts';
 
 interface Props {
   /** Optional. When omitted, the card renders as a non-link <article>. */
@@ -20,7 +20,9 @@ const t = useTranslations(locale);
 const statusVariant = status === 'live' ? 'success' : status === 'beta' ? 'accent' : 'muted';
 const statusLabel = t(`projects.status.${status}` as UiKey);
 const Tag = href ? 'a' : 'article';
-const linkProps = href ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) } : {};
+const linkProps = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : {};
 ---
 
 <Tag class={`card ${href ? 'card--link' : ''}`} {...linkProps}>

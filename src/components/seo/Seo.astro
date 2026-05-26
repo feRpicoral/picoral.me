@@ -16,13 +16,21 @@ const locale = getLocaleFromUrl(Astro.url);
 const lang = bcp47(locale);
 
 const localePathPrefix = locale === SITE.defaultLocale ? '' : `/${locale}`;
-const canonicalUrl = new URL(`${localePathPrefix}${canonicalPath === '/' ? '' : canonicalPath}`, SITE.url).toString();
-const ogImageUrl = ogImage ? new URL(ogImage, SITE.url).toString() : new URL('/og/default.png', SITE.url).toString();
+const canonicalUrl = new URL(
+  `${localePathPrefix}${canonicalPath === '/' ? '' : canonicalPath}`,
+  SITE.url,
+).toString();
+const ogImageUrl = ogImage
+  ? new URL(ogImage, SITE.url).toString()
+  : new URL('/og/default.png', SITE.url).toString();
 
 const alternates = getAlternates(canonicalPath);
-const otherLocaleAlternates = alternates.filter((a) => a.locale !== locale && a.locale !== 'x-default');
+const otherLocaleAlternates = alternates.filter(
+  (a) => a.locale !== locale && a.locale !== 'x-default',
+);
 
-const fullTitle = title === SITE.name ? `${SITE.name} — Software Engineer` : `${title} — ${SITE.name}`;
+const fullTitle =
+  title === SITE.name ? `${SITE.name} — Software Engineer` : `${title} — ${SITE.name}`;
 ---
 
 <title>{fullTitle}</title>

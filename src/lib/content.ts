@@ -1,5 +1,5 @@
 import { type CollectionEntry, type CollectionKey, getCollection } from 'astro:content';
-import { SITE, type Locale } from '~/config/site.ts';
+import { type Locale, SITE } from '~/config/site.ts';
 
 const isLocale = (s: string): s is Locale => (SITE.locales as readonly string[]).includes(s);
 

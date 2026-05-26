@@ -1,8 +1,8 @@
-import { unified } from 'unified';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
-import remarkMdx from 'remark-mdx';
-import remarkFrontmatter from 'remark-frontmatter';
+import { unified } from 'unified';
 
 /**
  * Treat these as leaf blocks containing translatable phrasing content.
@@ -26,19 +26,15 @@ const CONTAINER_BLOCKS = new Set([
 ]);
 
 const fullProcessor = () =>
-  unified()
-    .use(remarkParse)
-    .use(remarkFrontmatter, ['yaml'])
-    .use(remarkMdx)
-    .use(remarkStringify, {
-      bullet: '-',
-      emphasis: '_',
-      strong: '*',
-      fence: '`',
-      fences: true,
-      listItemIndent: 'one',
-      rule: '-',
-    });
+  unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remarkMdx).use(remarkStringify, {
+    bullet: '-',
+    emphasis: '_',
+    strong: '*',
+    fence: '`',
+    fences: true,
+    listItemIndent: 'one',
+    rule: '-',
+  });
 
 const phrasingWriter = () =>
   unified()
@@ -92,7 +88,9 @@ function parsePhrasing(text) {
   }
   const block = tree.children[0];
   if (block.type !== 'paragraph') {
-    throw new Error(`Translated snippet not a paragraph (got ${block.type}): ${text.slice(0, 80)}…`);
+    throw new Error(
+      `Translated snippet not a paragraph (got ${block.type}): ${text.slice(0, 80)}…`,
+    );
   }
   return block.children;
 }

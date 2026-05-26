@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import './fonts.css';
+@import "tailwindcss";
+@import "./fonts.css";
 
 @theme {
   --color-bg: oklch(99% 0.005 95);
@@ -15,9 +15,9 @@
   --color-accent-fg: oklch(99% 0.005 95);
   --color-accent-subtle: oklch(96% 0.025 250);
 
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-xs: 0.875rem;
   --text-sm: 1rem;
@@ -42,7 +42,7 @@
   --container-wide: 80rem;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --color-bg: oklch(14% 0.012 280);
   --color-bg-subtle: oklch(18% 0.014 280);
   --color-bg-elevated: oklch(21% 0.014 280);
@@ -94,9 +94,7 @@
     line-height: 1.6;
     margin: 0;
     min-height: 100vh;
-    transition:
-      background-color 200ms ease,
-      color 200ms ease;
+    transition: background-color 200ms ease, color 200ms ease;
   }
 
   h1,
@@ -243,8 +241,8 @@
     border: 1px solid var(--color-border);
   }
 
-  [data-theme='dark'] .prose .astro-code,
-  [data-theme='dark'] .prose .astro-code span {
+  [data-theme="dark"] .prose .astro-code,
+  [data-theme="dark"] .prose .astro-code span {
     color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
     font-style: var(--shiki-dark-font-style) !important;
@@ -262,7 +260,7 @@
   transform-origin: top center;
   will-change: opacity, transform;
 }
-[data-theme='dark'] .mobile-nav-dialog {
+[data-theme="dark"] .mobile-nav-dialog {
   background-color: oklch(14% 0.012 280) !important;
   color: oklch(96% 0.008 95);
 }

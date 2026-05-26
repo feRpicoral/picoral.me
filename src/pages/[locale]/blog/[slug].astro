@@ -3,13 +3,13 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import Breadcrumbs from '~/components/nav/Breadcrumbs.astro';
 import Container from '~/components/ui/Container.astro';
 import Section from '~/components/ui/Section.astro';
-import Page from '~/layouts/Page.astro';
-import { SITE, type Locale } from '~/config/site.ts';
 import { isEnabled } from '~/config/sections.ts';
+import { type Locale, SITE } from '~/config/site.ts';
 import { localizePath, useTranslations } from '~/i18n/utils.ts';
+import Page from '~/layouts/Page.astro';
 import { getCanonicalSlug, getLocalizedEntry } from '~/lib/content.ts';
-import { blogPostingSchema, breadcrumbSchema } from '~/lib/schema.ts';
 import { formatLongDate } from '~/lib/format.ts';
+import { blogPostingSchema, breadcrumbSchema } from '~/lib/schema.ts';
 
 export async function getStaticPaths() {
   if (!isEnabled('blog')) return [];

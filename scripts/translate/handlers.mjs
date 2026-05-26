@@ -11,7 +11,12 @@ const blog = {
   extract(fm) {
     const items = [
       { id: 'fm:title', kind: 'frontmatter:title', text: fm.title },
-      { id: 'fm:description', kind: 'frontmatter:description', text: fm.description, max_chars: 160 },
+      {
+        id: 'fm:description',
+        kind: 'frontmatter:description',
+        text: fm.description,
+        max_chars: 160,
+      },
     ];
     return items;
   },

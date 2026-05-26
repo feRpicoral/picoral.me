@@ -5,15 +5,11 @@
   "headers": [
     {
       "source": "/_astro/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
       "source": "/fonts/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
       "source": "/og/(.*)",
@@ -31,7 +27,10 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
@@ -40,6 +39,10 @@
   ],
   "redirects": [
     { "source": "/github", "destination": "https://github.com/feRpicoral", "permanent": false },
-    { "source": "/linkedin", "destination": "https://www.linkedin.com/in/picoral", "permanent": false }
+    {
+      "source": "/linkedin",
+      "destination": "https://www.linkedin.com/in/picoral",
+      "permanent": false
+    }
   ]
 }

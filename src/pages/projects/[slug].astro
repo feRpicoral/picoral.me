@@ -6,16 +6,12 @@ import FAQ from '~/components/sections/FAQ.astro';
 import SectionHeader from '~/components/sections/SectionHeader.astro';
 import Container from '~/components/ui/Container.astro';
 import Section from '~/components/ui/Section.astro';
-import Page from '~/layouts/Page.astro';
-import { SITE } from '~/config/site.ts';
 import { isEnabled } from '~/config/sections.ts';
+import { SITE } from '~/config/site.ts';
 import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts';
+import Page from '~/layouts/Page.astro';
 import { getCanonicalSlug, getLocalizedEntry } from '~/lib/content.ts';
-import {
-  breadcrumbSchema,
-  faqPageSchema,
-  softwareApplicationSchema,
-} from '~/lib/schema.ts';
+import { breadcrumbSchema, faqPageSchema, softwareApplicationSchema } from '~/lib/schema.ts';
 
 export async function getStaticPaths() {
   if (!isEnabled('projectCaseStudies')) return [];

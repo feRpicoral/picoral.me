@@ -5,9 +5,9 @@ import ProjectCard from '~/components/sections/ProjectCard.astro';
 import SectionHeader from '~/components/sections/SectionHeader.astro';
 import Container from '~/components/ui/Container.astro';
 import Section from '~/components/ui/Section.astro';
-import Page from '~/layouts/Page.astro';
-import { SITE, type Locale } from '~/config/site.ts';
+import { type Locale, SITE } from '~/config/site.ts';
 import { localizePath, useTranslations } from '~/i18n/utils.ts';
+import Page from '~/layouts/Page.astro';
 import { getLocalizedCollection } from '~/lib/content.ts';
 import { faqPageSchema, personSchema, websiteSchema } from '~/lib/schema.ts';
 
@@ -28,10 +28,7 @@ const featured = allProjects
 
 const faqItems = [
   {
-    q:
-      locale === 'pt'
-        ? 'Quem é Fernando Picoral?'
-        : '¿Quién es Fernando Picoral?',
+    q: locale === 'pt' ? 'Quem é Fernando Picoral?' : '¿Quién es Fernando Picoral?',
     a:
       locale === 'pt'
         ? 'Fernando Picoral é um engenheiro de software brasileiro baseado em Nova York. Acabou de se formar em Ciência da Computação pela University of Colorado Boulder (maio de 2026, GPA 3.9) e entra no Google em tempo integral como Software Engineer em setembro de 2026, depois de três estágios na empresa em Kirkland, Sunnyvale e Nova York.'
@@ -48,24 +45,18 @@ const faqItems = [
         : 'Algunos proyectos personales en IA — voz, multi-agente, RAG y cobros recurrentes. Existen solo como lugares para aprender lo siguiente. En septiembre de 2026 empieza en Google a tiempo completo.',
   },
   {
-    q:
-      locale === 'pt'
-        ? 'Como entrar em contato com Fernando?'
-        : '¿Cómo contactar a Fernando?',
+    q: locale === 'pt' ? 'Como entrar em contato com Fernando?' : '¿Cómo contactar a Fernando?',
     a:
       locale === 'pt'
-        ? `O caminho mais rápido é por e-mail (veja a página de contato). Também pode encontrá-lo no GitHub (@feRpicoral) e no LinkedIn (/in/picoral).`
-        : `La forma más rápida es por correo (ver la página de contacto). También puedes encontrarlo en GitHub (@feRpicoral) y LinkedIn (/in/picoral).`,
+        ? 'O caminho mais rápido é por e-mail (veja a página de contato). Também pode encontrá-lo no GitHub (@feRpicoral) e no LinkedIn (/in/picoral).'
+        : 'La forma más rápida es por correo (ver la página de contacto). También puedes encontrarlo en GitHub (@feRpicoral) y LinkedIn (/in/picoral).',
     aHtml:
       locale === 'pt'
         ? `O caminho mais rápido é por e-mail (veja a <a href="${localizePath('/contact', locale)}">página de contato</a>). Também pode encontrá-lo no <a href="${SITE.socials.github}" target="_blank" rel="noopener noreferrer">GitHub</a> (@feRpicoral) e no <a href="${SITE.socials.linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a> (/in/picoral).`
         : `La forma más rápida es por correo (ver la <a href="${localizePath('/contact', locale)}">página de contacto</a>). También puedes encontrarlo en <a href="${SITE.socials.github}" target="_blank" rel="noopener noreferrer">GitHub</a> (@feRpicoral) y <a href="${SITE.socials.linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a> (/in/picoral).`,
   },
   {
-    q:
-      locale === 'pt'
-        ? 'Que idiomas Fernando fala?'
-        : '¿Qué idiomas habla Fernando?',
+    q: locale === 'pt' ? 'Que idiomas Fernando fala?' : '¿Qué idiomas habla Fernando?',
     a:
       locale === 'pt'
         ? 'Português (nativo), inglês (fluente) e espanhol (proficiência de trabalho). Este site está disponível nos três idiomas.'
@@ -73,11 +64,7 @@ const faqItems = [
   },
 ];
 
-const jsonLd = [
-  personSchema(),
-  websiteSchema(locale),
-  faqPageSchema(faqItems),
-];
+const jsonLd = [personSchema(), websiteSchema(locale), faqPageSchema(faqItems)];
 ---
 
 <Page
