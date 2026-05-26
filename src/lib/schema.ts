@@ -9,10 +9,16 @@ export function personSchema(): Record<string, unknown> {
     url: SITE.url,
     image: `${SITE.url}/og/default.png`,
     jobTitle: SITE.jobTitle,
+    // Wrapped in OrganizationRole with startDate so crawlers don't read this
+    // as a current employment claim while the offer is still future-dated.
     worksFor: {
-      '@type': 'Organization',
-      name: SITE.employer,
-      url: 'https://about.google',
+      '@type': 'OrganizationRole',
+      startDate: '2026-09',
+      worksFor: {
+        '@type': 'Organization',
+        name: SITE.employer,
+        url: 'https://about.google',
+      },
     },
     alumniOf: {
       '@type': 'CollegeOrUniversity',
