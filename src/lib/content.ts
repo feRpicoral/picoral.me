@@ -10,50 +10,27 @@ const splitId = (id: string): { locale: Locale; slug: string } | null => {
   return { locale: head, slug: segments.slice(1).join('/') };
 };
 
-/** Get all entries of a collection for a given locale. Falls back to EN where a translation is missing. */
+/** All non-draft entries of a collection for the given locale. */
 export async function getLocalizedCollection<C extends CollectionKey>(
   collection: C,
   locale: Locale,
 ): Promise<CollectionEntry<C>[]> {
   const all = await getCollection(collection);
-  const byLocale = new Map<Locale, Map<string, CollectionEntry<C>>>();
-  for (const entry of all) {
-    const parsed = splitId(entry.id);
-    if (!parsed) continue;
-    if (!byLocale.has(parsed.locale)) byLocale.set(parsed.locale, new Map());
-    byLocale.get(parsed.locale)!.set(parsed.slug, entry);
-  }
-  const target = byLocale.get(locale) ?? new Map();
-  const fallback = byLocale.get(SITE.defaultLocale) ?? new Map();
-  const slugs = new Set([...target.keys(), ...fallback.keys()]);
-  return [...slugs]
-    .map((slug) => target.get(slug) ?? fallback.get(slug))
-    .filter((entry): entry is CollectionEntry<C> => Boolean(entry))
-    .filter((entry) => {
-      const data = entry.data as { draft?: boolean };
-      return !data.draft;
-    });
+  return all.filter((entry) => {
+    if (!entry.id.startsWith(`${locale}/`)) return false;
+    const data = entry.data as { draft?: boolean };
+    return !data.draft;
+  });
 }
 
-/** Find one entry by canonical slug in the requested locale; falls back to EN. */
+/** One entry by canonical slug in the given locale, or null if absent. */
 export async function getLocalizedEntry<C extends CollectionKey>(
   collection: C,
   locale: Locale,
   slug: string,
-): Promise<{ entry: CollectionEntry<C>; translated: boolean } | null> {
+): Promise<CollectionEntry<C> | null> {
   const all = await getCollection(collection);
-  let target: CollectionEntry<C> | undefined;
-  let fallback: CollectionEntry<C> | undefined;
-  for (const entry of all) {
-    const parsed = splitId(entry.id);
-    if (!parsed) continue;
-    if (parsed.slug !== slug) continue;
-    if (parsed.locale === locale) target = entry;
-    if (parsed.locale === SITE.defaultLocale) fallback = entry;
-  }
-  const entry = target ?? fallback;
-  if (!entry) return null;
-  return { entry, translated: Boolean(target) };
+  return all.find((entry) => entry.id === `${locale}/${slug}`) ?? null;
 }
 
 /** Strip locale prefix from a content entry id and return its canonical slug. */

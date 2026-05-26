@@ -1,13 +1,20 @@
 ---
 company: Trius
-role: Board Advisor
+role: Asesor de Directorio
 location: Brasil
 period:
-  start: '2025-01'
-  end: '2025-06'
-summary: Transicioné de CFO a Board Advisor en Trius para enfocarme en la pasantía en Google en Nueva York.
+  start: 2025-01
+  end: 2025-06
+summary: >-
+  Pasé de CFO a Asesor de Directorio en Trius para enfocarme en la pasantía en
+  Google en Nueva York.
 highlights:
-  - Permanecí como asesor del equipo fundador tras dejar el rol de CFO.
+  - Me quedé como asesor del equipo fundador después de dejar el rol de CFO.
 type: founder
 order: 2
+_source:
+  hash: 3fbd9dec6115cc20
+  locale: en
+  translatedAt: '2026-05-25T19:47:51.926Z'
 ---
+

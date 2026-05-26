@@ -7,6 +7,20 @@ const employmentType = z.enum(['fulltime', 'internship', 'founder', 'research', 
 /** Preserve the full relative path (locale/slug) as the entry id, e.g. `en/cite`. */
 const pathBasedId = ({ entry }: { entry: string }) => entry.replace(/\.(md|mdx)$/, '');
 
+/**
+ * Cache-key marker written to translated files by `scripts/translate-content.mjs`.
+ * `hash` is sha256(source bytes + prompt + model + locale + config version).
+ * `locked: true` opts a hand-edited translation out of regeneration.
+ */
+const sourceMarker = z
+  .object({
+    hash: z.string(),
+    locale: z.string(),
+    translatedAt: z.string(),
+    locked: z.boolean().optional(),
+  })
+  .optional();
+
 const projects = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
@@ -51,6 +65,7 @@ const projects = defineCollection({
           }),
         )
         .optional(),
+      _source: sourceMarker,
     }),
 });
 
@@ -74,6 +89,7 @@ const experience = defineCollection({
     type: employmentType,
     link: z.string().url().optional(),
     order: z.number(),
+    _source: sourceMarker,
   }),
 });
 
@@ -94,7 +110,7 @@ const blog = defineCollection({
       coverAlt: z.string().optional(),
       draft: z.boolean().default(false),
       canonical: z.string().url().optional(),
-      translationKey: z.string(),
+      _source: sourceMarker,
     }),
 });
 
@@ -107,6 +123,7 @@ const pages = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    _source: sourceMarker,
   }),
 });
 

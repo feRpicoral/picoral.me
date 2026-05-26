@@ -1,42 +1,72 @@
 ---
 slug: cite
 title: Cite
-tagline: Proyecto personal explorando RAG agéntico. Toda respuesta está fundamentada por citas inline; hacer clic en una abre el documento de origen en la región exacta que la produjo.
-summary: App de chat con RAG donde toda respuesta del modelo está respaldada por citas inline. Hacer clic en una cita abre el documento de origen en la región exacta — página, párrafo o span de tokens — que produjo la respuesta. Construido para aprender retrieval agéntico y UX de visor de documento sincronizado.
+tagline: >-
+  Proyecto personal explorando RAG agéntico. Cada respuesta está respaldada por
+  citas en línea; hacer clic en una abre el documento fuente en la región exacta
+  que la generó.
+summary: >-
+  Una app de chat con recuperación aumentada donde cada respuesta del modelo
+  está respaldada por citas en línea. Hacer clic en una cita abre el documento
+  fuente en la región exacta — página, párrafo o fragmento de tokens — que
+  generó la respuesta. Construida para aprender recuperación agéntica y UX de
+  visor de documentos sincronizado.
 status: in-development
-role: Solo — diseño, ingeniería
+role: 'Solo — diseño, ingeniería'
 period:
-  start: '2026-03'
+  start: 2026-03
 stack:
   - Next.js 16
   - TypeScript
   - Tailwind v4
   - shadcn/ui (Radix Nova)
   - Anthropic SDK
-  - PostgreSQL con pgvector
+  - PostgreSQL with pgvector
   - Yarn 4
 links:
-  repo: https://github.com/feRpicoral/cite
+  repo: 'https://github.com/feRpicoral/cite'
 featured: true
 order: 3
 hasCaseStudy: true
 seo:
-  description: Proyecto personal. RAG agéntico con citas inline clicables y visor de documento sincronizado que salta a la región exacta de la fuente.
+  description: >-
+    Un proyecto personal. RAG agéntico con citas en línea clicables y un visor
+    de documentos sincronizado que salta a la región fuente exacta.
+  keywords:
+    - agentic RAG
+    - retrieval-augmented generation
+    - citation grounding
+    - document viewer
+    - pgvector
 faq:
   - q: ¿Qué es Cite?
-    a: Cite es una aplicación de chat con retrieval-augmented generation agéntico. Los equipos suben sus documentos y preguntan en lenguaje natural. Toda respuesta está fundamentada por citas inline — hacer clic en una abre el documento de origen en la región exacta que produjo la respuesta, con el span relevante resaltado.
+    a: >-
+      Cite es una aplicación de chat con recuperación aumentada agéntica. Los
+      equipos suben sus documentos y hacen preguntas en lenguaje natural. Cada
+      respuesta está respaldada por citas en línea — hacer clic en una abre el
+      documento fuente en la región exacta que generó la respuesta, con el
+      fragmento relevante resaltado.
   - q: ¿En qué se diferencia Cite de un chatbot RAG típico?
-    a: Dos cosas. Primero, el retrieval es agéntico — el modelo puede planificar e iterar búsquedas antes de responder, en lugar de un único lookup top-k de similitud. Segundo, la cita ES la interfaz, no una nota al pie. Las citas son handles clicables que sincrónicamente hacen scroll al visor de documento al span citado, así que la verificación es un clic en lugar de una búsqueda.
+    a: >-
+      Dos cosas. Primero, el paso de recuperación es agéntico — el modelo puede
+      planificar e iterar recuperaciones antes de responder, en lugar de una
+      única búsqueda de similitud top-k. Segundo, la cita es la interfaz de
+      usuario, no una nota al pie. Las citas son elementos clicables que
+      desplazan sincrónicamente el visor de documentos hasta el fragmento
+      citado, así la verificación es un clic en lugar de una búsqueda.
+_source:
+  hash: 2ede6a0687b7ba8f
+  locale: en
+  translatedAt: '2026-05-25T19:26:07.903Z'
 ---
-
 ## Qué hace
 
-Los equipos suben sus documentos — PDFs, Word, Markdown, transcripciones — y preguntan en lenguaje natural. Toda respuesta está fundamentada por citas inline. Hacer clic en una cita abre el documento de origen en la región exacta que produjo la respuesta, con el span relevante resaltado.
+Los equipos suben sus documentos — PDFs, Word, Markdown, transcripciones — y chatean con ellos en lenguaje natural. Cada respuesta está respaldada por citas en línea. Hacer clic en una cita abre el documento fuente en la región exacta que generó la respuesta, con el fragmento relevante resaltado.
 
 ## Por qué lo construí
 
-Los chatbots RAG sin citas son infalsificables. La fundamentación por cita hace verificable la salida del modelo, que es el punto entero de usar un sistema de retrieval. También quería diseñar una UI donde la cita es la interacción primaria, no una nota al pie — el visor de documento es co-igual al chat.
+No es un producto — es un proyecto personal. Los chatbots RAG sin citas son infalsificables. El respaldo con citas hace que el output del modelo sea verificable, que es el punto central de usar un sistema de recuperación. También quería diseñar una UI donde la cita sea la interacción principal, no una nota al pie — el visor de documentos es igual de importante que el chat.
 
 ## Estado
 
-En desarrollo activo. El pipeline de retrieval y la UI de chat funcionan end-to-end; la lógica de region-anchor del visor es el foco actual.
+En desarrollo activo. El pipeline de recuperación y la UI de chat funcionan de punta a punta; la lógica de anclaje de regiones del visor de documentos es el foco actual.

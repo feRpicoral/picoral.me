@@ -13,9 +13,8 @@ import { breadcrumbSchema, personSchema, websiteSchema } from '~/lib/schema.ts';
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const result = await getLocalizedEntry('pages', locale, 'about');
-if (!result) return Astro.redirect('/404', 404);
-const { entry, translated } = result;
+const entry = await getLocalizedEntry('pages', locale, 'about');
+if (!entry) return Astro.redirect('/404', 404);
 const { Content } = await render(entry);
 
 const jsonLd = [
@@ -39,9 +38,6 @@ const jsonLd = [
       <Eyebrow>{t('about.title')}</Eyebrow>
       <h1 class="display-serif title">{SITE.name}</h1>
       <p class="lead text-pretty">{t('about.lead')}</p>
-      {!translated && (
-        <p class="missing">{t('page.translationMissing')}</p>
-      )}
       <div class="prose">
         <Content />
       </div>
@@ -66,15 +62,6 @@ const jsonLd = [
     color: var(--color-fg-muted);
     line-height: 1.6;
     margin: 0 0 3rem;
-  }
-  .missing {
-    background: var(--color-bg-subtle);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-    color: var(--color-fg-muted);
-    margin-bottom: 2rem;
   }
   .socials {
     margin-top: 4rem;
