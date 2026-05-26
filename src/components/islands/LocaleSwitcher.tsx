@@ -53,7 +53,7 @@ export default function LocaleSwitcher({ current, alternates, labels }: Props) {
       <button
         ref={buttonRef}
         type="button"
-        aria-haspopup="listbox"
+        aria-haspopup="menu"
         aria-expanded={open}
         aria-label={labels.label}
         onClick={() => setOpen((o) => !o)}
@@ -103,7 +103,6 @@ export default function LocaleSwitcher({ current, alternates, labels }: Props) {
       </button>
       {open && (
         <ul
-          role="listbox"
           aria-label={labels.label}
           style={{
             position: 'absolute',
@@ -125,8 +124,6 @@ export default function LocaleSwitcher({ current, alternates, labels }: Props) {
             return (
               <li key={locale}>
                 <a
-                  role="option"
-                  aria-selected={isCurrent}
                   aria-current={isCurrent ? 'true' : undefined}
                   href={alternates[locale]}
                   onClick={() => onSelect(locale)}

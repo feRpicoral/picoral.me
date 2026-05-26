@@ -124,109 +124,112 @@ export default function MobileNav({ items, labels }: Props) {
           <line x1="4" x2="20" y1="18" y2="18" />
         </svg>
       </button>
-      {shouldRender && mounted && createPortal(
-        <div
-          ref={dialogRef}
-          id="mobile-nav-dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation"
-          className={`mobile-nav-dialog ${open ? 'is-open' : 'is-closing'}`}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 100,
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '1.25rem',
-            overflowY: 'auto',
-            overscrollBehavior: 'contain',
-          }}
-        >
+      {shouldRender &&
+        mounted &&
+        createPortal(
           <div
+            ref={dialogRef}
+            id="mobile-nav-dialog"
+            // biome-ignore lint/a11y/useSemanticElements: <dialog> would require .showModal() and break the existing custom modal animation/escape handling.
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation"
+            className={`mobile-nav-dialog ${open ? 'is-open' : 'is-closing'}`}
             style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 100,
               display: 'flex',
-              justifyContent: 'flex-end',
-              marginBottom: '2rem',
+              flexDirection: 'column',
+              padding: '1.25rem',
+              overflowY: 'auto',
+              overscrollBehavior: 'contain',
             }}
           >
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false);
-                openerRef.current?.focus();
-              }}
-              aria-label={labels.close}
+            <div
               style={{
-                background: 'transparent',
-                border: '1px solid var(--color-border)',
-                borderRadius: 'var(--radius-md)',
-                padding: '0.5rem',
-                width: '2.25rem',
-                height: '2.25rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--color-fg)',
-                cursor: 'pointer',
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <line x1="6" x2="18" y1="6" y2="18" />
-                <line x1="6" x2="18" y1="18" y2="6" />
-              </svg>
-            </button>
-          </div>
-          <nav aria-label="Mobile primary">
-            <ul
-              style={{
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
                 display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
+                justifyContent: 'flex-end',
+                marginBottom: '2rem',
               }}
             >
-              {items.map((item, idx) => (
-                <li key={item.href}>
-                  <a
-                    ref={idx === 0 ? firstLinkRef : undefined}
-                    href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
-                    onClick={() => setOpen(false)}
-                    style={{
-                      display: 'block',
-                      padding: '0.875rem 0.5rem',
-                      fontSize: '1.5rem',
-                      fontWeight: item.current ? 600 : 400,
-                      color: item.current ? 'var(--color-accent)' : 'var(--color-fg)',
-                      textDecoration: 'none',
-                      borderBottom: '1px solid var(--color-border)',
-                      letterSpacing: '-0.01em',
-                    }}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>,
-        document.body,
-      )}
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  openerRef.current?.focus();
+                }}
+                aria-label={labels.close}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '0.5rem',
+                  width: '2.25rem',
+                  height: '2.25rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-fg)',
+                  cursor: 'pointer',
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="18" y2="6" />
+                </svg>
+              </button>
+            </div>
+            <nav aria-label="Mobile primary">
+              <ul
+                style={{
+                  listStyle: 'none',
+                  margin: 0,
+                  padding: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                }}
+              >
+                {items.map((item, idx) => (
+                  <li key={item.href}>
+                    <a
+                      ref={idx === 0 ? firstLinkRef : undefined}
+                      href={item.href}
+                      aria-current={item.current ? 'page' : undefined}
+                      onClick={() => setOpen(false)}
+                      style={{
+                        display: 'block',
+                        padding: '0.875rem 0.5rem',
+                        fontSize: '1.5rem',
+                        fontWeight: item.current ? 600 : 400,
+                        color: item.current ? 'var(--color-accent)' : 'var(--color-fg)',
+                        textDecoration: 'none',
+                        borderBottom: '1px solid var(--color-border)',
+                        letterSpacing: '-0.01em',
+                      }}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
