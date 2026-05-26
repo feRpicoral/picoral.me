@@ -1,77 +1,82 @@
 ---
 slug: forge
 title: Forge
-tagline: Personal project — a reproducible benchmark suite and cost-vs-quality study for self-hosted Llama 3.1 8B (AWQ-INT4 on vLLM) against commercial APIs. Not a SaaS, a portfolio piece.
-summary: A serving + optimization study comparing self-hosted, AWQ-INT4-quantized Llama 3.1 8B on vLLM against GPT-4o and Claude on throughput, latency, quality, and cost per million tokens. Deliverable is a methodology doc, committed benchmark JSON, and a defensible $/1M-tokens chart — reproducible from a rented GPU.
+tagline: Personal project — a serving + benchmarking artifact for self-hosted Llama 3.1 8B (AWQ-INT4 on vLLM). Answers "should I self-host an OSS LLM instead of paying a commercial API" with a reproducible methodology, not vibes.
+summary: A focused engineering artifact comparing self-hosted, AWQ-INT4-quantized Llama 3.1 8B on vLLM against commercial APIs on throughput, TTFT/TPOT under concurrency, quantization quality (MMLU/GSM8K/HellaSwag), and $/1M tokens. Serving config, benchmark harness, eval wrapper, cost model, and chart pipeline are wired up and rehearsed locally on M1; the real numbers land after the Phase 7 RunPod RTX 4090 run.
 status: in-development
 role: Solo — Python, vLLM, benchmarking, infra
 period:
   start: '2026-05'
 stack:
   - Python 3.12
+  - uv
   - vLLM
-  - AutoAWQ
+  - AWQ-INT4 (Marlin kernels)
   - lm-evaluation-harness
   - Prometheus
   - Grafana
-  - Docker
-  - RunPod
+  - RunPod RTX 4090
   - Ruff
-  - mypy
+  - mypy (strict)
   - pytest
+  - GitHub Actions
 links:
   repo: https://github.com/feRpicoral/forge
-featured: false
+featured: true
 order: 6
 hasCaseStudy: true
 seo:
-  description: A personal project. Production-grade LLM inference serving and optimization study — vLLM, AWQ-INT4, throughput/latency benchmarks, and a self-hosted vs. commercial-API cost model.
+  description: A personal project. vLLM + AWQ-INT4 self-hosted Llama 3.1 8B with throughput, latency, quality-retention, and $/1M-tokens benchmarks against commercial APIs — reproducible methodology.
   keywords:
     - LLM inference
     - vLLM
-    - AWQ quantization
+    - AWQ-INT4
+    - Marlin kernels
     - Llama 3.1
-    - benchmark
-    - cost analysis
     - lm-evaluation-harness
+    - cost per million tokens
+    - RunPod
 faq:
   - q: What is Forge?
-    a: Forge is a portfolio piece demonstrating that an open-source LLM can be served and optimized in production. The deliverable is a reproducible benchmark suite — throughput, TTFT, TPOT under concurrency — plus a quality eval (MMLU, GSM8K, HellaSwag) and a $/1M-tokens cost study comparing self-hosted Llama 3.1 8B against GPT-4o and Claude.
+    a: Forge answers one question rigorously — should I self-host an open-source LLM instead of paying a commercial API? The deliverable is a reproducible methodology, a benchmark harness on top of vllm bench serve, a quality eval via lm-evaluation-harness, a chart pipeline, and a cost model. Every claim traces back to a JSON file in results/ whose metadata names the GPU, the vLLM version, the model SHA, and the date.
   - q: Why AWQ-INT4 on vLLM?
-    a: AWQ-INT4 with vLLM-native Marlin kernels is currently the best documented quality-vs-throughput trade for an 8B model on a single GPU. vLLM gives continuous batching, KV cache, and an OpenAI-compatible streaming API — the stack a real product would use, not a synthetic benchmark.
+    a: AWQ-INT4 with vLLM-native Marlin kernels is the fastest INT4 path on vLLM and retains ~1–2 percentage points more quality than GPTQ on the standard tasks. vLLM gives continuous batching, a KV cache, native Prometheus metrics, and an OpenAI-compatible streaming API — the stack a real product would use, not a synthetic benchmark.
   - q: How is the methodology kept defensible?
-    a: Methodology, hardware, model SHAs, and exact vLLM version live in docs/methodology.md and are committed alongside the benchmark JSON. The full pipeline is rehearsed locally on a base-M1 MacBook against a tiny model (Qwen 2.5 0.5B) before any paid GPU rental, so the harness is debugged on free hardware.
+    a: Hardware (RunPod RTX 4090 24 GB Community tier), model SHAs (meta-llama/Llama-3.1-8B-Instruct BF16 baseline and hugging-quants AWQ-INT4 variant), vLLM version, workload (ShareGPT trace at concurrency 1/4/16/32/64, 256 prompts per level), and pricing-source dates are all committed in docs/methodology.md and the results JSON. The full pipeline is rehearsed locally on a base-M1 MacBook against a tiny model (Qwen 2.5 0.5B) before any paid GPU minute, so the harness is debugged on free hardware.
+  - q: Why the M1 rehearsal gate?
+    a: The same shell script that runs the real benchmark on RunPod runs in --rehearsal mode on M1 against the tiny model. That gate must pass before a paid GPU is rented. It catches a config typo, a parser bug, or a chart pipeline regression for free instead of for $0.34/hr.
 ---
 
 ## What it is
 
-A study, not a product. The shipped artifact is:
+A focused engineering artifact, not a SaaS. The shipped pieces:
 
-- A vLLM serving config with continuous batching, KV cache, and an OpenAI-compatible streaming API.
-- An AWQ-INT4 quantization recipe.
-- A benchmark harness measuring throughput, TTFT (p50/p95), and TPOT (p50/p95) under realistic concurrency.
-- A quality eval wrapping `lm-evaluation-harness` (MMLU, GSM8K, HellaSwag) and reporting the full-precision-vs-quantized delta.
-- A cost model producing $/1M tokens self-hosted vs. commercial APIs.
-- Prometheus metrics + a Grafana dashboard for the serving leg.
+- **Serving** — env-driven vLLM config with continuous batching, KV cache, and an OpenAI-compatible streaming API. Native Prometheus metrics exported and scraped into an auto-provisioned Grafana dashboard.
+- **Quantization** — AWQ-INT4 recipe documented in `forge/quantization/awq.py` against `meta-llama/Llama-3.1-8B-Instruct`, served with vLLM's Marlin kernels.
+- **Benchmark harness** — wraps `vllm bench serve` with a ShareGPT trace, sweeps concurrency 1/4/16/32/64 (256 prompts per level), and writes structured JSON to `results/bench/` with the GPU, vLLM version, and model SHA in each record's metadata.
+- **Quality eval** — `lm-evaluation-harness` with the `local-completions` model type pointed at the running vLLM endpoint. Tasks: MMLU (5-shot, `acc`), GSM8K (5-shot, `exact_match`), HellaSwag (5-shot, `acc_norm`). Retention math lives in `forge/eval/`.
+- **Cost model** — `$/1M tokens = gpu_hourly_usd * 1e6 / (3600 * sustained_throughput * utilization)`. Headline number uses peak throughput at `utilization=1.0`; the cost-comparison JSON next to the chart reports the 80%-utilization sensitivity.
+- **Chart pipeline** — five canonical charts (throughput vs concurrency, TTFT vs concurrency, TPOT vs concurrency, cost per 1M tokens, quantization quality retention), regenerated from `results/` with one `make chart` invocation.
+- **CI** — GitHub Actions runs Ruff + mypy (strict) + pytest on every PR. No GPU jobs in CI — benchmark reproduction is a manual, methodology-driven step on RunPod.
 
 ## Why I built it
 
-To demonstrate I can serve and optimize an open-source LLM end-to-end — not just call a hosted API. The interesting question isn't "can vLLM run Llama 3.1 8B" (yes, the docs cover that) — it's "what does the defensible $/1M-tokens number look like once you account for utilization, p95 latency, and quality regression from quantization?" That's what Forge measures.
+To prove I can serve and optimize an open-source LLM end-to-end — not just call a hosted API. The interesting question isn't "can vLLM run Llama 3.1 8B" (yes, the docs cover that) — it's "what does the defensible $/1M-tokens number look like once you account for utilization, p99 latency, and quality regression from quantization?" That's what Forge measures, and it traces every number back to a JSON file you can inspect.
 
 ## How it works
 
-### Local development on commodity hardware
+### Reproducibility as a first-class constraint
 
-The full pipeline runs on a base-model M1 MacBook Pro against a tiny model (`Qwen/Qwen2.5-0.5B-Instruct`) before any paid GPU rental. The vLLM CPU build, the benchmark harness, the cost-model parsers, and the chart generator are all debugged locally for free. Only the final reproduction run consumes GPU minutes.
+Methodology, hardware, model SHAs, exact vLLM version, AWQ recipe, and pricing-source dates are committed in `docs/methodology.md` and the per-run metadata. Anyone with the methodology doc and a RunPod account can reproduce the numbers — that's the point of the deliverable. Versions are pinned in `uv.lock`, with the GPU-coupled dependencies (vLLM, lm-eval, transformers) pinned separately in `constraints/serve.txt` and `constraints/eval.txt` so the CI image can install them without a GPU.
 
-### Reproducibility
+### M1 rehearsal gate
 
-Methodology, hardware, model SHAs, exact vLLM version, and AWQ recipe live in `docs/methodology.md`. Benchmark output JSON is committed under `results/`. Anyone with the methodology doc and a rented GPU can reproduce the numbers — that's the point of the deliverable.
+The same shell script that runs the paid benchmark on RunPod runs in `--rehearsal` mode on a base-M1 MacBook against `Qwen/Qwen2.5-0.5B-Instruct`. The rehearsal must pass before any paid GPU is rented. Config typos, parser bugs, and chart-pipeline regressions cost $0 on M1 instead of $0.34/hr on a 4090.
 
-### CI
+### Strategic test coverage
 
-GitHub Actions runs Ruff (lint + format), mypy, and pytest on every PR and push to main. No GPU jobs in CI — benchmark reproduction is a manual, methodology-driven step on rented hardware.
+Tests cover the load-bearing utilities — cost model, results parsers, chart-data shaping, config validators — not LLM outputs. The LLM is the system under test; the tests verify the harness around it.
 
 ## Status
 
-Scaffolding. The serving layer, quantization recipe, benchmark harness, and cost model land across phases 1–8 of the implementation plan; the impact lead, full benchmark run, and charts land in phase 9.
+Phases 1–6 (scaffolding, serving config, quantization, benchmark harness, quality eval, cost model + charts) are landed and rehearsed end-to-end on M1. Phase 7 — the paid RunPod RTX 4090 run that replaces every illustrative number with a measured one — is queued. Phase 9 is the impact lead and the final case study writeup.
