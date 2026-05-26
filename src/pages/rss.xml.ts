@@ -3,6 +3,12 @@ import type { APIRoute } from 'astro';
 import { isEnabled } from '~/config/sections.ts';
 import { SITE } from '~/config/site.ts';
 
+// When the blog section is disabled we still render the feed once so the
+// route never SSRs, but it carries no items. Combined with the Seo head-link
+// gate, it stays unadvertised and acts as a graceful empty channel for any
+// reader that probes the canonical /rss.xml path.
+export const prerender = true;
+
 const escapeXml = (s: string) =>
   s
     .replace(/&/g, '&amp;')
@@ -12,13 +18,11 @@ const escapeXml = (s: string) =>
     .replace(/'/g, '&apos;');
 
 export const GET: APIRoute = async () => {
-  if (!isEnabled('blog')) {
-    return new Response('Not found', { status: 404 });
-  }
-
-  const posts = (
-    await getCollection('blog', ({ data, id }) => !data.draft && id.startsWith('en/'))
-  ).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+  const posts = isEnabled('blog')
+    ? (await getCollection('blog', ({ data, id }) => !data.draft && id.startsWith('en/'))).sort(
+        (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+      )
+    : [];
 
   const items = posts
     .map((post) => {
