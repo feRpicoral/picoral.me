@@ -4,7 +4,6 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-import icon from 'astro-icon';
 import { sections } from './src/config/sections.ts';
 
 const SITE_URL = process.env.PUBLIC_SITE_URL ?? 'https://picoral.me';
@@ -37,7 +36,6 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
-    icon({ include: { lucide: ['*'] } }),
     sitemap({
       filter: sitemapFilter,
       i18n: {
