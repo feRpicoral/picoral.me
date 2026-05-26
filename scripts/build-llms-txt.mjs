@@ -8,7 +8,7 @@ const repoRoot = join(__dirname, '..');
 
 const SITE = {
   name: 'Fernando Picoral',
-  url: 'https://picoral.me',
+  url: process.env.PUBLIC_SITE_URL ?? 'https://picoral.me',
   description:
     'Brazilian software engineer based in New York. Software Engineer at Google (full-time from September 2026, after three summer internships). BS in Computer Science from CU Boulder, May 2026.',
 };

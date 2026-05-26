@@ -6,7 +6,7 @@
 export const SITE = {
   name: 'Fernando Picoral',
   shortName: 'Picoral',
-  url: 'https://picoral.me',
+  url: import.meta.env.PUBLIC_SITE_URL ?? 'https://picoral.me',
   emailUser: 'fernando',
   emailDomain: 'picoral.me',
   location: 'New York, NY',
