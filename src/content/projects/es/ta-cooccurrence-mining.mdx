@@ -1,0 +1,121 @@
+---
+slug: ta-cooccurrence-mining
+title: Minería de Co-ocurrencia de AT
+tagline: >-
+  Proyecto final de CSCI 4502 (otoño 2025). Aplicación de análisis de canasta de
+  mercado a acciones intradiarias de EE. UU. — cada barra de 5 minutos como
+  transacción y eventos de AT por ticker como ítems — para descubrir
+  co-ocurrencias de señales entre activos.
+summary: >-
+  Un estudio de minería de datos en CU Boulder que reformula el análisis técnico
+  como transacciones de ítems (ticker, evento) y ejecuta FP-Growth + H-Mine
+  sobre un año de barras de 5 minutos de acciones de EE. UU. de Stooq. Descubre
+  itemsets frecuentes y reglas de asociación entre tickers, particiona por
+  sesión intradiaria, pondera por capitalización de mercado y valida contra un
+  placebo de mezcla de timestamps.
+status: archived
+role: 'Individual — Python, minería de datos, series de tiempo'
+period:
+  start: 2025-10
+  end: 2025-12
+stack:
+  - Python
+  - pandas
+  - pyarrow / Parquet
+  - TA-Lib
+  - 'mlxtend (FP-Growth, H-Mine)'
+  - scikit-learn
+  - NetworkX
+  - Plotly
+  - Jupyter
+links:
+  repo: 'https://github.com/feRpicoral/ta-cooccurrence-mining'
+featured: false
+order: 15
+hasCaseStudy: true
+seo:
+  description: >-
+    Proyecto CSCI 4502 — minería de canasta de mercado en acciones intradiarias
+    de EE. UU. FP-Growth sobre transacciones (ticker, evento de AT) para
+    co-ocurrencia de señales entre activos.
+  keywords:
+    - market basket analysis
+    - association rule mining
+    - FP-Growth
+    - technical analysis
+    - intraday equities
+    - CSCI 4502
+faq:
+  - q: ¿Qué es este proyecto?
+    a: >-
+      Un proyecto final para CSCI 4502 (Minería de Datos) en CU Boulder. Aplica
+      análisis de canasta de mercado — típicamente usado para patrones de compra
+      en retail — para descubrir qué señales de análisis técnico (AT) tienden a
+      co-ocurrir en acciones de EE. UU., tratando cada timestamp intradiario
+      como una transacción cuyos ítems son pares (ticker, evento) como
+      AAPL:RSI_LONG o NVDA:BB_BREAK_UP.
+  - q: ¿Por qué no mirar solo el AT de un ticker individual?
+    a: >-
+      El AT de un solo ticker no puede ver la estructura entre activos. La
+      pregunta interesante es si una ruptura de Banda de Bollinger en una acción
+      co-ocurre con un cruce de RSI en otra a frecuencias por encima del azar,
+      condicionado por sesión y sector. Tratar cada timestamp como una
+      transacción hace esa pregunta directamente mineable.
+  - q: ¿Cómo se validan los resultados?
+    a: >-
+      Con un placebo de mezcla de timestamps y una línea base de precio crudo
+      (notebook 09). Si las reglas de asociación sobreviven la prueba de mezcla,
+      son espurias. Los patrones también se analizan por estabilidad temporal en
+      folds mensuales (notebook 07), así que el reporte solo destaca reglas que
+      persisten fuera de muestra.
+_source:
+  hash: 53b2c5d2c69aa0de
+  locale: en
+  translatedAt: '2026-05-26T21:44:45.389Z'
+---
+## Qué es
+
+Un proyecto de clase que hace una sola pregunta: ¿las señales de análisis técnico (AT) se disparan juntas en distintas acciones de EE. UU. a frecuencias por encima del azar y, si es así, cuáles — condicionado por sesión intradiaria y sector?
+
+Los datos son un año de barras OHLCV de 5 minutos de [Stooq](https://stooq.com/db/h/) para el universo de tickers de EE. UU. Cada timestamp se convierte en una transacción:
+
+```
+X_t = { TICKER:EVENT | event fires for ticker at time t }
+```
+
+con 13 señales de eventos binarios derivadas de indicadores de TA-Lib — cruces de medias móviles, cruces de MACD, RSI sobrevendido/sobrecomprado, rupturas y reversiones de Bandas de Bollinger, cruces de VWAP, picos de volumen. Luego FP-Growth y H-Mine sobre la base de transacciones descubren itemsets frecuentes y reglas de asociación con el triple habitual de soporte/confianza/lift.
+
+## Cómo funciona
+
+### Pipeline
+
+Diez notebooks de Jupyter, ejecutables en secuencia:
+
+- `01_preprocessing` — cargar barras ASCII crudas de Stooq, normalizar CEST → ET, filtrar a horario regular de trading.
+- `02_feature_engineering` — calcular indicadores de AT con TA-Lib y generar las 13 señales binarias.
+- `03_technical_analysis` — visualizar y validar la generación de señales.
+- `04_event_encoding` — transformar señales en transacciones `TICKER:EVENT`; agregar ponderación por capitalización de mercado.
+- `05_global_mining` — FP-Growth sobre el dataset completo; itemsets frecuentes y reglas de asociación.
+- `06_session_mining` — minería separada para las sesiones Open (9:30–10:30 ET), Midday (10:30–15:00 ET) y Close (15:00–16:00 ET); comparación de patrones.
+- `07_temporal_leadlag` — estabilidad temporal en folds mensuales; identificación de patrones persistentes.
+- `08_sectoral_mining` — patrones intra e inter-sector; redes de flujo con NetworkX.
+- `09_baseline_validation` — línea base de precio crudo y placebo de mezcla de timestamps para filtrar reglas espurias.
+
+### Filtrado entre tickers
+
+Las reglas interesantes son inter-activo: `{AAPL:RSI_LONG, NVDA:RSI_LONG} => {MSFT:RSI_LONG}`, no reformulaciones intra-ticker del AT de manual. La etapa de minería filtra reglas cuyo antecedente y consecuente involucran tickers distintos.
+
+### Ponderación por capitalización de mercado
+
+Las transacciones se ponderan por la capitalización de mercado de los tickers participantes para que los patrones principales sean económicamente significativos y no estén impulsados por penny stocks. La vista cruda sin ponderación se conserva para comparación.
+
+### Validación
+
+Dos salvaguardas contra reglas con falsos positivos:
+
+- **Placebo de mezcla de timestamps** — re-minar los mismos datos con timestamps mezclados entre tickers. Cualquier regla que sobreviva la mezcla es espuria por definición.
+- **Folds temporales** — minar en folds mensuales y exigir que la regla persista fuera de muestra antes de reportarla.
+
+## Estado
+
+Entregado como proyecto final de CSCI 4502, otoño 2025.
