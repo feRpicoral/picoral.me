@@ -6,8 +6,8 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    name: tests + translate:check
+  ci:
+    name: lint + check + test + build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,10 +23,16 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm check
+
       - name: Unit tests
         run: pnpm test
 
-      # Fails non-zero if any translation file is missing or has a stale
-      # `_source.hash`. Offline — never calls the Anthropic API.
-      - name: Verify translations are up to date
-        run: pnpm translate:check
+      # `pnpm build` runs translate:check (offline — never calls Anthropic),
+      # regenerates public/llms.txt, then astro build.
+      - name: Build
+        run: pnpm build
