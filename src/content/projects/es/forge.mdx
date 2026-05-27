@@ -1,0 +1,124 @@
+---
+slug: forge
+title: Forge
+tagline: >-
+  Proyecto personal — un artefacto de serving + benchmarking para Llama 3.1 8B
+  autoalojado (AWQ-INT4 en vLLM). Responde "¿debería autoalojar un LLM OSS en
+  vez de pagar una API comercial?" con una metodología reproducible, no con
+  intuición.
+summary: >-
+  Un artefacto de ingeniería enfocado que compara Llama 3.1 8B autoalojado con
+  cuantización AWQ-INT4 en vLLM contra APIs comerciales en throughput, TTFT/TPOT
+  bajo concurrencia, calidad de cuantización (MMLU/GSM8K/HellaSwag) y $/1M
+  tokens. La config de serving, el harness de benchmark, el wrapper de eval, el
+  modelo de costos y el pipeline de gráficos están conectados y ensayados
+  localmente en M1; los números reales llegan tras la corrida de la Fase 7 en
+  RunPod RTX 4090.
+status: in-development
+role: 'Solo — Python, vLLM, benchmarking, infra'
+period:
+  start: 2026-05
+stack:
+  - Python 3.12
+  - uv
+  - vLLM
+  - AWQ-INT4 (Marlin kernels)
+  - lm-evaluation-harness
+  - Prometheus
+  - Grafana
+  - RunPod RTX 4090
+  - Ruff
+  - mypy (strict)
+  - pytest
+  - GitHub Actions
+links:
+  repo: 'https://github.com/feRpicoral/forge'
+featured: true
+order: 6
+hasCaseStudy: true
+seo:
+  description: >-
+    Un proyecto personal. vLLM + AWQ-INT4 con Llama 3.1 8B autoalojado:
+    benchmarks de throughput, latencia, retención de calidad y $/1M tokens
+    contra APIs comerciales — metodología reproducible.
+  keywords:
+    - LLM inference
+    - vLLM
+    - AWQ-INT4
+    - Marlin kernels
+    - Llama 3.1
+    - lm-evaluation-harness
+    - cost per million tokens
+    - RunPod
+faq:
+  - q: ¿Qué es Forge?
+    a: >-
+      Forge responde una pregunta con rigor: ¿debería autoalojar un LLM de
+      código abierto en vez de pagar una API comercial? El entregable es una
+      metodología reproducible, un harness de benchmark sobre vllm bench serve,
+      una eval de calidad vía lm-evaluation-harness, un pipeline de gráficos y
+      un modelo de costos. Cada afirmación se rastrea hasta un archivo JSON en
+      results/ cuyo metadata indica la GPU, la versión de vLLM, el SHA del
+      modelo y la fecha.
+  - q: ¿Por qué AWQ-INT4 en vLLM?
+    a: >-
+      AWQ-INT4 con los kernels Marlin nativos de vLLM es el camino INT4 más
+      rápido en vLLM y retiene ~1–2 puntos porcentuales más de calidad que GPTQ
+      en las tareas estándar. vLLM ofrece continuous batching, KV cache,
+      métricas nativas de Prometheus y una API de streaming compatible con
+      OpenAI — el stack que usaría un producto real, no un benchmark sintético.
+  - q: ¿Cómo se mantiene la metodología defendible?
+    a: >-
+      El hardware (RunPod RTX 4090 24 GB Community tier), los SHAs del modelo
+      (baseline BF16 meta-llama/Llama-3.1-8B-Instruct y variante AWQ-INT4 de
+      hugging-quants), la versión de vLLM, la carga de trabajo (traza ShareGPT
+      con concurrencia 1/4/16/32/64, 256 prompts por nivel) y las fechas de las
+      fuentes de precios están todos commiteados en docs/methodology.md y en el
+      JSON de resultados. El pipeline completo se ensaya localmente en un
+      MacBook M1 base contra un modelo pequeño (Qwen 2.5 0.5B) antes de
+      cualquier minuto de GPU pago, así el harness se depura en hardware
+      gratuito.
+  - q: ¿Por qué el gate de ensayo en M1?
+    a: >-
+      El mismo shell script que corre el benchmark real en RunPod corre en modo
+      --rehearsal en M1 contra el modelo pequeño. Ese gate debe pasar antes de
+      rentar una GPU paga. Atrapa un typo de config, un bug de parser o una
+      regresión en el pipeline de gráficos gratis, en vez de a $0.34/hr.
+_source:
+  hash: 88dd0507ee67f746
+  locale: en
+  translatedAt: '2026-05-26T21:38:41.690Z'
+---
+## Qué es
+
+Un artefacto de ingeniería enfocado, no un SaaS. Las piezas entregadas:
+
+- **Serving** — config de vLLM manejada por variables de entorno con continuous batching, KV cache y una API de streaming compatible con OpenAI. Métricas nativas de Prometheus exportadas y scrapeadas en un dashboard de Grafana auto-provisionado.
+- **Cuantización** — receta AWQ-INT4 documentada en `forge/quantization/awq.py` contra `meta-llama/Llama-3.1-8B-Instruct`, servida con los kernels Marlin de vLLM.
+- **Harness de benchmark** — envuelve `vllm bench serve` con una traza ShareGPT, barre concurrencia 1/4/16/32/64 (256 prompts por nivel) y escribe JSON estructurado en `results/bench/` con la GPU, la versión de vLLM y el SHA del modelo en el metadata de cada registro.
+- **Eval de calidad** — `lm-evaluation-harness` con el tipo de modelo `local-completions` apuntando al endpoint de vLLM en ejecución. Tareas: MMLU (5-shot, `acc`), GSM8K (5-shot, `exact_match`), HellaSwag (5-shot, `acc_norm`). La matemática de retención vive en `forge/eval/`.
+- **Modelo de costos** — `$/1M tokens = gpu_hourly_usd * 1e6 / (3600 * sustained_throughput * utilization)`. El número principal usa el throughput pico con `utilization=1.0`; el JSON de comparación de costos junto al gráfico reporta la sensibilidad al 80% de utilización.
+- **Pipeline de gráficos** — cinco gráficos canónicos (throughput vs concurrencia, TTFT vs concurrencia, TPOT vs concurrencia, costo por 1M tokens, retención de calidad de cuantización), regenerados desde `results/` con una sola invocación de `make chart`.
+- **CI** — GitHub Actions corre Ruff + mypy (strict) + pytest en cada PR. Sin jobs de GPU en CI — la reproducción del benchmark es un paso manual, guiado por la metodología, en RunPod.
+
+## Por qué lo construí
+
+Para demostrar que puedo servir y optimizar un LLM de código abierto de punta a punta — no solo llamar a una API alojada. La pregunta interesante no es "¿puede vLLM correr Llama 3.1 8B?" (sí, la documentación lo cubre) — es "¿cómo queda el número defendible de $/1M tokens una vez que se considera la utilización, la latencia p99 y la regresión de calidad por cuantización?" Eso es lo que Forge mide, y rastrea cada número hasta un archivo JSON que podés inspeccionar.
+
+## Cómo funciona
+
+### Reproducibilidad como restricción de primer orden
+
+La metodología, el hardware, los SHAs del modelo, la versión exacta de vLLM, la receta AWQ y las fechas de las fuentes de precios están commiteados en `docs/methodology.md` y en el metadata de cada corrida. Cualquiera con el doc de metodología y una cuenta de RunPod puede reproducir los números — ese es el punto del entregable. Las versiones están fijadas en `uv.lock`, con las dependencias acopladas a la GPU (vLLM, lm-eval, transformers) fijadas por separado en `constraints/serve.txt` y `constraints/eval.txt` para que la imagen de CI pueda instalarlas sin GPU.
+
+### Gate de ensayo en M1
+
+El mismo shell script que corre el benchmark pago en RunPod corre en modo `--rehearsal` en un MacBook M1 base contra `Qwen/Qwen2.5-0.5B-Instruct`. El ensayo debe pasar antes de rentar cualquier GPU paga. Los typos de config, los bugs de parser y las regresiones en el pipeline de gráficos cuestan $0 en M1 en vez de $0.34/hr en una 4090.
+
+### Cobertura de tests estratégica
+
+Los tests cubren las utilidades críticas — modelo de costos, parsers de resultados, transformación de datos para gráficos, validadores de config — no los outputs del LLM. El LLM es el sistema bajo prueba; los tests verifican el harness a su alrededor.
+
+## Estado
+
+Las fases 1–6 (scaffolding, config de serving, cuantización, harness de benchmark, eval de calidad, modelo de costos + gráficos) están terminadas y ensayadas de punta a punta en M1. La Fase 7 — la corrida paga en RunPod RTX 4090 que reemplaza cada número ilustrativo por uno medido — está en cola. La Fase 9 es el impact lead y el writeup final del caso de estudio.
