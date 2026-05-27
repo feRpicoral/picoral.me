@@ -4,7 +4,6 @@ import { type UiKey, ui } from './ui.ts';
 const isLocale = (value: string): value is Locale =>
   (SITE.locales as readonly string[]).includes(value);
 
-/** Get the locale of the current request URL. Falls back to default. */
 export function getLocaleFromUrl(url: URL): Locale {
   const segments = url.pathname.split('/').filter(Boolean);
   const first = segments[0];
@@ -12,7 +11,6 @@ export function getLocaleFromUrl(url: URL): Locale {
   return SITE.defaultLocale;
 }
 
-/** Returns a translation function bound to a locale. Falls back to EN if a key is missing. */
 export function useTranslations(locale: Locale) {
   return function t(key: UiKey, vars?: Record<string, string | number>): string {
     const value = (ui[locale] as Record<string, string>)[key] ?? ui.en[key] ?? key;
@@ -21,7 +19,6 @@ export function useTranslations(locale: Locale) {
   };
 }
 
-/** Build a URL path under a given locale, e.g. localizePath('/about', 'pt') → '/pt/about'. */
 export function localizePath(path: string, locale: Locale): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   if (locale === SITE.defaultLocale) return clean === '/' ? '/' : clean;
@@ -29,7 +26,6 @@ export function localizePath(path: string, locale: Locale): string {
   return `/${locale}${clean}`;
 }
 
-/** Strip the locale prefix from a path and return the canonical (EN) path. */
 export function stripLocale(pathname: string): string {
   const segments = pathname.split('/').filter(Boolean);
   if (segments.length === 0) return '/';
@@ -41,7 +37,6 @@ export function stripLocale(pathname: string): string {
   return pathname === '' ? '/' : pathname;
 }
 
-/** Build hreflang alternates for a given canonical (EN-shaped) path. */
 export function getAlternates(
   canonicalPath: string,
 ): Array<{ locale: Locale | 'x-default'; href: string }> {
@@ -57,13 +52,11 @@ export function getAlternates(
   ];
 }
 
-/** Build a same-page URL under a different locale (used by the locale switcher). */
 export function swapLocale(currentPath: string, targetLocale: Locale): string {
   const canonical = stripLocale(currentPath);
   return localizePath(canonical, targetLocale);
 }
 
-/** Map locale → BCP47 string for og:locale and html lang. */
 export function bcp47(locale: Locale): string {
   switch (locale) {
     case 'pt':

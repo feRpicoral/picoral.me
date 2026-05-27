@@ -10,7 +10,6 @@ const splitId = (id: string): { locale: Locale; slug: string } | null => {
   return { locale: head, slug: segments.slice(1).join('/') };
 };
 
-/** All non-draft entries of a collection for the given locale. */
 export async function getLocalizedCollection<C extends CollectionKey>(
   collection: C,
   locale: Locale,
@@ -23,7 +22,6 @@ export async function getLocalizedCollection<C extends CollectionKey>(
   });
 }
 
-/** One entry by canonical slug in the given locale, or null if absent. */
 export async function getLocalizedEntry<C extends CollectionKey>(
   collection: C,
   locale: Locale,
@@ -33,7 +31,6 @@ export async function getLocalizedEntry<C extends CollectionKey>(
   return all.find((entry) => entry.id === `${locale}/${slug}`) ?? null;
 }
 
-/** Strip locale prefix from a content entry id and return its canonical slug. */
 export function getCanonicalSlug(id: string): string {
   const parsed = splitId(id);
   return parsed?.slug ?? id;

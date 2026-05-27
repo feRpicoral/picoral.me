@@ -9,11 +9,7 @@ interface Props {
   };
 }
 
-/**
- * Copy-to-clipboard for the email. The literal address is only constructed
- * client-side from the split `user` + `domain` props — the server-rendered
- * HTML never contains the joined string.
- */
+// Construct the literal address only client-side so server-rendered HTML never contains it.
 export default function CopyEmail({ user, domain, labels }: Props) {
   const [copied, setCopied] = useState(false);
 

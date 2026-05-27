@@ -2,8 +2,8 @@ import type { Locale } from '~/config/site.ts';
 import { bcp47 } from '~/i18n/utils.ts';
 
 /**
- * Format a YYYY-MM or YYYY-MM-DD string into a localized "MMM YYYY" or "MMM YYYY" string.
- * Falls through unparseable values unchanged.
+ * Format period dates with a localized month and year.
+ * Unparseable values pass through unchanged.
  */
 export function formatPeriodDate(value: string | null | undefined, locale: Locale): string {
   if (!value) return '';

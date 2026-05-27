@@ -1,8 +1,5 @@
 /**
- * Validate translated output against the per-snippet constraints and the
- * structural fingerprint of the source MDX tree.
- *
- * Returns an array of human-readable issues. Empty array = pass.
+ * Validate translated snippets against the expected ids and per-snippet constraints.
  */
 export function validateTranslations({ snippets, byId }) {
   const issues = [];

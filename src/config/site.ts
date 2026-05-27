@@ -1,7 +1,7 @@
 /**
  * Email is split into `user` and `domain` so the literal address is never written
- * to server-rendered HTML or static assets. Use the <EmailLink /> island for any
- * UI surface that needs to show or link to it — it concatenates client-side.
+ * to server-rendered HTML or static assets. Base.astro wires data-email-* links,
+ * and CopyEmail joins the same parts for clipboard use.
  */
 export const SITE = {
   name: 'Fernando Picoral',

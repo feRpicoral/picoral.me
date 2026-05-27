@@ -1,9 +1,7 @@
 import { type SectionKey, isEnabled } from './sections.ts';
 
 export type NavItem = {
-  /** translation key in src/i18n/ui.ts */
   labelKey: string;
-  /** href relative to the locale root, e.g. '/about' */
   href: string;
   section: SectionKey;
 };
