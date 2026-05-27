@@ -37,9 +37,6 @@ export default function MobileNav({ items, labels }: Props) {
     setMounted(true);
   }, []);
 
-  // Open/close lifecycle. On open: mount immediately, lock body scroll, wire
-  // up key handlers. On close: keep the dialog mounted long enough for the
-  // close animation to play, then unmount + release scroll lock.
   useEffect(() => {
     if (open) {
       setShouldRender(true);
@@ -70,7 +67,6 @@ export default function MobileNav({ items, labels }: Props) {
       return () => document.removeEventListener('keydown', onKey);
     }
 
-    // open just flipped false — let the exit animation play, then unmount.
     const t = setTimeout(() => {
       setShouldRender(false);
       document.body.style.overflow = '';
@@ -78,7 +74,6 @@ export default function MobileNav({ items, labels }: Props) {
     return () => clearTimeout(t);
   }, [open]);
 
-  // Focus the first link once the dialog is on screen.
   useEffect(() => {
     if (shouldRender && open) firstLinkRef.current?.focus();
   }, [shouldRender, open]);
