@@ -65,21 +65,21 @@ It's also a generic, config-driven engine, not a SaaS. Nothing personal — voic
 
 ```
 Vercel Cron (daily 14:00 UTC)
-   ↓ day/hour filter
+   | day/hour filter
 Collector: RSS + GitHub
-   ↓
+   |
 Generator + anti-AI-tell linter
-   ↓
+   |
 Media: Pexels or owner upload
-   ↓
+   |
 Vercel KV
-   ↓
+   |
 Resend: magic-link email to /review
-   ↓
+   |
 Conversational chat edits
-   ↓
+   |
 WebAuthn passkey assertion
-   ↓
+   |
 LinkedIn Posts API
 ```
 
@@ -93,11 +93,11 @@ The state machine in `src/lib/state/drafts.ts` is the single writer of draft sta
 
 ### Security model
 
-- The only publish path is a click → WebAuthn assertion → server transition with a derived `publishProof`. The assertion challenge is `sha256(draft.id || draft.version || draft.body)`, so a captured assertion can't be replayed.
+- The only publish path is a click, then a WebAuthn assertion, then a server transition with a derived `publishProof`. The assertion challenge is `sha256(draft.id || draft.version || draft.body)`, so a captured assertion can't be replayed.
 - Magic links are HMAC-signed, single-use (nonce stored in KV with a TTL), and expire after 24 hours by default.
 - The public `/access` endpoint always emails the configured `NOTIFY_TO_ADDRESS` only — never an attacker-supplied target.
 - Sessions are HttpOnly, Secure, SameSite=Lax cookies bound to a specific draft id.
-- `.gitignore` excludes `config.yml`, `.env*`, and `.vercel/`. The setup script flows secrets `prompt → vercel env add` only — never to disk.
+- `.gitignore` excludes `config.yml`, `.env*`, and `.vercel/`. The setup script flows secrets `prompt -> vercel env add` only — never to disk.
 
 ## Status
 

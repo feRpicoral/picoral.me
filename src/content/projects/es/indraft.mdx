@@ -4,7 +4,7 @@ title: InDraft
 tagline: >-
   Proyecto personal — un motor de borradores para LinkedIn basado en
   configuración. Genera borradores con tu voz según un cron, los revisás desde
-  el celular, y nada se publica sin una aserción de passkey.
+  el celular, y nada se publica sin una aserción con passkey.
 summary: >-
   Motor open-source que monitorea feeds RSS y tu actividad en GitHub, genera
   borradores de posts para LinkedIn con tu voz según un horario, te permite
@@ -37,7 +37,7 @@ seo:
   description: >-
     Un proyecto personal. Motor de borradores para LinkedIn basado en
     configuración, sobre Next.js + Vercel KV + OpenRouter, con un flujo de
-    publicación protegido por passkey y un linter anti-señales de IA.
+    publicación protegido por passkey y un linter anti-AI-tell.
   keywords:
     - LinkedIn automation
     - LinkedIn post generator
@@ -54,9 +54,9 @@ faq:
       programado obtiene elementos nuevos de tus feeds RSS y tu actividad en
       GitHub, elige uno y genera un borrador con tu voz. Lo revisás en el
       celular, lo editás de forma conversacional, y el post solo se publica
-      después de una aserción de passkey WebAuthn vinculada a ese borrador
+      después de una aserción WebAuthn con passkey vinculada a ese borrador
       exacto.
-  - q: ¿Por qué se necesita una passkey para publicar?
+  - q: ¿Por qué una passkey para publicar?
     a: >-
       No existe un flujo de publicación automático en el código. Cada post
       publicado pasa por una aserción WebAuthn vinculada a un sha256 del id, la
@@ -68,21 +68,20 @@ faq:
     a: >-
       Un bloque de texto libre en config.yml es el grounding principal del
       modelo. El modelo de borradores es Claude Opus 4.7 vía OpenRouter BYOK,
-      porque el estándar anti-señales de IA se degrada con modelos más débiles.
-      Un linter separado rechaza el abuso de guiones em, "let's dive in" y otras
-      señales antes de que el borrador llegue a la UI de revisión.
-  - q: ¿Por qué omitir el enlace por defecto?
+      porque el estándar anti-AI-tell se degrada con modelos más débiles. Un
+      linter separado rechaza el abuso de em-dash, "let's dive in" y otros tells
+      antes de que el borrador llegue a la UI de revisión.
+  - q: ¿Por qué omitir el link por defecto?
     a: >-
       Investigaciones sobre el algoritmo de LinkedIn en 2026 muestran que los
-      posts con enlace en el cuerpo pueden perder hasta un 60% de alcance, y el
-      viejo truco del "enlace en el primer comentario" puede perder hasta un
-      80%. El valor por defecto de InDraft es link_placement = "none" — la URL
-      fuente se muestra dentro de la UI de revisión. Podés sobreescribirlo por
-      post.
+      posts con link en el cuerpo reciben hasta un 60% menos de alcance, y el
+      viejo truco del "link en el primer comentario" hasta un 80%. El valor por
+      defecto de InDraft es link_placement = "none" — la URL fuente se muestra
+      dentro de la UI de revisión. Podés sobreescribirlo por post.
 _source:
-  hash: 640afa56c4c98615
+  hash: 6e63e03e9acafba3
   locale: en
-  translatedAt: '2026-05-26T21:24:05.463Z'
+  translatedAt: '2026-05-29T00:44:38.758Z'
 ---
 ## Qué hace
 
@@ -92,7 +91,7 @@ Abrís la página de revisión en el celular. Podés editar el borrador de forma
 
 ## Por qué lo construí
 
-La calidad de un post en LinkedIn depende de la voz y la oportunidad. La mayoría de las herramientas de automatización destruyen ambas: generan texto genérico de IA y publican según un horario que no tiene nada que ver con lo que está pasando ese día. InDraft intenta preservarlas — tu voz es el grounding principal del modelo, el horario está ligado a fuentes frescas, y siempre hay un humano en el circuito antes de que se publique algo.
+La calidad de un post en LinkedIn depende de la voz y la oportunidad. La mayoría de las herramientas de automatización destruyen ambas: generan texto genérico de IA y publican según un horario que no tiene nada que ver con lo que está pasando ese día. InDraft intenta preservarlas — tu voz es el grounding principal del modelo, el horario se basa en fuentes frescas, y siempre hay un humano en el loop antes de que se publique algo.
 
 También es un motor genérico basado en configuración, no un SaaS. Nada personal — voz, fuentes, credenciales — vive en el repo. Forkéalo, apuntá tu config a tus cosas, desplegá.
 
@@ -102,39 +101,39 @@ También es un motor genérico basado en configuración, no un SaaS. Nada person
 
 ```
 Vercel Cron (daily 14:00 UTC)
-   ↓ day/hour filter
+   | day/hour filter
 Collector: RSS + GitHub
-   ↓
+   |
 Generator + anti-AI-tell linter
-   ↓
+   |
 Media: Pexels or owner upload
-   ↓
+   |
 Vercel KV
-   ↓
+   |
 Resend: magic-link email to /review
-   ↓
+   |
 Conversational chat edits
-   ↓
+   |
 WebAuthn passkey assertion
-   ↓
+   |
 LinkedIn Posts API
 ```
 
-La máquina de estados en `src/lib/state/drafts.ts` es la única escritora del estado del borrador y el límite de seguridad fundamental. La única forma de llegar a la LinkedIn Posts API es a través de una aserción WebAuthn verificada — ningún flujo programado o automático publica. Un test e2e en `tests/e2e/publish-guard.test.ts` lo prueba a nivel de máquina de estados: un borrador que no esté en `PENDING_REVIEW` nunca puede pasar a `PUBLISHED`, y una aserción capturada no puede reutilizarse contra un borrador editado porque el challenge está vinculado a la versión del borrador.
+La máquina de estados en `src/lib/state/drafts.ts` es la única escritora del estado del borrador y el límite de seguridad principal. La única forma de llegar a la LinkedIn Posts API es a través de una aserción WebAuthn verificada — ningún flujo programado o automático publica. Un test e2e en `tests/e2e/publish-guard.test.ts` lo prueba a nivel de máquina de estados: un borrador que no esté en `PENDING_REVIEW` nunca puede pasar a `PUBLISHED`, y una aserción capturada no puede reutilizarse contra un borrador editado porque el challenge está vinculado a la versión del borrador.
 
 ### Valores por defecto clave
 
-- **`link_placement: "none"`** — investigaciones actuales sobre el algoritmo de LinkedIn muestran que los enlaces externos reducen el alcance. InDraft muestra la URL fuente dentro de la UI de revisión. Sobreescribilo por post si querés.
-- **Modelo frontier para borradores, modelo económico para ranking** — Claude Opus 4.7 genera los borradores porque el estándar anti-señales de IA se degrada con modelos más débiles; Claude Haiku 4.5 se encarga del ranking de fuentes y las tareas mecánicas. Ambos enrutados a través de OpenRouter BYOK.
-- **Token de LinkedIn de 60 días, sin refresh** — las apps de LinkedIn self-serve emiten tokens de 60 días sin opción de refresh. InDraft guarda `issued_at` en KV, envía un aviso de reautenticación por email ~7 días antes del vencimiento, y muestra un banner de "reconectar LinkedIn" en la UI de revisión.
+- **`link_placement: "none"`** — investigaciones actuales sobre el algoritmo de LinkedIn muestran que los links externos reducen el alcance. InDraft muestra la URL fuente dentro de la UI de revisión. Sobreescribilo por post si querés.
+- **Modelo frontier para borradores, modelo económico para ranking** — Claude Opus 4.7 genera los borradores porque el estándar anti-AI-tell se degrada con modelos más débiles; Claude Haiku 4.5 se encarga del ranking de fuentes y tareas mecánicas. Ambos enrutados a través de OpenRouter BYOK.
+- **Token de LinkedIn de 60 días, sin refresh** — las apps de LinkedIn self-serve emiten tokens de 60 días sin opción de refresh. InDraft guarda `issued_at` en KV, envía un email de reautenticación ~7 días antes del vencimiento y muestra un banner de "reconectar LinkedIn" en la UI de revisión.
 
 ### Modelo de seguridad
 
-- El único flujo de publicación es: clic → aserción WebAuthn → transición en el servidor con un `publishProof` derivado. El challenge de la aserción es `sha256(draft.id || draft.version || draft.body)`, por lo que una aserción capturada no puede reutilizarse.
+- El único flujo de publicación es: un clic, luego una aserción WebAuthn, luego una transición en el servidor con un `publishProof` derivado. El challenge de la aserción es `sha256(draft.id || draft.version || draft.body)`, así que una aserción capturada no puede reutilizarse.
 - Los magic links están firmados con HMAC, son de un solo uso (nonce guardado en KV con TTL) y vencen a las 24 horas por defecto.
-- El endpoint público `/access` siempre envía el email únicamente al `NOTIFY_TO_ADDRESS` configurado — nunca a un destino provisto por un atacante.
+- El endpoint público `/access` siempre envía el email solo al `NOTIFY_TO_ADDRESS` configurado — nunca a un destino provisto por un atacante.
 - Las sesiones son cookies HttpOnly, Secure, SameSite=Lax vinculadas a un id de borrador específico.
-- `.gitignore` excluye `config.yml`, `.env*` y `.vercel/`. El script de setup envía los secretos solo por el flujo `prompt → vercel env add` — nunca al disco.
+- `.gitignore` excluye `config.yml`, `.env*` y `.vercel/`. El script de setup envía los secretos solo por el flujo `prompt -> vercel env add` — nunca a disco.
 
 ## Estado
 

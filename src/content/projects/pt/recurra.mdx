@@ -6,11 +6,11 @@ tagline: >-
   serviços. Construído como desculpa para aprender Nx, AWS CDK e a camada de
   billing do começo ao fim.
 summary: >-
-  Um experimento de billing por assinatura para negócios de serviços com
+  Um experimento de cobrança por assinatura para negócios de serviços com
   clientes recorrentes — agendamentos recorrentes, cobranças automatizadas,
   autoatendimento do cliente. Backend em NestJS, web em React Router 7, mobile
-  em Expo, infra em AWS CDK e um cliente Android em Kotlin para integração com o
-  Clover POS.
+  em Expo, infra em AWS CDK, e um cliente Android em Kotlin para integração com
+  o Clover POS.
 status: in-development
 role: 'Solo — backend, web, mobile, infra'
 period:
@@ -27,6 +27,7 @@ stack:
   - Nx monorepo
 links:
   live: 'https://recurra.app'
+  repo: 'https://github.com/feRpicoral/recurra'
 featured: true
 order: 4
 hasCaseStudy: true
@@ -51,15 +52,15 @@ faq:
       checkout presencial.
   - q: Por que um monorepo multi-app para o Recurra?
     a: >-
-      Um negócio precisa de três interfaces — painel web do dono, mobile do
+      Um negócio precisa de três superfícies — painel web do dono, mobile do
       dono, POS voltado ao cliente — compartilhando um único backend, um modelo
       de autenticação e um sistema de billing. O monorepo Nx com @recurra/shared
-      mantém tipos, validação e lógica de negócio em um único lugar para React
-      Router, Expo e o cliente Kotlin do POS.
+      mantém tipos, validação e lógica de negócio em exatamente um lugar, entre
+      React Router, Expo e o cliente Kotlin do POS.
 _source:
-  hash: ca7427bc6c954079
+  hash: 14d7947461c7af7e
   locale: en
-  translatedAt: '2026-05-25T19:26:27.804Z'
+  translatedAt: '2026-05-29T00:44:27.892Z'
 ---
 ## O que faz
 
@@ -67,20 +68,20 @@ Recurra é uma plataforma de cobrança recorrente para negócios locais de servi
 
 ## Por que construí
 
-Não é um produto — é um projeto pessoal. Eu queria construir algo que abrangesse web + mobile + POS + infraestrutura AWS em um único monorepo, em parte para aprender Nx e CDK de verdade, em parte porque billing por assinatura para negócios locais de serviços é um domínio que acho genuinamente interessante (e consistentemente mal atendido).
+Não é um produto — é um projeto pessoal. Eu queria construir algo que abrangesse web + mobile + POS + infraestrutura AWS em um único monorepo, em parte para aprender Nx e CDK de verdade, em parte porque cobrança por assinatura para negócios locais de serviços é um domínio que acho genuinamente interessante (e consistentemente mal atendido).
 
 ## Como funciona
 
 Monorepo Nx com NPM workspaces. Seis apps:
 
-- `backend` — NestJS com Prisma contra PostgreSQL no RDS, deployado no App Runner.
+- `backend` — NestJS com Prisma conectado ao PostgreSQL no RDS, deployado no App Runner.
 - `web` — React Router 7 SPA em build/client/, hospedado no S3 + CloudFront.
 - `mobile` — Expo.
 - `clover-pos` — Kotlin Android para o Clover Mini.
 - `infra` — AWS CDK com seis stacks: Network, Dns, Database, Backend, Web, Email.
 - `backend-e2e` — testes e2e com Jest.
 
-Tipos compartilhados e schemas Zod ficam em `@recurra/shared` e são importados por todos os apps. As stacks do CDK usam o SSM Parameter Store para segredos e um script de entrypoint que monta a URL do banco a partir do JSON do Secrets Manager.
+Tipos compartilhados e schemas Zod ficam em `@recurra/shared` e são importados por todos os apps. As stacks do CDK usam o SSM Parameter Store para segredos e um script de entrada que monta a URL do banco a partir do JSON do Secrets Manager.
 
 ## Status
 
