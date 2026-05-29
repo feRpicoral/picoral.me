@@ -20,10 +20,11 @@ tech:
   - Expo
   - TypeScript
 type: founder
+link: 'https://www.linkedin.com/company/89329053'
 order: 6
 _source:
-  hash: bf78fd75cc671ea6
+  hash: 192d354254648359
   locale: en
-  translatedAt: '2026-05-25T19:46:47.828Z'
+  translatedAt: '2026-05-29T00:44:43.691Z'
 ---
 

@@ -11,8 +11,8 @@ summary: >-
   desde coleta de dados em campo até experimentos com óculos de AR.
 highlights:
   - >-
-    Desenvolvi ferramentas de software internas para simplificar a configuração
-    e execução de experimentos de pesquisa.
+    Desenvolvi ferramentas de software internas para facilitar a configuração e
+    execução de experimentos de pesquisa.
   - >-
     Criei um aplicativo mobile com detecção de objetos por IA integrada para
     coleta de dados em campo.
@@ -25,11 +25,11 @@ tech:
   - React Native
   - Python
 type: research
-link: 'https://www.cs.colorado.edu/~tomyeh/'
+link: 'https://www.colorado.edu/center/mortenson/tom-yeh-phd'
 order: 5
 _source:
-  hash: 4bdf0df7b8a1242e
+  hash: d101c574a88e8154
   locale: en
-  translatedAt: '2026-05-25T19:46:53.447Z'
+  translatedAt: '2026-05-29T00:44:48.258Z'
 ---
 
