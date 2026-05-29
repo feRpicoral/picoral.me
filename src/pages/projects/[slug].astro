@@ -8,9 +8,11 @@ import Container from '~/components/ui/Container.astro';
 import Section from '~/components/ui/Section.astro';
 import { isEnabled } from '~/config/sections.ts';
 import { SITE } from '~/config/site.ts';
+import projectDates from '~/data/project-dates.json';
 import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts';
 import Page from '~/layouts/Page.astro';
 import { getCanonicalSlug, getLocalizedEntry } from '~/lib/content.ts';
+import { formatDateTimeTz } from '~/lib/format.ts';
 import { breadcrumbSchema, faqPageSchema, softwareApplicationSchema } from '~/lib/schema.ts';
 
 export async function getStaticPaths() {
@@ -40,6 +42,15 @@ if (!entry) return Astro.redirect('/404', 404);
 const { Content } = await render(entry);
 const { data } = entry;
 
+const dates = projectDates[slug as keyof typeof projectDates] ?? null;
+const publishedLabel = dates
+  ? `${t('projects.published')} ${formatDateTimeTz(dates.published, locale)}`
+  : null;
+const updatedLabel =
+  dates && dates.updated !== dates.published
+    ? `${t('projects.updated')} ${formatDateTimeTz(dates.updated, locale)}`
+    : null;
+
 const jsonLd: Record<string, unknown>[] = [
   breadcrumbSchema([
     { name: 'Home', url: SITE.url },
@@ -50,6 +61,8 @@ const jsonLd: Record<string, unknown>[] = [
     name: data.title,
     description: data.seo.description,
     url: data.links?.live,
+    datePublished: dates?.published,
+    dateModified: dates?.updated,
   }),
 ];
 if (data.faq && data.faq.length > 0) {
@@ -91,9 +104,14 @@ if (data.faq && data.faq.length > 0) {
           <FAQ items={data.faq} />
         </div>
       )}
-      <p class="back">
-        <a href={localizePath('/projects', locale)}>{t('projects.backToList')}</a>
-      </p>
+      <footer class="case-foot">
+        {publishedLabel && (
+          <p class="dates">{publishedLabel}{updatedLabel && ` · ${updatedLabel}`}</p>
+        )}
+        <p class="back">
+          <a href={localizePath('/projects', locale)}>{t('projects.backToList')}</a>
+        </p>
+      </footer>
     </Container>
   </Section>
 </Page>
@@ -104,8 +122,17 @@ if (data.faq && data.faq.length > 0) {
     padding-top: 3rem;
     border-top: 1px solid var(--color-border);
   }
-  .back {
+  .case-foot {
     margin-top: 3.5rem;
+  }
+  .dates {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-fg-subtle);
+  }
+  .back {
+    margin: 0;
     font-family: var(--font-mono);
     font-size: 0.875rem;
   }

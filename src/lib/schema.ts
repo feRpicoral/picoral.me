@@ -102,6 +102,8 @@ export function softwareApplicationSchema(input: {
   url?: string;
   category?: string;
   operatingSystem?: string;
+  datePublished?: string;
+  dateModified?: string;
 }): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -111,6 +113,8 @@ export function softwareApplicationSchema(input: {
     applicationCategory: input.category ?? 'BusinessApplication',
     operatingSystem: input.operatingSystem ?? 'Web',
     url: input.url,
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
     author: { '@type': 'Person', name: SITE.name, url: SITE.url },
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   };
