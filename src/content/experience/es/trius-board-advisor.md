@@ -11,10 +11,11 @@ summary: >-
 highlights:
   - Me quedé como asesor del equipo fundador después de dejar el rol de CFO.
 type: founder
+link: 'https://www.linkedin.com/company/101222529'
 order: 2
 _source:
-  hash: 3fbd9dec6115cc20
+  hash: be43281ff202d17f
   locale: en
-  translatedAt: '2026-05-25T19:47:51.926Z'
+  translatedAt: '2026-05-29T00:45:17.723Z'
 ---
 

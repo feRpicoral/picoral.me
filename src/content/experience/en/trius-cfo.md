@@ -10,5 +10,6 @@ highlights:
   - Cofounded the company.
   - Owned the finance function as CFO for 14 months.
 type: founder
+link: https://www.linkedin.com/company/101222529
 order: 3
 ---

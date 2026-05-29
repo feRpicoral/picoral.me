@@ -9,5 +9,6 @@ summary: Transitioned from CFO to Board Advisor at Trius to focus on the Google 
 highlights:
   - Stayed on as an advisor to the founding team after stepping back from the CFO role.
 type: founder
+link: https://www.linkedin.com/company/101222529
 order: 2
 ---

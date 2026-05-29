@@ -4,15 +4,14 @@ title: Forge
 tagline: >-
   Projeto pessoal — um artefato de serving + benchmarking para Llama 3.1 8B
   self-hosted (AWQ-INT4 no vLLM). Responde "devo hospedar um LLM open-source em
-  vez de pagar uma API comercial" com uma metodologia reproduzível, não com
-  achismo.
+  vez de pagar uma API comercial" com uma metodologia reproduzível.
 summary: >-
-  Um artefato de engenharia focado que compara Llama 3.1 8B self-hosted com
-  quantização AWQ-INT4 no vLLM contra APIs comerciais em throughput, TTFT/TPOT
-  sob concorrência, qualidade da quantização (MMLU/GSM8K/HellaSwag) e $/1M
-  tokens. Config de serving, harness de benchmark, wrapper de eval, modelo de
-  custo e pipeline de gráficos estão montados e ensaiados localmente no M1; os
-  números reais chegam após a rodada do Phase 7 no RunPod RTX 4090.
+  Um artefato de engenharia focado que compara o Llama 3.1 8B quantizado com
+  AWQ-INT4 no vLLM contra APIs comerciais em throughput, TTFT/TPOT sob
+  concorrência, qualidade da quantização (MMLU/GSM8K/HellaSwag) e $/1M tokens.
+  Config de serving, harness de benchmark, wrapper de eval, modelo de custo e
+  pipeline de gráficos estão montados e ensaiados localmente no M1; os números
+  reais chegam após o run no RunPod RTX A5000.
 status: in-development
 role: 'Solo — Python, vLLM, benchmarking, infra'
 period:
@@ -25,7 +24,7 @@ stack:
   - lm-evaluation-harness
   - Prometheus
   - Grafana
-  - RunPod RTX 4090
+  - RunPod RTX A5000
   - Ruff
   - mypy (strict)
   - pytest
@@ -39,7 +38,7 @@ seo:
   description: >-
     Projeto pessoal. vLLM + AWQ-INT4 com Llama 3.1 8B self-hosted — benchmarks
     de throughput, latência, retenção de qualidade e $/1M tokens contra APIs
-    comerciais. Metodologia reproduzível.
+    comerciais, com metodologia reproduzível.
   keywords:
     - LLM inference
     - vLLM
@@ -68,7 +67,7 @@ faq:
       OpenAI — a stack que um produto real usaria, não um benchmark sintético.
   - q: Como a metodologia se mantém defensável?
     a: >-
-      Hardware (RunPod RTX 4090 24 GB Community tier), SHAs do modelo (baseline
+      Hardware (RunPod RTX A5000 24 GB a $0,27/hr), SHAs do modelo (baseline
       BF16 meta-llama/Llama-3.1-8B-Instruct e variante AWQ-INT4 da
       hugging-quants), versão do vLLM, workload (trace ShareGPT com concorrência
       1/4/16/32/64, 256 prompts por nível) e datas das fontes de preço estão
@@ -80,12 +79,12 @@ faq:
     a: >-
       O mesmo shell script que roda o benchmark real no RunPod roda em modo
       --rehearsal no M1 contra o modelo pequeno. Esse gate precisa passar antes
-      de qualquer GPU paga ser alugada. Ele pega typo de config, bug de parser
-      ou regressão no pipeline de gráficos de graça em vez de por $0,34/hr.
+      de qualquer GPU paga ser alugada. Ele pega erro de config, bug de parser
+      ou regressão no pipeline de gráficos de graça, em vez de custar $0,27/hr.
 _source:
-  hash: 53bce7d523401400
+  hash: d9eb727a055cd967
   locale: en
-  translatedAt: '2026-05-26T21:38:41.555Z'
+  translatedAt: '2026-05-29T02:19:23.386Z'
 ---
 ## O que é
 
@@ -95,23 +94,23 @@ Um artefato de engenharia focado, não um SaaS. As peças entregues:
 - **Quantização** — receita AWQ-INT4 documentada em `forge/quantization/awq.py` contra `meta-llama/Llama-3.1-8B-Instruct`, servida com os kernels Marlin do vLLM.
 - **Harness de benchmark** — encapsula o `vllm bench serve` com um trace ShareGPT, varre concorrência 1/4/16/32/64 (256 prompts por nível) e grava JSON estruturado em `results/bench/` com a GPU, versão do vLLM e SHA do modelo nos metadados de cada registro.
 - **Eval de qualidade** — `lm-evaluation-harness` com o tipo de modelo `local-completions` apontado para o endpoint vLLM em execução. Tarefas: MMLU (5-shot, `acc`), GSM8K (5-shot, `exact_match`), HellaSwag (5-shot, `acc_norm`). A matemática de retenção fica em `forge/eval/`.
-- **Modelo de custo** — `$/1M tokens = gpu_hourly_usd * 1e6 / (3600 * sustained_throughput * utilization)`. O número principal usa o throughput de pico com `utilization=1.0`; o JSON de comparação de custos ao lado do gráfico reporta a sensibilidade a 80% de utilização.
+- **Modelo de custo** — `$/1M tokens = gpu_hourly_usd * 1e6 / (3600 * sustained_throughput * utilization)`. O número principal usa o throughput de pico com `utilization=1.0`; o JSON de comparação de custo ao lado do gráfico reporta a sensibilidade a 80% de utilização.
 - **Pipeline de gráficos** — cinco gráficos canônicos (throughput vs concorrência, TTFT vs concorrência, TPOT vs concorrência, custo por 1M tokens, retenção de qualidade da quantização), regenerados a partir de `results/` com um único `make chart`.
 - **CI** — GitHub Actions roda Ruff + mypy (strict) + pytest em todo PR. Sem jobs de GPU no CI — a reprodução do benchmark é um passo manual, orientado pela metodologia, no RunPod.
 
 ## Por que construí
 
-Para provar que consigo servir e otimizar um LLM open-source de ponta a ponta — não só chamar uma API hospedada. A pergunta interessante não é "o vLLM consegue rodar Llama 3.1 8B" (sim, a documentação cobre isso) — é "como fica o número defensável de $/1M tokens quando você leva em conta utilização, latência p99 e regressão de qualidade da quantização?" É isso que o Forge mede, e ele rastreia cada número até um arquivo JSON que você pode inspecionar.
+Para provar que consigo servir e otimizar um LLM open-source de ponta a ponta — não só chamar uma API hospedada. A pergunta interessante não é "o vLLM consegue rodar o Llama 3.1 8B" (sim, a documentação cobre isso) — é "como fica o número defensável de $/1M tokens quando você leva em conta utilização, latência p99 e regressão de qualidade da quantização?" É isso que o Forge mede, e ele rastreia cada número até um arquivo JSON que você pode inspecionar.
 
 ## Como funciona
 
 ### Reprodutibilidade como restrição de primeira classe
 
-Metodologia, hardware, SHAs do modelo, versão exata do vLLM, receita AWQ e datas das fontes de preço estão commitados em `docs/methodology.md` e nos metadados de cada execução. Qualquer pessoa com o doc de metodologia e uma conta no RunPod consegue reproduzir os números — esse é o ponto do entregável. As versões são fixadas em `uv.lock`, com as dependências acopladas à GPU (vLLM, lm-eval, transformers) fixadas separadamente em `constraints/serve.txt` e `constraints/eval.txt` para que a imagem de CI possa instalá-las sem GPU.
+Metodologia, hardware, SHAs do modelo, versão exata do vLLM, receita AWQ e datas das fontes de preço estão commitados em `docs/methodology.md` e nos metadados de cada run. Qualquer pessoa com o doc de metodologia e uma conta no RunPod consegue reproduzir os números — esse é o ponto do entregável. As versões são fixadas em `uv.lock`, com as dependências acopladas à GPU (vLLM, lm-eval, transformers) fixadas separadamente em `constraints/serve.txt` e `constraints/eval.txt` para que a imagem de CI possa instalá-las sem GPU.
 
 ### Gate de ensaio no M1
 
-O mesmo shell script que roda o benchmark pago no RunPod roda em modo `--rehearsal` num MacBook M1 base contra `Qwen/Qwen2.5-0.5B-Instruct`. O ensaio precisa passar antes de qualquer GPU paga ser alugada. Typos de config, bugs de parser e regressões no pipeline de gráficos custam $0 no M1 em vez de $0,34/hr num 4090.
+O mesmo shell script que roda o benchmark pago no RunPod roda em modo `--rehearsal` num MacBook M1 base contra `Qwen/Qwen2.5-0.5B-Instruct`. O ensaio precisa passar antes de qualquer GPU paga ser alugada. Erros de config, bugs de parser e regressões no pipeline de gráficos custam $0 no M1 em vez de $0,27/hr num A5000.
 
 ### Cobertura de testes estratégica
 
@@ -119,4 +118,4 @@ Os testes cobrem os utilitários estruturais — modelo de custo, parsers de res
 
 ## Status
 
-As fases 1–6 (scaffolding, config de serving, quantização, harness de benchmark, eval de qualidade, modelo de custo + gráficos) estão concluídas e ensaiadas de ponta a ponta no M1. A fase 7 — a rodada paga no RunPod RTX 4090 que substitui cada número ilustrativo por um medido — está na fila. A fase 9 é o impact lead e o writeup final do case study.
+A config de serving, receita de quantização, harness de benchmark, eval de qualidade, modelo de custo e pipeline de gráficos estão prontos e ensaiados de ponta a ponta no M1 contra um modelo pequeno. O run pago no RunPod RTX A5000, que substitui cada número ilustrativo por um medido, está na fila; o writeup final do case study vem assim que esses números chegarem.

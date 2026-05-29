@@ -25,11 +25,11 @@ tech:
   - React Native
   - Python
 type: research
-link: 'https://www.cs.colorado.edu/~tomyeh/'
+link: 'https://www.colorado.edu/center/mortenson/tom-yeh-phd'
 order: 5
 _source:
-  hash: e36d80a8ca9ef96f
+  hash: 1dcebeca84130965
   locale: en
-  translatedAt: '2026-05-25T19:46:53.334Z'
+  translatedAt: '2026-05-29T00:44:52.495Z'
 ---
 

@@ -20,6 +20,7 @@ stack:
   - Tailwind v4
   - shadcn/ui
 links:
+  live: https://sonar-cyan-seven.vercel.app
   repo: https://github.com/feRpicoral/sonar
 featured: true
 order: 1
@@ -61,7 +62,7 @@ Not a product — a personal project. I wanted one codebase that exercised the m
 
 ### Multi-agent orchestration
 
-- Four sequential nodes (research → transcription → analysis → strategy → writer)
+- Four sequential nodes (research, transcription, analysis, strategy, writer)
 - Every node returns structured output via Anthropic tool use + a Zod schema. No free-text outputs.
 - Each step writes an `AgentRunStep` row. The run pauses at `AWAITING_APPROVAL` after the writer step.
 - Anthropic prompt caching is enabled on system messages — ~70% input-token reduction on repeat runs.
@@ -70,7 +71,7 @@ Not a product — a personal project. I wanted one codebase that exercised the m
 
 ### Audio processing
 
-- Drag-drop upload goes browser → Supabase Storage via signed URL. Server is not in the upload path.
+- Drag-drop upload goes browser to Supabase Storage via signed URL. Server is not in the upload path.
 - Groq Whisper Large v3 transcribes with segment-level timestamps.
 - MIME type and 100 MB cap enforced both on the server action and bucket policy.
 - The writer receives transcript segments tagged with bracketed indices; citations reference those indices.

@@ -6,7 +6,7 @@
   "description": "Fernando Picoral's personal website",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/translate-content.mjs --check && node scripts/build-llms-txt.mjs && astro build",
+    "build": "node scripts/translate-content.mjs --check && node scripts/build-llms-txt.mjs && node scripts/build-git-dates.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
@@ -14,7 +14,8 @@
     "lint:fix": "biome check --write .",
     "test": "node --test scripts/translate/*.test.mjs",
     "translate": "node scripts/translate-content.mjs",
-    "translate:check": "node scripts/translate-content.mjs --check"
+    "translate:check": "node scripts/translate-content.mjs --check",
+    "dates": "node scripts/build-git-dates.mjs"
   },
   "engines": {
     "node": ">=22.0.0"

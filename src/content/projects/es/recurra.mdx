@@ -4,13 +4,14 @@ title: Recurra
 tagline: >-
   Proyecto personal — estructura de facturación recurrente para negocios de
   servicios locales. Construido como excusa para aprender Nx, AWS CDK y la capa
-  de billing de punta a punta.
+  de facturación de punta a punta.
 summary: >-
   Un experimento de facturación por suscripción para negocios de servicios con
   clientes frecuentes — citas recurrentes, cobros automatizados, autogestión del
-  cliente. Backend en NestJS, web en React Router 7, mobile en Expo, infra en
-  AWS CDK y un cliente Android en Kotlin para integración con Clover POS.
-status: in-development
+  cliente. Backend en NestJS, web en React Router 7, mobile en Expo,
+  infraestructura en AWS CDK y un cliente Android en Kotlin para integración con
+  Clover POS.
+status: archived
 role: 'Solo — backend, web, mobile, infra'
 period:
   start: 2025-02
@@ -26,7 +27,8 @@ stack:
   - Nx monorepo
 links:
   live: 'https://recurra.app'
-featured: true
+  repo: 'https://github.com/feRpicoral/recurra'
+featured: false
 order: 4
 hasCaseStudy: true
 seo:
@@ -44,26 +46,26 @@ faq:
   - q: ¿Qué es Recurra?
     a: >-
       Recurra es una plataforma de facturación recurrente para negocios de
-      servicios locales — el tagline es 'repeat business, on repeat.' Maneja
+      servicios locales — el tagline es 'repeat business, on repeat.' Gestiona
       citas recurrentes, cobros automatizados vía Stripe, suscripciones de
-      autogestión para el cliente y una integración con Clover POS para cobros
+      autogestión para clientes y una integración con Clover POS para cobros
       presenciales.
   - q: ¿Por qué un monorepo multi-app para Recurra?
     a: >-
-      Un negocio necesita tres superficies — admin web del dueño, mobile del
+      Un negocio necesita tres superficies — panel web del dueño, mobile del
       dueño, POS orientado al cliente — compartiendo un solo backend, un modelo
-      de autenticación y un sistema de billing. El monorepo Nx con
+      de autenticación y un sistema de facturación. El monorepo Nx con
       @recurra/shared mantiene los tipos, la validación y la lógica de negocio
       en exactamente un lugar para React Router, Expo y el cliente Kotlin del
       POS.
 _source:
-  hash: 920af6c90792cf22
+  hash: eb5449c64786e499
   locale: en
-  translatedAt: '2026-05-25T19:26:43.688Z'
+  translatedAt: '2026-05-29T01:28:09.800Z'
 ---
 ## Qué hace
 
-Recurra es una plataforma de facturación recurrente para negocios de servicios locales — repeat business, on repeat. El dueño gestiona servicios, horarios y clientes desde un dashboard admin en React o una app mobile en Expo. El cliente gestiona sus suscripciones desde un portal alojado. Stripe maneja los cobros. Una integración con Clover POS escrita en Kotlin permite el cobro presencial consultando la suscripción activa del cliente.
+Recurra es una plataforma de facturación recurrente para negocios de servicios locales — repeat business, on repeat. El dueño gestiona servicios, horarios y clientes desde un panel admin en React o una app mobile en Expo. El cliente gestiona sus suscripciones desde un portal alojado. Stripe maneja los cobros. Una integración con Clover POS escrita en Kotlin permite cobros presenciales que consultan la suscripción activa del cliente.
 
 ## Por qué lo construí
 
@@ -84,4 +86,4 @@ Los tipos compartidos y los schemas Zod viven en `@recurra/shared` y son importa
 
 ## Estado
 
-En desarrollo activo. El backend, el admin web y la infra están en su lugar; la app Clover POS y la app mobile del dueño son los próximos pasos.
+En desarrollo activo. El backend, el web admin y la infra están en su lugar; la app Clover POS y la app mobile del dueño son los próximos pasos.

@@ -10,10 +10,11 @@ highlights:
   - Cofundou a empresa.
   - Responsável pela área financeira como CFO por 14 meses.
 type: founder
+link: 'https://www.linkedin.com/company/101222529'
 order: 3
 _source:
-  hash: 02d713010c920996
+  hash: 10eaa20b3d7cbd47
   locale: en
-  translatedAt: '2026-05-25T19:47:50.473Z'
+  translatedAt: '2026-05-29T00:45:17.655Z'
 ---
 

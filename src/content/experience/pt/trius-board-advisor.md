@@ -11,10 +11,11 @@ summary: >-
 highlights:
   - Continuei como conselheiro do time fundador após deixar o cargo de CFO.
 type: founder
+link: 'https://www.linkedin.com/company/101222529'
 order: 2
 _source:
-  hash: 579fd0bac41a79a2
+  hash: 09476a7c8076cfcc
   locale: en
-  translatedAt: '2026-05-25T19:47:51.269Z'
+  translatedAt: '2026-05-29T00:44:51.493Z'
 ---
 

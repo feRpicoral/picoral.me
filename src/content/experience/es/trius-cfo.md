@@ -12,10 +12,11 @@ highlights:
   - Cofundé la empresa.
   - Lideré la función financiera como CFO durante 14 meses.
 type: founder
+link: 'https://www.linkedin.com/company/101222529'
 order: 3
 _source:
-  hash: 529fe89b81d29726
+  hash: c904decba54e7b9e
   locale: en
-  translatedAt: '2026-05-25T19:47:53.580Z'
+  translatedAt: '2026-05-29T00:45:17.387Z'
 ---
 
