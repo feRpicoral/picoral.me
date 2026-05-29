@@ -11,7 +11,7 @@ summary: >-
   cliente. Backend en NestJS, web en React Router 7, mobile en Expo,
   infraestructura en AWS CDK y un cliente Android en Kotlin para integración con
   Clover POS.
-status: in-development
+status: archived
 role: 'Solo — backend, web, mobile, infra'
 period:
   start: 2025-02
@@ -28,7 +28,7 @@ stack:
 links:
   live: 'https://recurra.app'
   repo: 'https://github.com/feRpicoral/recurra'
-featured: true
+featured: false
 order: 4
 hasCaseStudy: true
 seo:
@@ -59,9 +59,9 @@ faq:
       en exactamente un lugar para React Router, Expo y el cliente Kotlin del
       POS.
 _source:
-  hash: cc6a4fced0c46dc4
+  hash: eb5449c64786e499
   locale: en
-  translatedAt: '2026-05-29T00:44:28.354Z'
+  translatedAt: '2026-05-29T01:28:09.800Z'
 ---
 ## Qué hace
 
@@ -80,7 +80,7 @@ Monorepo Nx con NPM workspaces. Seis apps:
 - `mobile` — Expo.
 - `clover-pos` — Kotlin Android para Clover Mini.
 - `infra` — AWS CDK con seis stacks: Network, Dns, Database, Backend, Web, Email.
-- `backend-e2e` — tests e2e con Jest.
+- `backend-e2e` — Tests e2e con Jest.
 
 Los tipos compartidos y los schemas Zod viven en `@recurra/shared` y son importados por cada app. Los stacks de CDK usan SSM Parameter Store para los secretos y un script de entrada que construye la URL de la base de datos a partir del JSON de Secrets Manager.
 

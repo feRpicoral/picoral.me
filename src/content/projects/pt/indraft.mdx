@@ -3,13 +3,13 @@ slug: indraft
 title: InDraft
 tagline: >-
   Projeto pessoal — um motor de rascunhos para LinkedIn orientado por config.
-  Rascunha com a sua voz num cron, você revisa no celular, nada publica sem uma
-  asserção de passkey.
+  Rascunha com a sua voz via cron, você revisa no celular, nada é publicado sem
+  uma asserção de passkey.
 summary: >-
   Motor open-source que monitora feeds RSS e sua atividade no GitHub, rascunha
   posts para o LinkedIn com a sua voz em um agendamento, deixa você editá-los de
   forma conversacional no celular, e publica só após uma asserção WebAuthn
-  verificada. Faça um fork, aponte o `config.yml` para o seu perfil, e faça o
+  verificada. Faça um fork, aponte o `config.yml` para o seu perfil e faça o
   deploy no Vercel.
 status: live
 role: 'Solo — engenharia, deploy'
@@ -30,14 +30,14 @@ stack:
 links:
   live: 'https://indraft.dev'
   repo: 'https://github.com/feRpicoral/indraft'
-featured: true
+featured: false
 order: 5
 hasCaseStudy: true
 seo:
   description: >-
-    Um projeto pessoal. Motor de rascunhos para LinkedIn orientado por config em
-    Next.js + Vercel KV + OpenRouter, com publicação protegida por passkey e um
-    linter anti-AI-tell.
+    Um projeto pessoal. Motor de rascunhos para LinkedIn orientado por config,
+    em Next.js + Vercel KV + OpenRouter, com publicação protegida por passkey e
+    um linter anti-AI-tell.
   keywords:
     - LinkedIn automation
     - LinkedIn post generator
@@ -52,7 +52,7 @@ faq:
     a: >-
       InDraft é um motor open-source de rascunhos para LinkedIn. Um job agendado
       puxa itens novos dos seus feeds RSS e da sua atividade no GitHub, escolhe
-      um, e rascunha um post com a sua voz. Você revisa no celular, edita de
+      um e rascunha um post com a sua voz. Você revisa no celular, edita de
       forma conversacional, e o post só vai ao ar após uma asserção de passkey
       WebAuthn vinculada àquele rascunho exato.
   - q: Por que usar passkey para publicar?
@@ -68,19 +68,19 @@ faq:
       Um bloco de texto livre no config.yml é o principal grounding do modelo. O
       modelo de rascunho é Claude Opus 4.7 via OpenRouter BYOK porque a barra de
       qualidade anti-AI-tell cai em modelos mais fracos. Um linter separado
-      rejeita abuso de em-dash, "let's dive in", e outros tells antes de o
+      rejeita abuso de travessão, "let's dive in" e outros tells antes de o
       rascunho chegar à UI de revisão.
   - q: Por que omitir o link por padrão?
     a: >-
       Pesquisas sobre o algoritmo do LinkedIn em 2026 mostram que posts com link
-      no corpo perdem até 60% de alcance, e o antigo truque de "link no primeiro
-      comentário" perde até 80%. O padrão do InDraft é link_placement = "none" —
-      a URL de origem aparece dentro da UI de revisão. Você pode sobrescrever
-      por post.
+      no corpo têm até 60% de queda no alcance, e o antigo truque de "link no
+      primeiro comentário" chega a 80%. O padrão do InDraft é link_placement =
+      "none" — a URL de origem aparece dentro da UI de revisão. Você pode
+      sobrescrever por post.
 _source:
-  hash: 9a16f7ecc4660129
+  hash: 5e2e6d645eef93c2
   locale: en
-  translatedAt: '2026-05-29T00:44:43.561Z'
+  translatedAt: '2026-05-29T01:27:53.589Z'
 ---
 ## O que ele faz
 
@@ -90,7 +90,7 @@ Você abre a página de revisão no celular. Pode editar o rascunho via chat at�
 
 ## Por que eu construí isso
 
-A qualidade de um post no LinkedIn depende de voz e timing. A maioria das ferramentas de automação mata os dois: geram texto genérico de IA e postam num horário que não tem nada a ver com o que está acontecendo naquele dia. O InDraft tenta preservar os dois — sua voz é o principal grounding do modelo, o agendamento é baseado em fontes frescas, e um humano está sempre no loop antes de qualquer publicação.
+A qualidade de um post no LinkedIn depende de voz e timing. A maioria das ferramentas de automação mata os dois: geram texto genérico de IA e postam em um horário que não tem nada a ver com o que está acontecendo naquele dia. O InDraft tenta preservar os dois — sua voz é o principal grounding do modelo, o agendamento é baseado em fontes frescas, e um humano está sempre no loop antes de qualquer publicação.
 
 É também um motor genérico orientado por config, não um SaaS. Nada pessoal — voz, fontes, credenciais — fica no repositório. Faça um fork, aponte sua config para o seu conteúdo, faça o deploy.
 
@@ -118,21 +118,21 @@ WebAuthn passkey assertion
 LinkedIn Posts API
 ```
 
-A máquina de estados em `src/lib/state/drafts.ts` é a única escritora do status do rascunho e a fronteira de segurança principal. O único caminho para a LinkedIn Posts API é através de uma asserção WebAuthn verificada — nenhum caminho agendado ou automático publica. Um teste e2e em `tests/e2e/publish-guard.test.ts` prova isso no nível da máquina de estados: um rascunho que não está em `PENDING_REVIEW` nunca pode transitar para `PUBLISHED`, e uma asserção capturada não pode ser reaproveitada contra um rascunho editado porque o challenge está vinculado à versão do rascunho.
+A máquina de estados em `src/lib/state/drafts.ts` é a única escritora do status do rascunho e a fronteira de segurança principal. O único caminho para a LinkedIn Posts API é por meio de uma asserção WebAuthn verificada — nenhum caminho agendado ou automático publica. Um teste e2e em `tests/e2e/publish-guard.test.ts` prova isso no nível da máquina de estados: um rascunho que não está em `PENDING_REVIEW` nunca pode transitar para `PUBLISHED`, e uma asserção capturada não pode ser reaproveitada contra um rascunho editado porque o challenge está vinculado à versão do rascunho.
 
 ### Padrões principais
 
 - **`link_placement: "none"`** — pesquisas atuais sobre o algoritmo do LinkedIn mostram que links externos suprimem o alcance. O InDraft exibe a URL de origem dentro da UI de revisão. Sobrescreva por post se quiser.
 - **Modelo frontier para rascunho, modelo barato para ranking** — Claude Opus 4.7 rascunha porque a barra anti-AI-tell cai em modelos mais fracos; Claude Haiku 4.5 cuida do ranking de fontes e tarefas mecânicas. Ambos roteados via OpenRouter BYOK.
-- **Token do LinkedIn de 60 dias, sem refresh** — apps LinkedIn self-serve emitem tokens de 60 dias sem caminho de refresh. O InDraft armazena `issued_at` no KV, envia um e-mail de reautenticação ~7 dias antes do vencimento, e exibe um banner "reconectar LinkedIn" na UI de revisão.
+- **Token do LinkedIn de 60 dias, sem refresh** — apps LinkedIn self-serve emitem tokens de 60 dias sem caminho de refresh. O InDraft armazena `issued_at` no KV, envia um e-mail de reautenticação ~7 dias antes do vencimento e exibe um banner de "reconectar LinkedIn" na UI de revisão.
 
 ### Modelo de segurança
 
-- O único caminho de publicação é um clique, depois uma asserção WebAuthn, depois uma transição no servidor com um `publishProof` derivado. O challenge da asserção é `sha256(draft.id || draft.version || draft.body)`, então uma asserção capturada não pode ser reaproveitada.
-- Magic links são assinados com HMAC, de uso único (nonce armazenado no KV com TTL), e expiram após 24 horas por padrão.
-- O endpoint público `/access` sempre envia e-mail apenas para o `NOTIFY_TO_ADDRESS` configurado — nunca para um destino fornecido por um atacante.
-- Sessões são cookies HttpOnly, Secure, SameSite=Lax vinculados a um id de rascunho específico.
-- O `.gitignore` exclui `config.yml`, `.env*` e `.vercel/`. O script de setup flui segredos apenas via `prompt -> vercel env add` — nunca para o disco.
+- O único caminho de publicação é: um clique, depois uma asserção WebAuthn, depois uma transição no servidor com um `publishProof` derivado. O challenge da asserção é `sha256(draft.id || draft.version || draft.body)`, então uma asserção capturada não pode ser reaproveitada.
+- Magic links são assinados com HMAC, de uso único (nonce armazenado no KV com TTL) e expiram após 24 horas por padrão.
+- O endpoint público `/access` sempre envia e-mail apenas para o `NOTIFY_TO_ADDRESS` configurado — nunca para um alvo fornecido por um atacante.
+- As sessões são cookies HttpOnly, Secure, SameSite=Lax vinculados a um id de rascunho específico.
+- O `.gitignore` exclui `config.yml`, `.env*` e `.vercel/`. O script de setup flui os secrets apenas via `prompt -> vercel env add` — nunca para o disco.
 
 ## Status
 
