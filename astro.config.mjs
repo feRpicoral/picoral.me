@@ -8,7 +8,8 @@ import { defineConfig } from 'astro/config';
 import { sections } from './src/config/sections.ts';
 
 const SITE_URL = process.env.PUBLIC_SITE_URL ?? 'https://picoral.me';
-const enableKeystatic = process.env.NODE_ENV !== 'production';
+const enableKeystatic =
+  process.env.NODE_ENV === 'development' || process.env.ENABLE_KEYSTATIC === 'true';
 
 const isEnabled = (key) => sections[key].enabled;
 

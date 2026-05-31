@@ -176,12 +176,6 @@ export default config({
         ),
         content: fields.mdx({
           label: 'Body',
-          options: {
-            image: {
-              directory: 'src/assets/projects',
-              publicPath: '@assets/projects/',
-            },
-          },
           components: {
             ProjectImage: projectImage,
           },

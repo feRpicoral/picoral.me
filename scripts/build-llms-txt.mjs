@@ -81,8 +81,9 @@ if (enabled('projects')) {
   for (const file of projectFiles.sort()) {
     const fm = await readFrontmatter(file);
     if (isTrue(fm.draft)) continue;
+    const slug = file.replace(/.*\//, '').replace(/\.(md|mdx)$/, '');
     projects.push({
-      slug: fm.slug,
+      slug,
       title: fm.title,
       tagline: fm.tagline,
       hasCaseStudy: isTrue(fm.hasCaseStudy),
