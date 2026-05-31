@@ -148,7 +148,7 @@ async function translateOneFile({ collection, sourceRaw, locale, expectedHash })
   const fmSnippets = handler.extract(parsed.data);
   const tree = parseMdx(parsed.content);
   const sourceFingerprint = structuralFingerprint(tree);
-  const { snippets: bodySnippets, leaves } = extractBodySnippets(tree);
+  const { snippets: bodySnippets, leaves, mdxAttributes } = extractBodySnippets(tree);
   const allSnippets = [...fmSnippets, ...bodySnippets];
 
   let byId = await translateSnippets({ locale, snippets: allSnippets });
@@ -161,7 +161,7 @@ async function translateOneFile({ collection, sourceRaw, locale, expectedHash })
     }
   }
 
-  injectBodyTranslations(leaves, byId);
+  injectBodyTranslations(leaves, byId, mdxAttributes);
   localizeInternalLinks(tree, locale, SOURCE_LOCALE, [SOURCE_LOCALE, ...TARGET_LOCALES]);
 
   const translatedFingerprint = structuralFingerprint(tree);
