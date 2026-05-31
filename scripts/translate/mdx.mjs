@@ -158,7 +158,6 @@ export function extractBodySnippets(tree) {
       id,
       kind: `mdx:${nodeName}.${attr.name}`,
       text: attr.value,
-      ...(attr.name === 'alt' ? { max_chars: 180 } : {}),
     });
     mdxAttributes.push({ id, attr });
   }

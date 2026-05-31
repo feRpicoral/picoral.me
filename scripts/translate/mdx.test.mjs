@@ -119,6 +119,27 @@ test('injectBodyTranslations localizes ProjectImage alt and caption attributes',
   assert.match(out, /src="@assets\/projects\/relay\/dashboard\.webp"/);
 });
 
+test('injectBodyTranslations quotes ProjectImage attributes with punctuation', () => {
+  const src =
+    '<ProjectImage src="@assets/projects/relay/dashboard.webp" alt="English alt" caption="English caption" />\n';
+  const tree = parseMdx(src);
+  const { leaves, mdxAttributes } = extractBodySnippets(tree);
+
+  injectBodyTranslations(
+    leaves,
+    {
+      'mdx:ProjectImage[0].alt': 'Painel "ao vivo" com {latência}',
+      'mdx:ProjectImage[0].caption': 'Legenda com "aspas" e {chaves}.',
+    },
+    mdxAttributes,
+  );
+
+  const out = serializeMdx(tree).trim();
+  assert.match(out, /alt="Painel &#x22;ao vivo&#x22; com \{latência\}"/);
+  assert.match(out, /caption="Legenda com &#x22;aspas&#x22; e \{chaves\}\."/);
+  assert.match(out, /src="@assets\/projects\/relay\/dashboard\.webp"/);
+});
+
 test('extractBodySnippets skips MDX ESM imports', () => {
   const src = "import foo from './foo';\n\nBody paragraph.\n";
   const tree = parseMdx(src);

@@ -29,7 +29,7 @@ const widths = candidateWidths.filter((width) => width <= image.width);
 if (!widths.includes(image.width)) widths.push(image.width);
 const sizes =
   size === 'wide'
-    ? '(min-width: 64rem) 64rem, calc(100vw - 2rem)'
+    ? '(min-width: 64rem) 64rem, calc(100vw - 2.5rem)'
     : '(min-width: 42rem) 42rem, calc(100vw - 2rem)';
 ---
 
@@ -54,9 +54,9 @@ const sizes =
     width: 100%;
   }
   .project-image--wide {
-    width: min(calc(100vw - 2rem), var(--container-content));
-    margin-left: 50%;
-    transform: translateX(-50%);
+    --project-image-width: min(var(--container-content), calc(100vw - 2.5rem));
+    width: var(--project-image-width);
+    margin-left: calc((100% - var(--project-image-width)) / 2);
   }
   .project-image :global(img) {
     display: block;
