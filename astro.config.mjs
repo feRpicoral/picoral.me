@@ -2,11 +2,14 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
+import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import { sections } from './src/config/sections.ts';
 
 const SITE_URL = process.env.PUBLIC_SITE_URL ?? 'https://picoral.me';
+const enableKeystatic =
+  process.env.NODE_ENV === 'development' || process.env.ENABLE_KEYSTATIC === 'true';
 
 const isEnabled = (key) => sections[key].enabled;
 
@@ -36,6 +39,7 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
+    ...(enableKeystatic ? [keystatic()] : []),
     sitemap({
       filter: sitemapFilter,
       i18n: {

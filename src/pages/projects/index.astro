@@ -6,7 +6,7 @@ import Section from '~/components/ui/Section.astro';
 import { SITE } from '~/config/site.ts';
 import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts';
 import Page from '~/layouts/Page.astro';
-import { getLocalizedCollection } from '~/lib/content.ts';
+import { getCanonicalSlug, getLocalizedCollection } from '~/lib/content.ts';
 import { breadcrumbSchema } from '~/lib/schema.ts';
 
 const locale = getLocaleFromUrl(Astro.url);
@@ -40,16 +40,19 @@ const jsonLd = [
         <>
           <p class="group-label">{t('projects.featured')}</p>
           <div class="grid">
-            {featured.map((project) => (
-              <ProjectCard
-                href={localizePath(`/projects/${project.data.slug}`, locale)}
-                title={project.data.title}
-                tagline={project.data.tagline}
-                status={project.data.status}
-                stack={project.data.stack}
-                locale={locale}
-              />
-            ))}
+            {featured.map((project) => {
+              const slug = getCanonicalSlug(project.id);
+              return (
+                <ProjectCard
+                  href={localizePath(`/projects/${slug}`, locale)}
+                  title={project.data.title}
+                  tagline={project.data.tagline}
+                  status={project.data.status}
+                  stack={project.data.stack}
+                  locale={locale}
+                />
+              );
+            })}
           </div>
         </>
       )}
@@ -59,8 +62,9 @@ const jsonLd = [
           <p class="group-label">{t('projects.other')}</p>
           <div class="grid">
             {other.map((project) => {
+              const slug = getCanonicalSlug(project.id);
               const href = project.data.hasCaseStudy
-                ? localizePath(`/projects/${project.data.slug}`, locale)
+                ? localizePath(`/projects/${slug}`, locale)
                 : project.data.links?.repo ?? project.data.links?.live;
               const external = Boolean(href && /^https?:\/\//.test(href));
               return (
