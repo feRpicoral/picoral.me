@@ -37,6 +37,8 @@ pnpm translate         # regenerate stale pt/es translations from en/ sources
 pnpm translate:check   # exit non-zero if any translation is stale (no API call)
 ```
 
+Keystatic is available during local development at `/keystatic`. It is configured for English project files only; after editing project content, run `pnpm translate` before committing.
+
 `pnpm build` runs `translate:check` first (so stale translations fail the build with no network call), then regenerates `public/llms.txt`, then runs `astro build`.
 
 Translation requires `ANTHROPIC_API_KEY` in the environment. CI only ever runs `--check`, so the key is needed locally, not on Vercel.
