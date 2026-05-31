@@ -1,5 +1,20 @@
 import { type Locale, SITE } from '~/config/site.ts';
 
+type SchemaImage = string | { url: string; caption?: string };
+
+function inLanguage(locale: Locale): string {
+  return locale === 'en' ? 'en-US' : locale === 'pt' ? 'pt-BR' : 'es';
+}
+
+function schemaImage(image: SchemaImage): string | Record<string, unknown> {
+  if (typeof image === 'string') return image;
+  return {
+    '@type': 'ImageObject',
+    url: image.url,
+    ...(image.caption ? { caption: image.caption } : {}),
+  };
+}
+
 export function personSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -64,7 +79,7 @@ export function websiteSchema(locale: Locale): Record<string, unknown> {
     url: SITE.url,
     name: SITE.name,
     description: SITE.description,
-    inLanguage: locale === 'en' ? 'en-US' : locale === 'pt' ? 'pt-BR' : 'es',
+    inLanguage: inLanguage(locale),
     author: { '@type': 'Person', name: SITE.name, url: SITE.url },
   };
 }
@@ -100,6 +115,7 @@ export function softwareApplicationSchema(input: {
   name: string;
   description: string;
   url?: string;
+  image?: SchemaImage;
   category?: string;
   operatingSystem?: string;
   datePublished?: string;
@@ -113,10 +129,29 @@ export function softwareApplicationSchema(input: {
     applicationCategory: input.category ?? 'BusinessApplication',
     operatingSystem: input.operatingSystem ?? 'Web',
     url: input.url,
+    ...(input.image ? { image: schemaImage(input.image) } : {}),
     ...(input.datePublished ? { datePublished: input.datePublished } : {}),
     ...(input.dateModified ? { dateModified: input.dateModified } : {}),
     author: { '@type': 'Person', name: SITE.name, url: SITE.url },
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  };
+}
+
+export function webPageSchema(input: {
+  name: string;
+  description: string;
+  url: string;
+  locale: Locale;
+  primaryImage?: SchemaImage;
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: input.name,
+    description: input.description,
+    url: input.url,
+    inLanguage: inLanguage(input.locale),
+    ...(input.primaryImage ? { primaryImageOfPage: schemaImage(input.primaryImage) } : {}),
   };
 }
 
@@ -139,7 +174,7 @@ export function blogPostingSchema(input: {
     dateModified: (input.updatedAt ?? input.publishedAt).toISOString(),
     author: { '@type': 'Person', name: SITE.name, url: SITE.url },
     publisher: { '@type': 'Person', name: SITE.name, url: SITE.url },
-    inLanguage: input.locale === 'en' ? 'en-US' : input.locale === 'pt' ? 'pt-BR' : 'es',
+    inLanguage: inLanguage(input.locale),
     mainEntityOfPage: { '@type': 'WebPage', '@id': input.url },
   };
 }

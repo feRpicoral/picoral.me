@@ -1,8 +1,11 @@
 ---
+import { getImage } from 'astro:assets';
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import Breadcrumbs from '~/components/nav/Breadcrumbs.astro';
 import CaseStudyHeader from '~/components/sections/CaseStudyHeader.astro';
 import FAQ from '~/components/sections/FAQ.astro';
+import ProjectCover from '~/components/sections/ProjectCover.astro';
+import ProjectImage from '~/components/sections/ProjectImage.astro';
 import SectionHeader from '~/components/sections/SectionHeader.astro';
 import Container from '~/components/ui/Container.astro';
 import Section from '~/components/ui/Section.astro';
@@ -13,7 +16,12 @@ import { getLocaleFromUrl, localizePath, useTranslations } from '~/i18n/utils.ts
 import Page from '~/layouts/Page.astro';
 import { getCanonicalSlug, getLocalizedEntry } from '~/lib/content.ts';
 import { formatDateTimeTz } from '~/lib/format.ts';
-import { breadcrumbSchema, faqPageSchema, softwareApplicationSchema } from '~/lib/schema.ts';
+import {
+  breadcrumbSchema,
+  faqPageSchema,
+  softwareApplicationSchema,
+  webPageSchema,
+} from '~/lib/schema.ts';
 
 export async function getStaticPaths() {
   if (!isEnabled('projectCaseStudies')) return [];
@@ -50,17 +58,34 @@ const updatedLabel =
   dates && dates.updated !== dates.published
     ? `${t('projects.updated')} ${formatDateTimeTz(dates.updated, locale)}`
     : null;
+const pageUrl = `${SITE.url}/projects/${slug}`;
+const coverMeta =
+  data.cover && data.coverAlt
+    ? await getImage({ src: data.cover, width: Math.min(data.cover.width, 1200), format: 'webp' })
+    : null;
+const coverImage =
+  coverMeta && data.coverAlt
+    ? { url: new URL(coverMeta.src, SITE.url).toString(), caption: data.coverAlt }
+    : undefined;
 
 const jsonLd: Record<string, unknown>[] = [
   breadcrumbSchema([
     { name: 'Home', url: SITE.url },
     { name: t('projects.title'), url: `${SITE.url}/projects` },
-    { name: data.title, url: `${SITE.url}/projects/${slug}` },
+    { name: data.title, url: pageUrl },
   ]),
+  webPageSchema({
+    name: data.title,
+    description: data.seo.description,
+    url: pageUrl,
+    locale,
+    primaryImage: coverImage,
+  }),
   softwareApplicationSchema({
     name: data.title,
     description: data.seo.description,
     url: data.links?.live,
+    image: coverImage,
     datePublished: dates?.published,
     dateModified: dates?.updated,
   }),
@@ -95,8 +120,9 @@ if (data.faq && data.faq.length > 0) {
         links={data.links}
         locale={locale}
       />
+      {data.cover && data.coverAlt && <ProjectCover src={data.cover} alt={data.coverAlt} />}
       <div class="prose">
-        <Content />
+        <Content components={{ ProjectImage }} />
       </div>
       {data.faq && data.faq.length > 0 && (
         <div class="faq-wrap">

@@ -28,45 +28,55 @@ const projects = defineCollection({
     generateId: pathBasedId,
   }),
   schema: ({ image }) =>
-    z.object({
-      slug: z.string(),
-      title: z.string(),
-      tagline: z.string().max(260),
-      summary: z.string(),
-      status: projectStatus,
-      role: z.string(),
-      period: z.object({
-        start: z.string(),
-        end: z.string().optional(),
+    z
+      .object({
+        slug: z.string(),
+        title: z.string(),
+        tagline: z.string().max(260),
+        summary: z.string(),
+        status: projectStatus,
+        role: z.string(),
+        period: z.object({
+          start: z.string(),
+          end: z.string().optional(),
+        }),
+        stack: z.array(z.string()),
+        links: z
+          .object({
+            live: z.string().url().optional(),
+            repo: z.string().url().optional(),
+            demo: z.string().url().optional(),
+          })
+          .optional(),
+        cover: image().optional(),
+        coverAlt: z.string().min(1).max(180).optional(),
+        featured: z.boolean().default(false),
+        order: z.number().default(0),
+        hasCaseStudy: z.boolean().default(false),
+        draft: z.boolean().default(false),
+        seo: z.object({
+          description: z.string().max(220),
+          keywords: z.array(z.string()).optional(),
+        }),
+        faq: z
+          .array(
+            z.object({
+              q: z.string(),
+              a: z.string(),
+            }),
+          )
+          .optional(),
+        _source: sourceMarker,
+      })
+      .superRefine((data, ctx) => {
+        if (data.cover && !data.coverAlt) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['coverAlt'],
+            message: 'coverAlt is required when cover is set.',
+          });
+        }
       }),
-      stack: z.array(z.string()),
-      links: z
-        .object({
-          live: z.string().url().optional(),
-          repo: z.string().url().optional(),
-          demo: z.string().url().optional(),
-        })
-        .optional(),
-      cover: image().optional(),
-      coverAlt: z.string().optional(),
-      featured: z.boolean().default(false),
-      order: z.number().default(0),
-      hasCaseStudy: z.boolean().default(false),
-      draft: z.boolean().default(false),
-      seo: z.object({
-        description: z.string().max(220),
-        keywords: z.array(z.string()).optional(),
-      }),
-      faq: z
-        .array(
-          z.object({
-            q: z.string(),
-            a: z.string(),
-          }),
-        )
-        .optional(),
-      _source: sourceMarker,
-    }),
 });
 
 const experience = defineCollection({
