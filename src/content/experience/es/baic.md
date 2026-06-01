@@ -7,8 +7,9 @@ period:
   end: 2023-12
 summary: >-
   Pasante de investigación en el laboratorio BAIC del Dr. Tom Yeh, desarrollando
-  el software interno necesario para ejecutar estudios de interacción humano-IA
-  — desde la recolección de datos en campo hasta experimentos con lentes de AR.
+  el software interno necesario para llevar a cabo estudios de interacción
+  humano-IA — desde la recolección de datos en campo hasta experimentos con
+  lentes de AR.
 highlights:
   - >-
     Desarrollé herramientas de software internas para simplificar la
@@ -17,7 +18,7 @@ highlights:
     Creé una aplicación móvil con detección de objetos por IA integrada para la
     recolección de datos en campo.
   - >-
-    Implementé una plataforma web que permite a los investigadores ejecutar
+    Implementé una plataforma web que permite a los investigadores realizar
     estudios usando lentes de AR.
 tech:
   - TypeScript
@@ -28,8 +29,8 @@ type: research
 link: 'https://www.colorado.edu/center/mortenson/tom-yeh-phd'
 order: 5
 _source:
-  hash: 1dcebeca84130965
+  hash: 56671f0114e0697b
   locale: en
-  translatedAt: '2026-05-29T00:44:52.495Z'
+  translatedAt: '2026-06-01T02:15:33.231Z'
 ---
 

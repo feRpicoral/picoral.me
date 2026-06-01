@@ -6,24 +6,24 @@ period:
   start: 2022-10
   end: 2023-02
 summary: >-
-  Seleccionado para liderar un pequeño equipo de desarrollo automatizando el
+  Seleccionado para liderar un equipo de desarrollo pequeño que automatizó el
   proceso de asignación de proyectos capstone para el programa de maestría MENV.
 highlights:
   - >-
-    Estructuré y asigné tareas en el equipo y conduje sprints Agile para
-    mantener la entrega en cronograma.
+    Organicé y asigné tareas en el equipo y conduje sprints Agile para mantener
+    las entregas en tiempo.
   - >-
-    Garanticé la calidad y la entrega a tiempo frente a un plazo fijo del
-    calendario académico.
+    Garanticé la calidad y el cumplimiento de plazos frente a una fecha límite
+    fija del calendario académico.
   - >-
-    Automaticé la asignación de estudiantes a proyectos capstone, logrando un
-    aumento del 70% en la satisfacción con las asignaciones.
+    Automaticé la asignación de estudiantes a proyectos capstone, lo que resultó
+    en un 70% de aumento en la satisfacción con los emparejamientos.
 type: contract
 link: 'https://www.colorado.edu/menv/'
 order: 8
 _source:
-  hash: 938933f6afc32337
+  hash: 747be396345086af
   locale: en
-  translatedAt: '2026-05-25T19:47:54.429Z'
+  translatedAt: '2026-06-01T02:15:59.443Z'
 ---
 

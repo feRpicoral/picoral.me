@@ -2,13 +2,13 @@
 slug: cite
 title: Cite
 tagline: >-
-  Projeto pessoal explorando RAG agêntico. Cada resposta é fundamentada por
-  citações inline; clicar em uma abre o documento-fonte na região exata que a
-  gerou.
+  Projeto pessoal explorando RAG agêntico. Cada resposta é embasada por citações
+  inline; clicar em uma abre o documento-fonte exatamente na região que gerou a
+  resposta.
 summary: >-
   Um app de chat com recuperação aumentada onde cada resposta do modelo é
-  respaldada por citações inline. Clicar em uma citação abre o documento-fonte
-  na região exata — página, parágrafo ou trecho de token — que gerou a resposta.
+  embasada por citações inline. Clicar em uma citação abre o documento-fonte
+  exatamente na região — página, parágrafo ou trecho — que gerou a resposta.
   Construído para aprender recuperação agêntica e UX de visualizador de
   documentos sincronizado.
 status: in-development
@@ -31,8 +31,9 @@ order: 3
 hasCaseStudy: true
 seo:
   description: >-
-    Um projeto pessoal. RAG agêntico com citações inline clicáveis e um
-    visualizador de documentos sincronizado que salta para a região-fonte exata.
+    Projeto pessoal. RAG agêntico com citações inline clicáveis e um
+    visualizador de documentos sincronizado que salta direto para a região-fonte
+    exata.
   keywords:
     - agentic RAG
     - retrieval-augmented generation
@@ -43,31 +44,31 @@ faq:
   - q: O que é o Cite?
     a: >-
       Cite é uma aplicação de chat com recuperação aumentada agêntica. Times
-      fazem upload de documentos e fazem perguntas em linguagem natural. Cada
-      resposta é fundamentada por citações inline — clicar em uma abre o
-      documento-fonte na região exata que gerou a resposta, com o trecho
+      fazem upload dos seus documentos e fazem perguntas em linguagem natural.
+      Cada resposta é embasada por citações inline — clicar em uma abre o
+      documento-fonte exatamente na região que gerou a resposta, com o trecho
       relevante destacado.
-  - q: Como o Cite é diferente de um chatbot RAG típico?
+  - q: O que diferencia o Cite de um chatbot RAG comum?
     a: >-
       Duas coisas. Primeiro, a etapa de recuperação é agêntica — o modelo pode
-      planejar e iterar recuperações antes de responder, em vez de uma única
-      busca por similaridade top-k. Segundo, a citação é a interface, não uma
+      planejar e iterar as buscas antes de responder, em vez de fazer uma única
+      consulta por similaridade top-k. Segundo, a citação é a interface, não uma
       nota de rodapé. As citações são elementos clicáveis que rolam o
       visualizador de documentos de forma síncrona até o trecho citado, então
-      verificar é um clique em vez de uma busca.
+      verificar uma resposta é um clique, não uma busca.
 _source:
-  hash: 9189a1b262848955
+  hash: a65753a1def07c23
   locale: en
-  translatedAt: '2026-05-29T00:44:11.892Z'
+  translatedAt: '2026-06-01T02:11:46.484Z'
 ---
 ## O que faz
 
-Times fazem upload de documentos — PDFs, Word, Markdown, transcrições — e conversam com eles em linguagem natural. Cada resposta é fundamentada por citações inline. Clicar em uma citação abre o documento-fonte na região exata que gerou a resposta, com o trecho relevante destacado.
+Times fazem upload dos seus documentos — PDFs, Word, Markdown, transcrições — e conversam com eles em linguagem natural. Cada resposta é embasada por citações inline. Clicar em uma citação abre o documento-fonte exatamente na região que gerou a resposta, com o trecho relevante destacado.
 
 ## Por que construí
 
-Não é um produto — é um projeto pessoal. Chatbots RAG sem citação são infalsificáveis. A fundamentação por citações torna o output do modelo verificável, que é o ponto central de usar um sistema de recuperação. Também queria criar uma UI onde a citação é a interação principal, não uma nota de rodapé — o visualizador de documentos é tão central quanto o chat.
+Não é um produto — é um projeto pessoal. Chatbots RAG sem citação são infalsificáveis. Embasar as respostas em citações torna o output do modelo verificável, que é justamente o ponto de usar um sistema de recuperação. Também queria criar uma UI onde a citação é a interação principal, não uma nota de rodapé — o visualizador de documentos tem o mesmo peso que o chat.
 
 ## Status
 
-Em desenvolvimento ativo. O pipeline de recuperação e a UI de chat estão funcionando de ponta a ponta; a lógica de âncora de região do visualizador de documentos é o foco atual.
+Em desenvolvimento ativo. O pipeline de recuperação e a UI de chat funcionam de ponta a ponta; o foco atual é a lógica de âncoras de região do visualizador de documentos.

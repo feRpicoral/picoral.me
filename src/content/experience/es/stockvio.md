@@ -6,7 +6,7 @@ period:
   start: 2020-11
   end: 2022-02
 summary: >-
-  Fundé Stockvio, una plataforma que automatizó el cálculo de impuestos sobre
+  Fundé Stockvio, una plataforma que automatizaba el cálculo del impuesto a las
   ganancias de capital para inversores individuales brasileños que operaban en
   B3 (BOVESPA).
 highlights:
@@ -23,8 +23,8 @@ tech:
 type: founder
 order: 10
 _source:
-  hash: 96ff5310daf885b7
+  hash: 8bc20fbdf9afa2a2
   locale: en
-  translatedAt: '2026-05-25T19:47:52.146Z'
+  translatedAt: '2026-06-01T02:16:11.980Z'
 ---
 

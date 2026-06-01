@@ -6,18 +6,18 @@ period:
   start: 2026-09
   end: null
 summary: >-
-  Regresa a Google a tiempo completo como Ingeniero de Software en Nueva York en
-  septiembre de 2026, tras tres pasantías en la empresa.
+  Vuelvo a Google como Ingeniero de Software en Nueva York en septiembre de
+  2026, después de tres pasantías en la empresa.
 highlights:
   - >-
-    Regresa a tiempo completo tras tres pasantías en Google en Kirkland (2023),
-    Sunnyvale (2024) y Nueva York (2025).
+    Regreso full-time tras tres pasantías en Google: Kirkland (2023), Sunnyvale
+    (2024) y Nueva York (2025).
 type: fulltime
 link: 'https://about.google'
 order: 0
 _source:
-  hash: 485afde72fc5cb30
+  hash: a5d7cd9ab2b5b88e
   locale: en
-  translatedAt: '2026-05-25T19:48:25.915Z'
+  translatedAt: '2026-06-01T02:15:54.611Z'
 ---
 

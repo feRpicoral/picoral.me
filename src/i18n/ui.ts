@@ -137,7 +137,7 @@ export const ui = {
     'about.education.title': 'Formação',
     'projects.title': 'Projetos',
     'projects.lead':
-      'Projetos paralelos. Nenhum é produto — são coisas que construí para aprender algo ou resolver uma vontade minha.',
+      'Projetos paralelos. Nenhum deles é produto — são coisas que criei para aprender alguma coisa ou resolver um problema meu.',
     'projects.featured': 'Em destaque',
     'projects.other': 'Outros trabalhos',
     'projects.status.live': 'No ar',
