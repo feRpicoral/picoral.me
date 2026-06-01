@@ -7,12 +7,12 @@ period:
   end: 2025-08
 summary: >-
   Trabajo de backend en Google Keep — migrando una cola Spanner multi-tenant,
-  escalando el reemplazo a todos los usuarios y avanzando hacia el agente de IA
+  escalando el reemplazo a todos los usuarios, y avanzando hacia el agente de IA
   de Keep.
 highlights:
   - >-
-    Lideré el diseño y la migración end-to-end de una cola Spanner multi-tenant
-    a tres colas single-tenant.
+    Lideré el diseño y la migración de punta a punta de una cola Spanner
+    multi-tenant a tres colas single-tenant.
   - >-
     Escalé las nuevas colas a 15k RPS en producción usando experimentos de
     Mendel.
@@ -26,8 +26,8 @@ type: internship
 link: 'https://about.google'
 order: 1
 _source:
-  hash: 654cee122b6a1630
+  hash: b674d0cb377e2a33
   locale: en
-  translatedAt: '2026-05-25T19:47:09.744Z'
+  translatedAt: '2026-06-01T02:15:55.271Z'
 ---
 

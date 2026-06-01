@@ -3,13 +3,13 @@ slug: sonar
 title: Sonar
 tagline: >-
   Projeto pessoal explorando orquestração multi-agente. O caso de uso é revisão
-  de chamadas de vendas; o objetivo real foi aprender Anthropic tool use, prompt
-  caching e estado persistente de agentes.
+  de chamadas de vendas; o objetivo real foi aprender tool use da Anthropic,
+  prompt caching e estado persistente de agentes.
 summary: >-
   Um pipeline multi-agente que transforma uma gravação de chamada de vendas em
   pesquisa, análise, próximo passo recomendado e rascunho de e-mail de follow-up
-  com citações vinculadas à transcrição. Construído com Claude Sonnet 4.6 +
-  Haiku 4.5, Groq Whisper e Tavily.
+  com citações linkando de volta à transcrição. Construído com Claude Sonnet 4.6
+  + Haiku 4.5, Groq Whisper e Tavily.
 status: in-development
 role: 'Solo — design, engenharia, deploy'
 period:
@@ -34,9 +34,9 @@ order: 1
 hasCaseStudy: true
 seo:
   description: >-
-    Um projeto pessoal. Pipeline multi-agente que transforma gravações de
-    chamadas de vendas em pesquisa, análise, próximo passo e rascunhos de
-    follow-up com citações.
+    Projeto pessoal. Pipeline multi-agente que transforma gravações de chamadas
+    de vendas em pesquisa, análise, próximo passo e rascunhos de follow-up com
+    citações.
   keywords:
     - multi-agent
     - AI sales enablement
@@ -50,50 +50,50 @@ faq:
       Sonar é um workspace de IA multi-agente para times de vendas. Um rep faz
       upload de uma chamada gravada; ~20 segundos depois ele tem pesquisa sobre
       o prospect, análise estruturada da chamada, próximo passo recomendado e
-      rascunho de e-mail de follow-up com citações vinculando cada afirmação a
-      um trecho específico da transcrição.
+      rascunho de follow-up com citações linkando cada afirmação a um trecho
+      específico da transcrição.
   - q: Como funciona a orquestração multi-agente do Sonar?
     a: >-
       Quatro nós sequenciais — research, analysis, strategy, writer — cada um
-      retornando output estruturado via Anthropic tool use com schemas Zod. Cada
-      etapa grava uma linha AgentRunStep no Postgres; a execução pausa em
-      AWAITING_APPROVAL após o passo do writer para revisão humana. O writer
+      retornando output estruturado via tool use da Anthropic com schemas Zod.
+      Cada etapa grava uma linha `AgentRunStep` no Postgres; o run pausa em
+      `AWAITING_APPROVAL` após o passo do writer para revisão humana. O writer
       pode ser regerado com feedback do revisor sem re-executar os nós
       anteriores.
-  - q: Por que o Sonar usa Anthropic prompt caching?
+  - q: Por que o Sonar usa prompt caching da Anthropic?
     a: >-
-      As system messages são cacheadas em todos os nós. Em execuções repetidas
-      no mesmo workspace, isso reduz os tokens de entrada em cerca de 70%, o que
-      se traduz diretamente em ganhos de latência e custo à medida que o corpus
-      de contexto do workspace cresce.
+      As system messages são cacheadas em todos os nós. Em runs repetidos no
+      mesmo workspace, isso reduz os tokens de entrada em cerca de 70%, o que se
+      traduz diretamente em ganhos de latência e custo conforme o contexto do
+      workspace cresce.
 _source:
-  hash: d3a9257ef20e87a5
+  hash: 6a3023879ff050a9
   locale: en
-  translatedAt: '2026-05-29T00:44:57.693Z'
+  translatedAt: '2026-06-01T02:15:02.663Z'
 ---
 ## O que faz
 
 Um rep de vendas faz upload de uma gravação de chamada. Cerca de vinte segundos depois, o Sonar retorna:
 
 1. Pesquisa sobre a empresa do prospect (Tavily + Claude Haiku 4.5)
-2. Análise estruturada da chamada — tópicos, pontos de dor, objeções, itens de ação, sentimento (Claude Sonnet 4.6)
+2. Análise estruturada da chamada — tópicos, dores, objeções, itens de ação, sentimento (Claude Sonnet 4.6)
 3. Próximo passo recomendado com talking points e urgência (Claude Sonnet 4.6)
-4. Rascunho de e-mail de follow-up com citações entre colchetes vinculadas a trechos da transcrição (Claude Sonnet 4.6)
+4. Rascunho de e-mail de follow-up com citações entre colchetes linkando de volta a trechos da transcrição (Claude Sonnet 4.6)
 
-O revisor vê uma UI em split-view: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o trecho correspondente. O revisor pode aprovar, editar o corpo diretamente ou regerar o writer com feedback. A regeração reutiliza o estado anterior de research, analysis e strategy; só o writer executa novamente.
+O revisor vê uma UI em split-view: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o trecho correspondente. O revisor pode aprovar, editar o corpo diretamente ou regerar o writer com feedback. A regeração reutiliza o estado anterior de pesquisa, análise e estratégia; só o writer roda novamente.
 
 ## Por que construí
 
-Não é um produto — é um projeto pessoal. Queria uma base de código que exercitasse a stack moderna de IA de ponta a ponta: orquestração multi-agente com estado persistente, processamento real de áudio, tool use estruturado, prompt caching e o formato B2B multi-tenant. Revisão de chamadas de vendas foi o domínio escolhido porque o fluxo é genuinamente linear-com-rollback, que é o ponto ideal para grafos de agentes.
+Não é um produto — é um projeto pessoal. Queria uma codebase que exercitasse a stack moderna de IA de ponta a ponta: orquestração multi-agente com estado persistente, processamento real de áudio, tool use estruturado, prompt caching e o formato B2B multi-tenant. Revisão de chamadas de vendas foi o domínio escolhido porque o fluxo é genuinamente linear-com-rollback, que é o ponto ideal para grafos de agentes.
 
 ## Como funciona
 
 ### Orquestração multi-agente
 
 - Quatro nós sequenciais (research, transcription, analysis, strategy, writer)
-- Cada nó retorna output estruturado via Anthropic tool use + um schema Zod. Sem outputs em texto livre.
-- Cada etapa grava uma linha `AgentRunStep`. A execução pausa em `AWAITING_APPROVAL` após o passo do writer.
-- Anthropic prompt caching habilitado nas system messages — redução de ~70% nos tokens de entrada em execuções repetidas.
+- Cada nó retorna output estruturado via tool use da Anthropic + um schema Zod. Sem outputs em texto livre.
+- Cada etapa grava uma linha `AgentRunStep`. O run pausa em `AWAITING_APPROVAL` após o passo do writer.
+- Prompt caching da Anthropic habilitado nas system messages — redução de ~70% nos tokens de entrada em runs repetidos.
 - A regeração do writer reutiliza o estado dos nós anteriores.
 - Execução em background via route handler `after()` do Next.js 16 (`maxDuration = 300`).
 
@@ -101,14 +101,14 @@ Não é um produto — é um projeto pessoal. Queria uma base de código que exe
 
 - Upload por drag-and-drop vai direto do browser para o Supabase Storage via signed URL. O servidor não está no caminho do upload.
 - Groq Whisper Large v3 transcreve com timestamps por segmento.
-- Tipo MIME e limite de 100 MB aplicados tanto na server action quanto na política do bucket.
+- Tipo MIME e limite de 100 MB aplicados tanto na server action quanto na bucket policy.
 - O writer recebe os segmentos da transcrição marcados com índices entre colchetes; as citações referenciam esses índices.
 - A UI em split-view rola até o segmento citado ao passar o mouse.
 
 ### B2B multi-tenant
 
-Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), convites, API keys, log de auditoria. Três camadas de isolamento — escopo por linha no Postgres, guards na camada de aplicação em cada server action e políticas de bucket no Supabase Storage com chave por workspace ID.
+Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), convites, API keys, log de auditoria. Três camadas de isolamento — escopo por linha no Postgres, guards na camada de aplicação em cada server action e bucket policies do Supabase Storage com chave por workspace ID.
 
 ## Status
 
-Em desenvolvimento ativo. O pipeline de agentes e a tenancy de workspace estão funcionando; o polimento da UI e a demo ao vivo estão em andamento.
+Em desenvolvimento ativo. O pipeline de agentes e a tenancy de workspaces estão funcionando; o polimento da UI e o demo ao vivo estão em andamento.

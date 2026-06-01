@@ -13,7 +13,7 @@ highlights:
   - Levei a empresa a uma avaliação de 500K USD em apenas 5 meses.
   - Captei mais de 100K USD em investimentos em menos de 8 meses.
   - Desenvolvi o frontend com React Native e Expo.
-  - Implementei estratégias de marketing altamente eficientes.
+  - Implementei estratégias de marketing com alta eficiência.
   - Gerenciei estratégias de negócio e roadmap de produto.
 tech:
   - React Native
@@ -23,8 +23,8 @@ type: founder
 link: 'https://www.linkedin.com/company/89329053'
 order: 6
 _source:
-  hash: 192d354254648359
+  hash: b92cbe97b7ba7a6c
   locale: en
-  translatedAt: '2026-05-29T00:44:43.691Z'
+  translatedAt: '2026-06-01T02:15:27.466Z'
 ---
 

@@ -2,18 +2,17 @@
 slug: anvil
 title: Anvil
 tagline: >-
-  Proyecto personal - fine-tuning QLoRA completado de Llama 3.1 8B para
-  extracción sintética de contratos, con 100% de validez JSON, costo medido de
-  $58.46 y un modelo de punto de equilibrio de 0.80M tokens mensuales.
+  Proyecto personal — fine-tuning QLoRA completado de Llama 3.1 8B para
+  extracción de contratos sintéticos, con 100% de JSON válido, costo de
+  ejecución de $58.46 y un modelo de punto de equilibrio de 0.80M tokens al mes.
 summary: >-
-  Un artefacto completo de entrenamiento y evaluación que sintetizó 4,000
-  contratos con GPT-4o, curó 3,707 ejemplos, hizo fine-tuning de Llama 3.1 8B
-  con QLoRA en un RunPod A40, y evaluó predictores base, fine-tuned y GPT-4o
-  sobre 370 contratos reservados. El adapter alcanzó 100% de validez JSON y un
-  macro field score de 0.899 frente al 99.73% de validez y 0.881 de macro score
-  de GPT-4o. El run costó $58.46; el modelo de costos alcanza el punto de
-  equilibrio a 0.80M tokens por mes bajo los supuestos configurados de serving
-  en A40.
+  Artefacto de entrenamiento y evaluación completo: sintetizó 4,000 contratos
+  con GPT-4o, curó 3,707 ejemplos, hizo fine-tuning de Llama 3.1 8B con QLoRA en
+  un RunPod A40, y evaluó los predictores base, fine-tuned y GPT-4o sobre 370
+  contratos de prueba. El adapter alcanzó 100% de JSON válido y un macro field
+  score de 0.899, frente al 99.73% de validez y 0.881 de GPT-4o. La ejecución
+  costó $58.46; el modelo de costos llega al punto de equilibrio en 0.80M tokens
+  al mes bajo los supuestos configurados de serving en A40.
 status: live
 role: 'Solo - Python, QLoRA, eval, RunPod, modelado de costos'
 period:
@@ -44,8 +43,8 @@ draft: false
 seo:
   description: >-
     Fine-tuning QLoRA completado de Llama 3.1 8B para extracción de contratos:
-    100% de validez JSON, macro field score de 0.899, costo de $58.46 y modelo
-    de punto de equilibrio en A40.
+    100% de JSON válido, macro field score de 0.899, costo de ejecución de
+    $58.46 y modelo de punto de equilibrio en A40.
   keywords:
     - QLoRA
     - LoRA
@@ -60,87 +59,88 @@ faq:
     a: >-
       Anvil es un artefacto completo de fine-tuning y evaluación para extracción
       estructurada de contratos. Sintetiza contratos con GPT-4o, cura y divide
-      el dataset, hace fine-tuning de Llama 3.1 8B con QLoRA en un único A40, y
-      compara predictores base, fine-tuned y GPT-4o sobre el mismo test split
-      reservado.
-  - q: ¿Qué demostró el run pago?
+      el dataset, hace fine-tuning de Llama 3.1 8B con QLoRA en un solo A40, y
+      compara los predictores base, fine-tuned y GPT-4o sobre el mismo split de
+      prueba.
+  - q: ¿Qué demostró la ejecución paga?
     a: >-
-      El adapter fine-tuned alcanzó 100% de validez JSON sobre 370 contratos
-      reservados, mientras que el modelo base produjo 0% de JSON válido. También
-      superó levemente a GPT-4o en macro field score, 0.899 frente a 0.881, en
+      El adapter fine-tuned alcanzó 100% de JSON válido sobre 370 contratos de
+      prueba, mientras que el modelo base produjo 0% de JSON válido. También
+      superó levemente a GPT-4o en macro field score: 0.899 frente a 0.881, en
       este benchmark sintético de extracción.
   - q: ¿Cómo se mantiene honesta la metodología?
     a: >-
-      Un guard anti-contaminación hashea el texto normalizado de cada contrato y
-      aborta si una muestra aparece en dos splits. La validez JSON condiciona
-      cada puntaje, por lo que una salida que no parsea contra el schema
-      estricto no recibe crédito de campo. El modelo de costos separa el costo
-      medido del run del supuesto configurado de throughput de serving en A40.
+      Una guarda anti-contaminación hashea el texto normalizado de cada contrato
+      y aborta si un ejemplo aparece en más de un split. La validez del JSON es
+      requisito para cualquier puntaje: si el output no parsea contra el schema
+      estricto, no recibe crédito por campo. El modelo de costos separa el costo
+      medido de ejecución del supuesto configurado de throughput de serving en
+      A40.
   - q: ¿Cómo se relaciona Anvil con Forge?
     a: >-
       Forge responde qué tan barata y rápida es la inferencia self-hosted una
-      vez que se consideran la utilización, la latencia y la cuantización. Anvil
-      responde si un fine-tuning QLoRA pequeño puede cerrar la brecha con un API
-      frontier en una tarea estrecha.
+      vez que se consideran utilización, latencia y cuantización. Anvil responde
+      si un fine-tuning QLoRA pequeño puede cerrar la brecha con una API
+      frontier en una tarea estructurada y acotada.
 _source:
-  hash: bfa0a33bb79dd25b
+  hash: 9e32409af454f35d
   locale: en
-  translatedAt: '2026-06-01T01:21:56.462Z'
+  translatedAt: '2026-06-01T02:12:30.980Z'
 ---
 ## Qué es
 
-Un artefacto de ingeniería enfocado, no un SaaS. Las piezas entregadas:
+Un artefacto de ingeniería concreto, no un SaaS. Las piezas entregadas:
 
-- **Pipeline de dataset** - generó 4,000 NDAs, MSAs y licencias sintéticos vía GPT-4o con aplicación estricta de JSON schema; curó 3,707 registros aceptados; los dividió en 2,966 de entrenamiento, 371 de validación y 370 de test.
-- **Entrenamiento** - QLoRA (NF4 + LoRA, rank 16, alpha 32, targets `all_linear`) sobre Llama 3.1 8B vía Unsloth en un único RunPod A40. El run pago completó 558 pasos de optimizador en 8,259 segundos, aproximadamente 2h 18m.
-- **Eval** - predictores base, fine-tuned y GPT-4o bajo un mismo protocolo, ejecutados sobre el mismo test split reservado de 370 ejemplos y puntuados en validez JSON más calidad de extracción por campo.
-- **Modelo de costos** - costo medido del run de entrenamiento (API de síntesis, tiempo de GPU, eval con GPT-4o) más un modelo self-hosted de $/1M tokens y volumen de punto de equilibrio frente a seguir llamando a GPT-4o.
+- **Pipeline de dataset** - generó 4,000 NDAs, MSAs y licencias sintéticos vía GPT-4o con validación estricta de JSON schema; curó 3,707 registros aceptados; los dividió en 2,966 de entrenamiento, 371 de validación y 370 de prueba.
+- **Entrenamiento** - QLoRA (NF4 + LoRA, rank 16, alpha 32, targets `all_linear`) sobre Llama 3.1 8B con Unsloth en un solo RunPod A40. La ejecución paga completó 558 pasos de optimizador en 8,259 segundos, aproximadamente 2h 18m.
+- **Eval** - predictores base, fine-tuned y GPT-4o bajo un mismo protocolo, ejecutados sobre el mismo split de prueba de 370 ejemplos y puntuados por validez de JSON más calidad de extracción por campo.
+- **Modelo de costos** - costo medido de la ejecución de entrenamiento (API de síntesis, tiempo de GPU, eval con GPT-4o) más un modelo de $/1M tokens self-hosted y el volumen de punto de equilibrio frente a seguir llamando a GPT-4o.
 - **CI y ensayo** - el pipeline completo puede ensayarse en un M1 contra fixtures antes de rentar una GPU; el CI cubre parsing, schema, costos, gráficos, preflight, configuración de entrenamiento y utilidades de eval.
 
 ## Por qué lo construí
 
-Para demostrar que puedo hacer fine-tuning y evaluar un modelo abierto de punta a punta, con una historia de costos defendible, en lugar de solo llamar a un API hosteado. La pregunta útil es si el fine-tuning cierra la brecha con un modelo frontier en una tarea estrecha de salida estructurada, y cuánto tiempo tarda el costo único de entrenamiento en amortizarse.
+Para demostrar que puedo hacer fine-tuning y evaluar un modelo abierto de punta a punta, con una historia de costos defendible, en lugar de solo llamar a una API hosted. La pregunta útil es si el fine-tuning cierra la brecha con un modelo frontier en una tarea acotada de output estructurado, y cuánto tiempo tarda el costo único de entrenamiento en amortizarse.
 
-Anvil responde eso con números ligados a artefactos comprometidos: los conteos del dataset, el log de entrenamiento, el JSON de evaluación, las imágenes de gráficos y el reporte de costos son todos reproducibles desde el workflow del repo.
+Anvil responde eso con números atados a artefactos concretos: los conteos del dataset, el log de entrenamiento, el JSON de evaluación, las imágenes de gráficos y el reporte de costos son todos reproducibles desde el workflow del repo.
 
 ## Resultado medido
 
-El modelo base falló el gate estricto de schema: 0% de JSON válido en el test split reservado de 370 casos. El adapter fine-tuned produjo 100% de JSON válido, levemente por encima del 99.73% de validez de GPT-4o en los mismos casos.
+El modelo base falló la validación estricta de schema: 0% de JSON válido sobre el split de prueba de 370 casos. El adapter fine-tuned produjo 100% de JSON válido, levemente por encima del 99.73% de validez de GPT-4o sobre los mismos casos.
 
-<ProjectImage src="/src/assets/projects/anvil/json-validity.png" alt="Gráfico de barras comparando la validez JSON de los predictores base, fine-tuned y GPT-4o." caption="La validez JSON es el gate: la salida no parseable no recibe crédito de campo." size="chart" />
+<ProjectImage src="/src/assets/projects/anvil/json-validity.png" alt="Gráfico de barras comparando la validez de JSON para los predictores base, fine-tuned y GPT-4o." caption="La validez del JSON es el requisito: el output no parseable no recibe crédito por campo." size="chart" />
 
-En el puntaje de extracción por campo, el adapter fine-tuned alcanzó un macro score de 0.899 frente al 0.881 de GPT-4o. La tarea es estrecha y sintética, así que lo tomo como evidencia de que el adapter aprendió el schema objetivo y la distribución de campos, no como una afirmación amplia de que supera a GPT-4o.
+En el puntaje de extracción por campo, el adapter fine-tuned alcanzó un macro score de 0.899 frente al 0.881 de GPT-4o. La tarea es acotada y sintética, así que lo tomo como evidencia de que el adapter aprendió el schema objetivo y la distribución de campos, no como una afirmación general de que supera a GPT-4o.
 
-<ProjectImage src="/src/assets/projects/anvil/task-metric-comparison.png" alt="Gráfico de barras agrupadas comparando los puntajes de extracción de fine-tuned y GPT-4o por campo de contrato." caption="Puntaje por campo sobre los contratos sintéticos reservados." size="chart" />
+<ProjectImage src="/src/assets/projects/anvil/task-metric-comparison.png" alt="Gráfico de barras agrupadas comparando los puntajes de extracción de fine-tuned y GPT-4o por campo de contrato." caption="Puntaje por campo sobre los contratos sintéticos de prueba." size="chart" />
 
 ## Cómo funciona
 
-### Síntesis de datos con un guard anti-contaminación
+### Síntesis de datos con guarda anti-contaminación
 
-El conjunto de entrenamiento son contratos sintéticos generados bajo un JSON schema estricto, por lo que cada muestra tiene una extracción ground-truth conocida. Antes del entrenamiento, un guard hashea el texto normalizado de cada muestra y aborta el run si algún documento aparece en más de un split. Eso elimina la forma más común en que un benchmark de fine-tuning infla silenciosamente sus propios puntajes.
+El set de entrenamiento son contratos sintéticos generados bajo un JSON schema estricto, por lo que cada ejemplo tiene una extracción ground-truth conocida. Antes del entrenamiento, una guarda hashea el texto normalizado de cada contrato y aborta la ejecución si algún documento aparece en más de un split. Eso elimina la forma más común en que un benchmark de fine-tuning infla silenciosamente sus propios puntajes.
 
-### QLoRA en un único A40, ensayado en M1
+### QLoRA en un solo A40, ensayado en M1
 
-El mismo orquestador que ejecuta el job pago en RunPod corre en modo dry-run en un MacBook M1 base contra fixtures del repo, de punta a punta (`data-smoke -> train-smoke -> eval-smoke -> cost`) con cero gasto en API. Ese ensayo debe pasar antes de rentar una GPU paga.
+El mismo orquestador que ejecuta el job pago en RunPod corre en modo dry-run sobre un MacBook M1 base contra fixtures del repo, de punta a punta (`data-smoke -> train-smoke -> eval-smoke -> cost`) sin ningún gasto en APIs. Ese ensayo debe pasar antes de rentar una GPU paga.
 
-El run pago usó un RunPod A40 a $0.44/hr, entrenó por 3 épocas y terminó con train loss 0.346 y eval loss 0.328.
+La ejecución paga usó un RunPod A40 a $0.44/hr, entrenó por 3 épocas y terminó con train loss 0.346 y eval loss 0.328.
 
-<ProjectImage src="/src/assets/projects/anvil/training-loss.png" alt="Gráfico de líneas del train loss y validation loss de Anvil a lo largo de 558 pasos de optimizador." caption="El entrenamiento convergió rápido y se mantuvo estable durante el run de 3 épocas en A40." size="chart" />
+<ProjectImage src="/src/assets/projects/anvil/training-loss.png" alt="Gráfico de líneas del train loss y validation loss de Anvil a lo largo de 558 pasos de optimizador." caption="El entrenamiento convergió rápido y se mantuvo estable durante la ejecución de 3 épocas en A40." size="chart" />
 
-### Eval de tres vías condicionada a validez JSON
+### Eval de tres vías con validez de JSON como requisito
 
-Los predictores base, fine-tuned y GPT-4o responden los mismos prompts. La validez es el gate: una salida que no parsea contra el schema no recibe crédito de campo, porque un número F1 sobre JSON no parseable no tiene sentido. Aquí es donde el modelo base colapsa y el fine-tune se vuelve útil.
+Los predictores base, fine-tuned y GPT-4o responden los mismos prompts. La validez es el requisito: un output que no parsea contra el schema no recibe crédito por campo, porque un número de F1 sobre JSON no parseable no tiene sentido. Aquí es donde el modelo base colapsa y el fine-tuning se vuelve útil.
 
 ### Costo y punto de equilibrio
 
-El run completo costó $58.46: $54.00 por síntesis, $1.76 por tiempo de GPU en A40 y $2.70 por eval con GPT-4o. La línea de inferencia self-hosted está etiquetada intencionalmente como un supuesto configurado de serving en A40, no como un benchmark de serving medido en este proyecto.
+La ejecución completa costó $58.46: $54.00 por síntesis, $1.76 por tiempo de GPU en A40 y $2.70 por eval con GPT-4o. La línea de inferencia self-hosted está etiquetada intencionalmente como un supuesto configurado de serving en A40, no como un benchmark de serving medido en este proyecto.
 
-<ProjectImage src="/src/assets/projects/anvil/cost-per-1m.png" alt="Gráfico de barras comparando el costo self-hosted configurado de Anvil en A40 por millón de tokens frente a GPT-4o y Claude Sonnet." caption="El costo self-hosted usa el supuesto configurado de throughput de serving en A40." size="chart" />
+<ProjectImage src="/src/assets/projects/anvil/cost-per-1m.png" alt="Gráfico de barras comparando el costo por millón de tokens del A40 self-hosted configurado en Anvil frente a GPT-4o y Claude Sonnet." caption="El costo self-hosted usa el supuesto configurado de throughput de serving en A40." size="chart" />
 
-Con esos supuestos, el costo único del run alcanza el punto de equilibrio frente a GPT-4o a 0.80M tokens por mes en un horizonte de 12 meses.
+Con esos supuestos, el costo único de ejecución llega al punto de equilibrio frente a GPT-4o en 0.80M tokens al mes a lo largo de un horizonte de 12 meses.
 
-<ProjectImage src="/src/assets/projects/anvil/breakeven.png" alt="Curva de punto de equilibrio comparando el costo acumulado del modelo fine-tuned frente a GPT-4o a lo largo de doce meses." caption="Volumen de punto de equilibrio: 0.80M tokens por mes frente a GPT-4o." size="chart" />
+<ProjectImage src="/src/assets/projects/anvil/breakeven.png" alt="Curva de punto de equilibrio comparando el costo acumulado del modelo fine-tuned frente a GPT-4o a lo largo de doce meses." caption="Volumen de punto de equilibrio: 0.80M tokens al mes frente a GPT-4o." size="chart" />
 
 ## Estado
 
-Terminado. El hito central de Anvil está completo: generación de datos paga, entrenamiento, evaluación, análisis de costos, gráficos y documentación están entregados. Intencionalmente no incluyo la publicación en Hugging Face ni un demo Space como parte del alcance.
+Terminado. El hito central de Anvil está completo: generación de datos paga, entrenamiento, evaluación, análisis de costos, gráficos y documentación están cerrados. Intencionalmente no incluyo la publicación en Hugging Face ni un demo Space como parte del alcance.
