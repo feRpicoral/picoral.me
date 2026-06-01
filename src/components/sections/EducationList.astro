@@ -1,6 +1,6 @@
 ---
 import { EDUCATION, type Locale } from '~/config/site.ts';
-import { formatPeriodDate } from '~/lib/format.ts';
+import { formatPeriodRange } from '~/lib/format.ts';
 
 interface Props {
   locale: Locale;
@@ -10,14 +10,13 @@ const { locale } = Astro.props;
 
 <ol class="edu">
   {EDUCATION.map((item) => {
-    const start = formatPeriodDate(item.period.start, locale);
-    const end = formatPeriodDate(item.period.end, locale);
+    const periodLabel = formatPeriodRange(item.period.start, item.period.end, locale);
     return (
       <li>
         <div class="row">
           <h3 class="degree">{item.degree}</h3>
           <p class="dates">
-            <time>{start}</time> – <time>{end}</time>
+            {periodLabel}
           </p>
         </div>
         <p class="school">

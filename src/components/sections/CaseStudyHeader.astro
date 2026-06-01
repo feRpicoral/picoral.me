@@ -3,7 +3,7 @@ import Pill from '~/components/ui/Pill.astro';
 import { type Locale } from '~/config/site.ts';
 import type { UiKey } from '~/i18n/ui.ts';
 import { useTranslations } from '~/i18n/utils.ts';
-import { formatPeriodDate } from '~/lib/format.ts';
+import { formatPeriodRange } from '~/lib/format.ts';
 
 interface Props {
   title: string;
@@ -18,8 +18,7 @@ interface Props {
 const { title, tagline, status, role, period, stack, links, locale } = Astro.props;
 const t = useTranslations(locale);
 const statusVariant = status === 'live' ? 'success' : status === 'beta' ? 'accent' : 'muted';
-const start = formatPeriodDate(period.start, locale);
-const end = period.end ? formatPeriodDate(period.end, locale) : t('experience.present');
+const periodLabel = formatPeriodRange(period.start, period.end, locale, t('experience.present'));
 const statusLabel = t(`projects.status.${status}` as UiKey);
 ---
 
@@ -37,7 +36,7 @@ const statusLabel = t(`projects.status.${status}` as UiKey);
     </div>
     <div>
       <dt>{t('projects.period')}</dt>
-      <dd>{start} – {end}</dd>
+      <dd>{periodLabel}</dd>
     </div>
     <div>
       <dt>{t('projects.stack')}</dt>
