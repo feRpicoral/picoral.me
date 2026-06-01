@@ -91,13 +91,34 @@ const experience = defineCollection({
     location: z.string(),
     period: z.object({
       start: z.string(),
-      end: z.string().nullable(),
+      end: z.string().nullable().optional(),
     }),
     summary: z.string(),
     highlights: z.array(z.string()),
     tech: z.array(z.string()).optional(),
     type: employmentType,
     link: z.string().url().optional(),
+    order: z.number(),
+    _source: sourceMarker,
+  }),
+});
+
+const education = defineCollection({
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/education',
+    generateId: pathBasedId,
+  }),
+  schema: z.object({
+    slug: z.string().optional(),
+    degree: z.string(),
+    school: z.string(),
+    detail: z.string(),
+    period: z.object({
+      start: z.string(),
+      end: z.string().nullable().optional(),
+    }),
+    location: z.string(),
     order: z.number(),
     _source: sourceMarker,
   }),
@@ -137,4 +158,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { projects, experience, blog, pages };
+export const collections = { projects, experience, education, blog, pages };
