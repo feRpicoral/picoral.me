@@ -4,16 +4,13 @@ import { TRANSLATOR_MODEL } from './config.mjs';
 import { getLanguageModel, resolveModelConfig } from './model.mjs';
 
 let savedModel;
-let savedKey;
 
 beforeEach(() => {
   savedModel = process.env.TRANSLATE_MODEL;
-  savedKey = process.env.OPENROUTER_API_KEY;
 });
 
 afterEach(() => {
   process.env.TRANSLATE_MODEL = savedModel ?? '';
-  process.env.OPENROUTER_API_KEY = savedKey ?? '';
 });
 
 test('resolveModelConfig falls back to the config default when TRANSLATE_MODEL is unset', () => {
@@ -23,13 +20,13 @@ test('resolveModelConfig falls back to the config default when TRANSLATE_MODEL i
 });
 
 test('resolveModelConfig honors the TRANSLATE_MODEL override', () => {
-  process.env.TRANSLATE_MODEL = 'anthropic/claude-sonnet-4.6';
+  process.env.TRANSLATE_MODEL = 'google/gemini-2.5-flash-lite';
 
-  assert.equal(resolveModelConfig().modelId, 'anthropic/claude-sonnet-4.6');
+  assert.equal(resolveModelConfig().modelId, 'google/gemini-2.5-flash-lite');
 });
 
-test('getLanguageModel throws a clear error when OPENROUTER_API_KEY is unset', () => {
-  process.env.OPENROUTER_API_KEY = '';
+test('getLanguageModel throws on an unregistered provider', () => {
+  process.env.TRANSLATE_MODEL = 'bogus/whatever';
 
-  assert.throws(() => getLanguageModel(), /OPENROUTER_API_KEY/);
+  assert.throws(() => getLanguageModel());
 });

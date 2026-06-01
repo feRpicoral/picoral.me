@@ -17,6 +17,9 @@
  *   pnpm translate --check    — exit non-zero if anything is stale or missing.
  *                                Never calls the API.
  *   pnpm translate --force    — regenerate everything, ignoring cache hits.
+ *   pnpm translate --rehash   — re-stamp existing translations to the current
+ *                                model hash without an API call (after a model-id
+ *                                change that did not change the model or content).
  *   pnpm translate --collection=blog --locale=pt
  *                             — narrow scope.
  *
@@ -53,8 +56,9 @@ const REPO_ROOT = join(__dirname, '..');
 const CONTENT_DIR = join(REPO_ROOT, 'src', 'content');
 
 /**
- * Conservative default for OpenRouter rate limits, which vary by model and
- * account credit balance. Bump via `--concurrency=N` if your limits allow.
+ * Conservative default for provider rate limits, which vary by model and tier
+ * (e.g. Anthropic Sonnet tier 1 caps output tokens per minute). Bump via
+ * `--concurrency=N` if your limits allow.
  */
 const DEFAULT_CONCURRENCY = 4;
 
@@ -76,9 +80,16 @@ function parseList(value) {
 function parseArgs(argv) {
   const program = new Command()
     .name('translate-content')
-    .description('Generate locale translations of src/content/*/en/* via OpenRouter.')
+    .description(
+      'Generate locale translations of src/content/*/en/* via the configured model provider.',
+    )
     .option('--check', 'exit non-zero if anything is stale or missing (never calls the API)', false)
     .option('--force', 'regenerate all translations even on cache hit', false)
+    .option(
+      '--rehash',
+      're-stamp existing translations to the current model hash without an API call (after a model-id change that did not change the model or content)',
+      false,
+    )
     .option(
       '--concurrency <n>',
       'max in-flight API requests',
@@ -93,6 +104,7 @@ function parseArgs(argv) {
   return {
     check: opts.check,
     force: opts.force,
+    rehash: opts.rehash,
     concurrency: opts.concurrency,
     collections: opts.collection,
     locales: opts.locale,
@@ -188,7 +200,7 @@ async function translateOneFile({ collection, sourceRaw, locale, expectedHash })
   return matter.stringify(translatedBody, translatedData);
 }
 
-async function processOne({ collection, sourcePath, locale, check, force }) {
+async function processOne({ collection, sourcePath, locale, check, force, rehash }) {
   const filename = sourcePath.split('/').pop();
   const targetPath = join(CONTENT_DIR, collection, locale, filename);
   const sourceRaw = await readFile(sourcePath, 'utf-8');
@@ -210,6 +222,19 @@ async function processOne({ collection, sourcePath, locale, check, force }) {
 
   if (!force && existingHash === expectedHash) {
     return { status: 'fresh', targetPath };
+  }
+
+  if (rehash) {
+    if (!existing) {
+      return {
+        status: 'stale',
+        targetPath,
+        message: 'No existing translation to re-stamp; run `pnpm translate`.',
+      };
+    }
+    existing.data._source = { ...existing.data._source, hash: expectedHash };
+    await writeFile(targetPath, matter.stringify(existing.content, existing.data), 'utf-8');
+    return { status: 'rehashed', targetPath };
   }
 
   if (check) {
@@ -255,6 +280,7 @@ async function main() {
         locale,
         check: args.check,
         force: args.force,
+        rehash: args.rehash,
       });
       results.push({ collection, sourcePath, locale, ...r });
       if (r.status === 'stale') {
@@ -263,6 +289,8 @@ async function main() {
         console.warn(`  locked  ${locale}  ${rel}  — ${r.message}`);
       } else if (r.status === 'translated') {
         console.log(`  wrote   ${locale}  ${rel}`);
+      } else if (r.status === 'rehashed') {
+        console.log(`  rehash  ${locale}  ${rel}`);
       }
     } catch (e) {
       results.push({ collection, sourcePath, locale, status: 'error', error: e });
@@ -276,6 +304,7 @@ async function main() {
   const wrote = results.filter((r) => r.status === 'translated').length;
   const fresh = results.filter((r) => r.status === 'fresh').length;
   const lockedStale = results.filter((r) => r.status === 'locked-stale').length;
+  const rehashed = results.filter((r) => r.status === 'rehashed').length;
 
   if (args.check) {
     console.log(
@@ -283,6 +312,18 @@ async function main() {
     );
     if (stale > 0) {
       console.error('Run `pnpm translate` to regenerate stale translations.');
+      process.exit(1);
+    }
+    if (errors > 0) process.exit(1);
+    return;
+  }
+
+  if (args.rehash) {
+    console.log(
+      `\nRe-stamped: ${rehashed}. Fresh (skipped): ${fresh}. Missing: ${stale}. Locked: ${lockedStale}. Errors: ${errors}.`,
+    );
+    if (stale > 0) {
+      console.error('Some translations are missing and were not re-stamped; run `pnpm translate`.');
       process.exit(1);
     }
     if (errors > 0) process.exit(1);

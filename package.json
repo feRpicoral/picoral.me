@@ -44,6 +44,9 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@ai-sdk/anthropic": "^3.0.81",
+    "@ai-sdk/google": "^3.0.80",
+    "@ai-sdk/openai": "^3.0.67",
     "@astrojs/check": "^0.9.4",
     "@biomejs/biome": "^1.9.4",
     "@openrouter/ai-sdk-provider": "^2.9.0",

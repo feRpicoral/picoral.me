@@ -41,7 +41,7 @@ Keystatic is available during local development at `/keystatic`. It is configure
 
 `pnpm build` runs `translate:check` first (so stale translations fail the build with no network call), then regenerates `public/llms.txt`, then runs `astro build`.
 
-Translation requires `ANTHROPIC_API_KEY` in the environment. CI only ever runs `--check`, so the key is needed locally, not on Vercel.
+Translation runs through whichever model `TRANSLATOR_MODEL` selects (in `scripts/translate/config.mjs`, default `anthropic/claude-sonnet-4-6`); override it per run with the `TRANSLATE_MODEL` env var. Model ids are `<provider>/<model>`: `anthropic/*`, `google/*`, and `openai/*` call that vendor directly (set its key — `ANTHROPIC_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`, or `OPENAI_API_KEY`), while `openrouter/*` reaches any model by slug via `OPENROUTER_API_KEY`. Keys are only needed locally for `pnpm translate`; CI runs `--check` only, so none are needed on Vercel.
 
 `pnpm translate` runs through a worker pool (default `--concurrency=4`) tuned for Anthropic's tier-1 output-tokens-per-minute limit on Sonnet 4.6. On higher tiers, pass `--concurrency=8` or more to go faster. The SDK retries 429s up to 5 times with exponential backoff; if a file still errors out, rerun `pnpm translate` and the cache will skip everything that succeeded and only retry the failed file in isolation.
 
