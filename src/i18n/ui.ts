@@ -121,7 +121,7 @@ export const ui = {
       'Sou Fernando Picoral, engenheiro de software brasileiro em Nova York. Por fora, mexo com IA — quase sempre para aprender alguma coisa nova.',
     'home.hero.ctaProjects': 'Coisas em que trabalho',
     'home.hero.ctaAbout': 'Sobre mim',
-    'home.projects.title': 'Projetos paralelos',
+    'home.projects.title': 'Projetos pessoais',
     'home.projects.lead':
       'Algumas coisas que venho construindo no meu tempo livre. Nenhuma é produto — existem porque eu queria testar alguma coisa.',
     'home.projects.allCta': 'Todos os projetos →',
@@ -137,7 +137,7 @@ export const ui = {
     'about.education.title': 'Formação',
     'projects.title': 'Projetos',
     'projects.lead':
-      'Projetos paralelos. Nenhum deles é produto — são coisas que criei para aprender alguma coisa ou resolver um problema meu.',
+      'Projetos pessoais. Nenhum deles é produto — são coisas que criei para aprender alguma coisa ou resolver um problema meu.',
     'projects.featured': 'Em destaque',
     'projects.other': 'Outros trabalhos',
     'projects.status.live': 'No ar',
