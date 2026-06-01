@@ -107,6 +107,24 @@ const experience = {
   },
 };
 
+const education = {
+  extract(fm) {
+    return [
+      { id: 'fm:degree', kind: 'frontmatter:degree', text: fm.degree },
+      { id: 'fm:detail', kind: 'frontmatter:detail', text: fm.detail },
+      { id: 'fm:location', kind: 'frontmatter:location', text: fm.location },
+    ];
+  },
+  inject(fm, byId) {
+    return {
+      ...fm,
+      degree: byId['fm:degree'],
+      detail: byId['fm:detail'],
+      location: byId['fm:location'],
+    };
+  },
+};
+
 const pages = {
   extract(fm) {
     return [
@@ -123,7 +141,7 @@ const pages = {
   },
 };
 
-export const HANDLERS = { blog, projects, experience, pages };
+export const HANDLERS = { blog, projects, experience, education, pages };
 
 export function getHandler(collection) {
   const h = HANDLERS[collection];
