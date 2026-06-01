@@ -14,7 +14,11 @@ export function formatPeriodDate(value: string | null | undefined, locale: Local
   const month = Number(monthStr);
   if (!Number.isFinite(year) || !Number.isFinite(month)) return value;
   const date = new Date(Date.UTC(year, month - 1, 1));
-  return new Intl.DateTimeFormat(bcp47(locale), { month: 'short', year: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat(bcp47(locale), {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
 }
 
 export function formatLongDate(value: Date | string, locale: Locale): string {

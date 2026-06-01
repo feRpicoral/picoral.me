@@ -1,9 +1,23 @@
 ---
 import { Image } from 'astro:assets';
 
-type Size = 'prose' | 'wide';
+type Size = 'prose' | 'chart' | 'wide';
 const ASSET_ALIAS_PREFIX = '@assets/';
 const ASSET_ROOT_PREFIX = '/src/assets/';
+const IMAGE_SIZES = {
+  prose: {
+    widths: [320, 640, 960, 1200],
+    sizes: '(min-width: 42rem) 42rem, calc(100vw - 2rem)',
+  },
+  chart: {
+    widths: [320, 640, 960, 1200],
+    sizes: '(min-width: 38rem) 38rem, calc(100vw - 2rem)',
+  },
+  wide: {
+    widths: [640, 960, 1200, 1600],
+    sizes: '(min-width: 56rem) 56rem, calc(100vw - 2.5rem)',
+  },
+} satisfies Record<Size, { widths: number[]; sizes: string }>;
 
 interface Props {
   src: string;
@@ -24,13 +38,10 @@ const imageKey = src.startsWith(ASSET_ALIAS_PREFIX)
 const image = images[imageKey]?.default;
 if (!image) throw new Error(`Unknown project image: ${src}`);
 
-const candidateWidths = size === 'wide' ? [640, 960, 1200, 1600] : [320, 640, 960, 1200];
-const widths = candidateWidths.filter((width) => width <= image.width);
+const imageSize = IMAGE_SIZES[size];
+const widths = imageSize.widths.filter((width) => width <= image.width);
 if (!widths.includes(image.width)) widths.push(image.width);
-const sizes =
-  size === 'wide'
-    ? '(min-width: 64rem) 64rem, calc(100vw - 2.5rem)'
-    : '(min-width: 42rem) 42rem, calc(100vw - 2rem)';
+const sizes = imageSize.sizes;
 ---
 
 <figure class:list={['project-image', `project-image--${size}`]}>
@@ -48,13 +59,18 @@ const sizes =
 
 <style>
   .project-image {
-    margin: 2.5rem auto;
+    margin: 2.25rem auto;
   }
   .project-image--prose {
-    width: 100%;
+    width: min(100%, 42rem);
+  }
+  .project-image--chart {
+    --project-image-width: min(38rem, calc(100vw - 2rem));
+    width: var(--project-image-width);
+    margin-left: calc((100% - var(--project-image-width)) / 2);
   }
   .project-image--wide {
-    --project-image-width: min(var(--container-content), calc(100vw - 2.5rem));
+    --project-image-width: min(56rem, calc(100vw - 2.5rem));
     width: var(--project-image-width);
     margin-left: calc((100% - var(--project-image-width)) / 2);
   }
