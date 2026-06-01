@@ -27,6 +27,24 @@ export function resolveModelConfig() {
   return { modelId: process.env.TRANSLATE_MODEL || TRANSLATOR_MODEL };
 }
 
+const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
+
+/**
+ * Max output tokens per request. Defaults to the model's general capacity; lower it
+ * via TRANSLATE_MAX_OUTPUT_TOKENS for tight provider tiers — Anthropic sizes its
+ * per-minute output-token limit off this, so on Sonnet tier 1 (8k/min) set 4096 or
+ * less, otherwise a single request claims the whole budget.
+ */
+export function resolveMaxOutputTokens() {
+  const raw = process.env.TRANSLATE_MAX_OUTPUT_TOKENS;
+  if (!raw) return DEFAULT_MAX_OUTPUT_TOKENS;
+  const n = Number.parseInt(raw, 10);
+  if (!Number.isInteger(n) || n < 1) {
+    throw new Error(`TRANSLATE_MAX_OUTPUT_TOKENS must be a positive integer, got "${raw}".`);
+  }
+  return n;
+}
+
 /**
  * Resolve the AI SDK language model for the active id. Providers read their key
  * lazily at request time, so this is only meaningfully exercised in real translate

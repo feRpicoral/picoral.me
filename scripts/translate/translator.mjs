@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { NoObjectGeneratedError, generateObject } from 'ai';
 import { z } from 'zod';
 import { LOCALE_NAMES, LOCALE_STYLE } from './config.mjs';
-import { getLanguageModel } from './model.mjs';
+import { getLanguageModel, resolveMaxOutputTokens } from './model.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROMPT_PATH = join(__dirname, 'prompt.md');
@@ -63,7 +63,7 @@ export async function translateSnippets({ locale, snippets, retryFeedback }) {
       system,
       prompt: buildUserMessage(snippets, retryFeedback),
       temperature: 0,
-      maxOutputTokens: 4096,
+      maxOutputTokens: resolveMaxOutputTokens(),
       // SDK default is 2; 5 buys headroom for provider rate-limit backoff.
       maxRetries: 5,
     }));
