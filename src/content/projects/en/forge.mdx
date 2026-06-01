@@ -1,21 +1,34 @@
 ---
 slug: forge
 title: Forge
-tagline: Personal project — a serving + benchmarking artifact for self-hosted Llama 3.1 8B (AWQ-INT4 on vLLM). Answers "should I self-host an OSS LLM instead of paying a commercial API" with a reproducible methodology.
-summary: A focused engineering artifact comparing self-hosted, AWQ-INT4-quantized Llama 3.1 8B on vLLM against commercial APIs on throughput, TTFT/TPOT under concurrency, quantization quality (MMLU/GSM8K/HellaSwag), and $/1M tokens. Serving config, benchmark harness, eval wrapper, cost model, and chart pipeline are wired up and rehearsed locally on M1; the real numbers land after the RunPod RTX A5000 run.
-status: in-development
-role: Solo — Python, vLLM, benchmarking, infra
+tagline: >-
+  Personal project - measured vLLM serving benchmark for Llama 3.1 8B on a
+  RunPod A5000, with BF16 at 2,169 total tok/s, $0.035 per 1M tokens, and AWQ
+  retaining 99.4% mean quality.
+summary: >-
+  A completed serving and benchmarking artifact for self-hosted Llama 3.1 8B on
+  vLLM. Forge compares BF16 and AWQ-INT4 on a RunPod RTX A5000 across
+  throughput, TTFT, TPOT, lm-evaluation-harness quality, and cost per million
+  tokens. BF16 was the economic winner in the measured run: 2,169 total tokens
+  per second and $0.035 per 1M tokens. AWQ retained 99.4% mean quality but was
+  slower on this setup at 1,017 total tokens per second and $0.074 per 1M
+  tokens.
+status: live
+role: Solo - Python, vLLM, benchmarking, infra
 period:
-  start: '2026-05'
+  start: 2026-05
+  end: 2026-05
 stack:
   - Python 3.12
   - uv
   - vLLM
   - AWQ-INT4 (Marlin kernels)
+  - Llama 3.1 8B
   - lm-evaluation-harness
   - Prometheus
   - Grafana
   - RunPod RTX A5000
+  - Matplotlib
   - Ruff
   - mypy (strict)
   - pytest
@@ -25,8 +38,11 @@ links:
 featured: true
 order: 6
 hasCaseStudy: true
+draft: false
 seo:
-  description: A personal project. vLLM + AWQ-INT4 self-hosted Llama 3.1 8B with throughput, latency, quality-retention, and $/1M-tokens benchmarks against commercial APIs — reproducible methodology.
+  description: >-
+    Measured vLLM serving benchmark for Llama 3.1 8B on RunPod A5000: BF16 at
+    2,169 tok/s, $0.035/1M tokens, AWQ at 99.4% quality retention.
   keywords:
     - LLM inference
     - vLLM
@@ -35,48 +51,88 @@ seo:
     - Llama 3.1
     - lm-evaluation-harness
     - cost per million tokens
-    - RunPod
+    - RunPod A5000
 faq:
   - q: What is Forge?
-    a: Forge answers one question rigorously — should I self-host an open-source LLM instead of paying a commercial API? The deliverable is a reproducible methodology, a benchmark harness on top of vllm bench serve, a quality eval via lm-evaluation-harness, a chart pipeline, and a cost model. Every claim traces back to a JSON file in results/ whose metadata names the GPU, the vLLM version, the model SHA, and the date.
-  - q: Why AWQ-INT4 on vLLM?
-    a: AWQ-INT4 with vLLM-native Marlin kernels is the fastest INT4 path on vLLM and retains ~1–2 percentage points more quality than GPTQ on the standard tasks. vLLM gives continuous batching, a KV cache, native Prometheus metrics, and an OpenAI-compatible streaming API — the stack a real product would use, not a synthetic benchmark.
+    a: >-
+      Forge is a completed serving benchmark for self-hosted Llama 3.1 8B. It
+      runs BF16 and AWQ-INT4 variants on vLLM, sweeps concurrency with
+      ShareGPT-style prompts, evaluates quality with lm-evaluation-harness, and
+      reduces the measured throughput into cost per million tokens.
+  - q: What did the paid run prove?
+    a: >-
+      BF16 was the winner on this A5000/vLLM setup: 2,169 total tokens per
+      second and $0.035 per 1M tokens. AWQ-INT4 retained 99.4% mean quality but
+      was slower, at 1,017 total tokens per second and $0.074 per 1M tokens.
+  - q: Why is the AWQ result useful if it was slower?
+    a: >-
+      It is a useful negative result. AWQ-INT4 kept quality close to BF16, but
+      did not produce the expected throughput or cost win on the measured
+      RunPod RTX A5000 configuration. The page reports that directly instead
+      of turning quantization into a generic speedup claim.
   - q: How is the methodology kept defensible?
-    a: Hardware (RunPod RTX A5000 24 GB at $0.27/hr), model SHAs (meta-llama/Llama-3.1-8B-Instruct BF16 baseline and hugging-quants AWQ-INT4 variant), vLLM version, workload (ShareGPT trace at concurrency 1/4/16/32/64, 256 prompts per level), and pricing-source dates are all committed in docs/methodology.md and the results JSON. The full pipeline is rehearsed locally on a base-M1 MacBook against a tiny model (Qwen 2.5 0.5B) before any paid GPU minute, so the harness is debugged on free hardware.
-  - q: Why the M1 rehearsal gate?
-    a: The same shell script that runs the real benchmark on RunPod runs in --rehearsal mode on M1 against the tiny model. That gate must pass before a paid GPU is rented. It catches a config typo, a parser bug, or a chart pipeline regression for free instead of for $0.27/hr.
+    a: >-
+      Hardware, model IDs, vLLM configuration, concurrency levels, prompt
+      counts, raw benchmark JSON, raw eval JSON, and chart JSON are committed in
+      the Forge repository. The full pipeline is rehearsed locally on M1 before
+      paid GPU time is used.
 ---
 
 ## What it is
 
 A focused engineering artifact, not a SaaS. The shipped pieces:
 
-- **Serving** — env-driven vLLM config with continuous batching, KV cache, and an OpenAI-compatible streaming API. Native Prometheus metrics exported and scraped into an auto-provisioned Grafana dashboard.
-- **Quantization** — AWQ-INT4 recipe documented in `forge/quantization/awq.py` against `meta-llama/Llama-3.1-8B-Instruct`, served with vLLM's Marlin kernels.
-- **Benchmark harness** — wraps `vllm bench serve` with a ShareGPT trace, sweeps concurrency 1/4/16/32/64 (256 prompts per level), and writes structured JSON to `results/bench/` with the GPU, vLLM version, and model SHA in each record's metadata.
-- **Quality eval** — `lm-evaluation-harness` with the `local-completions` model type pointed at the running vLLM endpoint. Tasks: MMLU (5-shot, `acc`), GSM8K (5-shot, `exact_match`), HellaSwag (5-shot, `acc_norm`). Retention math lives in `forge/eval/`.
-- **Cost model** — `$/1M tokens = gpu_hourly_usd * 1e6 / (3600 * sustained_throughput * utilization)`. Headline number uses peak throughput at `utilization=1.0`; the cost-comparison JSON next to the chart reports the 80%-utilization sensitivity.
-- **Chart pipeline** — five canonical charts (throughput vs concurrency, TTFT vs concurrency, TPOT vs concurrency, cost per 1M tokens, quantization quality retention), regenerated from `results/` with one `make chart` invocation.
-- **CI** — GitHub Actions runs Ruff + mypy (strict) + pytest on every PR. No GPU jobs in CI — benchmark reproduction is a manual, methodology-driven step on RunPod.
+* **Serving** - env-driven vLLM config with continuous batching, KV cache, and an OpenAI-compatible streaming API, plus native Prometheus metrics and Grafana provisioning.
+* **Benchmark harness** - `vllm bench serve` wrapped around a ShareGPT trace, sweeping concurrency 1, 4, 16, 32, and 64 with 256 prompts at each level.
+* **Model comparison** - BF16 `meta-llama/Llama-3.1-8B-Instruct` versus `hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4`.
+* **Quality eval** - `lm-evaluation-harness` against the running vLLM server on MMLU, GSM8K, and HellaSwag.
+* **Cost model** - measured throughput turned into dollars per million tokens, compared with GPT-4o, GPT-4o mini, Claude Sonnet, and Claude Haiku.
+* **Charts and CI** - result JSON drives the chart pipeline; CI covers parsers, config validation, cost math, and chart data shaping.
 
 ## Why I built it
 
-To prove I can serve and optimize an open-source LLM end-to-end — not just call a hosted API. The interesting question isn't "can vLLM run Llama 3.1 8B" (yes, the docs cover that) — it's "what does the defensible $/1M-tokens number look like once you account for utilization, p99 latency, and quality regression from quantization?" That's what Forge measures, and it traces every number back to a JSON file you can inspect.
+To answer a production question with measured numbers: should I self-host an open model instead of paying a commercial API, and does INT4 quantization improve the economics on a cheap 24 GB GPU?
+
+Forge answers both. BF16 Llama 3.1 8B on the RunPod A5000 was much cheaper than hosted frontier APIs on raw token cost. AWQ-INT4 kept quality but did not improve throughput or cost in this particular vLLM/A5000 setup.
+
+## Measured result
+
+BF16 was the throughput winner. At concurrency 64, it served 2,169 total tokens per second, compared with 1,017 total tokens per second for AWQ-INT4 on the same A5000 pod.
+
+<ProjectImage src="/src/assets/projects/forge/throughput-vs-concurrency.png" alt="Line chart comparing BF16 and AWQ total-token throughput across concurrency levels on Forge." caption="BF16 peaked at 2,169 total tokens per second; AWQ peaked at 1,017." size="chart" />
+
+Latency split by metric. AWQ had lower high-concurrency p99 time-to-first-token, 508 ms at concurrency 64 versus 2,822 ms for BF16. BF16 decoded faster: mean time per output token at concurrency 64 was 52.7 ms versus 88.0 ms for AWQ.
+
+<ProjectImage src="/src/assets/projects/forge/ttft-vs-concurrency.png" alt="Line chart comparing p99 time to first token for BF16 and AWQ across concurrency levels." caption="AWQ had lower p99 TTFT under high concurrency in this run." size="chart" />
+
+<ProjectImage src="/src/assets/projects/forge/tpot-vs-concurrency.png" alt="Line chart comparing mean time per output token for BF16 and AWQ across concurrency levels." caption="BF16 decoded faster, which is why it won throughput and cost." size="chart" />
+
+## Cost
+
+At $0.27/hr compute, BF16 cost $0.0346 per 1M total tokens at measured peak throughput. AWQ cost $0.0737 per 1M total tokens because it was slower. Against GPT-4o blended pricing at $6.25 per 1M tokens, the measured compute-only ratios are about 181x cheaper for BF16 and 85x cheaper for AWQ before storage and operational overhead.
+
+<ProjectImage src="/src/assets/projects/forge/cost-per-1m-tokens.png" alt="Bar chart comparing Forge BF16 and AWQ cost per million tokens against commercial API prices." caption="Compute-only self-hosted token cost, using measured A5000 throughput." size="chart" />
+
+## Quality
+
+AWQ-INT4 retained 99.4% mean quality versus BF16 across the three eval tasks. It lost 1.97 percentage points on MMLU, lost 0.85 points on HellaSwag, and gained 1.52 points on GSM8K. That is good enough quality retention for many serving experiments, but the benchmark still favored BF16 because AWQ was slower.
+
+<ProjectImage src="/src/assets/projects/forge/quality-retention.png" alt="Bar chart showing AWQ quality retention versus BF16 on GSM8K, HellaSwag, MMLU, and the mean." caption="AWQ retained 99.4% mean quality, but quality retention did not translate into a cost win here." size="chart" />
 
 ## How it works
 
 ### Reproducibility as a first-class constraint
 
-Methodology, hardware, model SHAs, exact vLLM version, AWQ recipe, and pricing-source dates are committed in `docs/methodology.md` and the per-run metadata. Anyone with the methodology doc and a RunPod account can reproduce the numbers — that's the point of the deliverable. Versions are pinned in `uv.lock`, with the GPU-coupled dependencies (vLLM, lm-eval, transformers) pinned separately in `constraints/serve.txt` and `constraints/eval.txt` so the CI image can install them without a GPU.
+Methodology, hardware, model IDs, exact vLLM setup, workload, pricing constants, and generated results are committed in the Forge repository. The raw benchmark files live under `results/bench/full-*`, raw eval under `results/eval/full`, and chart data under `results/charts`.
 
 ### M1 rehearsal gate
 
-The same shell script that runs the paid benchmark on RunPod runs in `--rehearsal` mode on a base-M1 MacBook against `Qwen/Qwen2.5-0.5B-Instruct`. The rehearsal must pass before any paid GPU is rented. Config typos, parser bugs, and chart-pipeline regressions cost $0 on M1 instead of $0.27/hr on an A5000.
+The same shell script that runs on RunPod runs locally in rehearsal mode against `Qwen/Qwen2.5-0.5B-Instruct`. That catches parser, config, chart, and orchestration bugs before paid GPU time starts.
 
 ### Strategic test coverage
 
-Tests cover the load-bearing utilities — cost model, results parsers, chart-data shaping, config validators — not LLM outputs. The LLM is the system under test; the tests verify the harness around it.
+Tests cover the load-bearing utilities around the model: cost math, result parsers, chart-data shaping, config validation, and benchmark metadata. The model output itself is measured in the paid run, not mocked into unit tests.
 
 ## Status
 
-The serving config, quantization recipe, benchmark harness, quality eval, cost model, and chart pipeline are landed and rehearsed end-to-end on M1 against a tiny model. The paid RunPod RTX A5000 run that replaces every illustrative number with a measured one is queued; the final case study writeup follows once those numbers land.
+Done. The core Forge milestone is complete: paid BF16 and AWQ serving runs, quality eval, cost analysis, charts, methodology docs, and reproduction guides are landed. The important result is narrower and more useful than the original assumption: self-hosted BF16 was extremely cheap on the A5000, while AWQ-INT4 was a quality-retention success but not a throughput win on this setup.
