@@ -2,6 +2,7 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import matter from 'gray-matter';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
@@ -40,23 +41,12 @@ const PAGE_DESCRIPTIONS = {
   '/projects': 'Personal side projects I have built or am building.',
 };
 
-const FRONTMATTER_RE = /^---\n([\s\S]*?)\n---/;
-
 const readFrontmatter = async (file) => {
   const txt = await readFile(file, 'utf-8');
-  const m = FRONTMATTER_RE.exec(txt);
-  if (!m) return {};
-  const out = {};
-  for (const line of m[1].split('\n')) {
-    const idx = line.indexOf(':');
-    if (idx < 0) continue;
-    const key = line.slice(0, idx).trim();
-    let val = line.slice(idx + 1).trim();
-    if (val.startsWith("'") || val.startsWith('"')) val = val.slice(1, -1);
-    out[key] = val;
-  }
-  return out;
+  return matter(txt).data;
 };
+
+const isTrue = (value) => value === true || value === 'true';
 
 const listMdxIn = async (dir) => {
   try {
@@ -90,13 +80,14 @@ if (enabled('projects')) {
   const projects = [];
   for (const file of projectFiles.sort()) {
     const fm = await readFrontmatter(file);
-    if (fm.draft === 'true') continue;
+    if (isTrue(fm.draft)) continue;
+    const slug = file.replace(/.*\//, '').replace(/\.(md|mdx)$/, '');
     projects.push({
-      slug: fm.slug,
+      slug,
       title: fm.title,
       tagline: fm.tagline,
-      hasCaseStudy: fm.hasCaseStudy === 'true',
-      featured: fm.featured === 'true',
+      hasCaseStudy: isTrue(fm.hasCaseStudy),
+      featured: isTrue(fm.featured),
       order: Number(fm.order ?? '0'),
     });
   }
@@ -113,7 +104,7 @@ if (enabled('blog')) {
   const postFiles = await listMdxIn(join(repoRoot, 'src/content/blog/en'));
   for (const file of postFiles.sort().reverse()) {
     const fm = await readFrontmatter(file);
-    if (fm.draft === 'true') continue;
+    if (isTrue(fm.draft)) continue;
     const slug = file.replace(/.*\//, '').replace(/\.(md|mdx)$/, '');
     lines.push(`- [${fm.title}](${SITE.url}/blog/${slug}): ${fm.description}`);
   }

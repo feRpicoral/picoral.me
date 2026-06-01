@@ -8,7 +8,7 @@ import Section from '~/components/ui/Section.astro';
 import { type Locale, SITE } from '~/config/site.ts';
 import { localizePath, useTranslations } from '~/i18n/utils.ts';
 import Page from '~/layouts/Page.astro';
-import { getLocalizedCollection } from '~/lib/content.ts';
+import { getCanonicalSlug, getLocalizedCollection } from '~/lib/content.ts';
 import { faqPageSchema, personSchema, websiteSchema } from '~/lib/schema.ts';
 
 export function getStaticPaths() {
@@ -90,16 +90,19 @@ const jsonLd = [personSchema(), websiteSchema(locale), faqPageSchema(faqItems)];
           lead={t('home.projects.lead')}
         />
         <div class="grid">
-          {featured.map((project) => (
-            <ProjectCard
-              href={localizePath(`/projects/${project.data.slug}`, locale)}
-              title={project.data.title}
-              tagline={project.data.tagline}
-              status={project.data.status}
-              stack={project.data.stack}
-              locale={locale}
-            />
-          ))}
+          {featured.map((project) => {
+            const slug = getCanonicalSlug(project.id);
+            return (
+              <ProjectCard
+                href={localizePath(`/projects/${slug}`, locale)}
+                title={project.data.title}
+                tagline={project.data.tagline}
+                status={project.data.status}
+                stack={project.data.stack}
+                locale={locale}
+              />
+            );
+          })}
         </div>
         <div class="all">
           <a href={localizePath('/projects', locale)} class="all-link">
