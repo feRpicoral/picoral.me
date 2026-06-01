@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { NoObjectGeneratedError, generateObject } from 'ai';
 import { z } from 'zod';
 import { LOCALE_NAMES, LOCALE_STYLE } from './config.mjs';
-import { getLanguageModel, resolveMaxOutputTokens } from './model.mjs';
+import { resolveMaxOutputTokens, resolveModelConfig } from './model.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROMPT_PATH = join(__dirname, 'prompt.md');
@@ -58,7 +58,7 @@ export async function translateSnippets({ locale, snippets, retryFeedback }) {
   let object;
   try {
     ({ object } = await generateObject({
-      model: getLanguageModel(),
+      model: resolveModelConfig().modelId,
       schema: TRANSLATIONS_SCHEMA,
       system,
       prompt: buildUserMessage(snippets, retryFeedback),

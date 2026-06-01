@@ -80,9 +80,7 @@ function parseList(value) {
 function parseArgs(argv) {
   const program = new Command()
     .name('translate-content')
-    .description(
-      'Generate locale translations of src/content/*/en/* via the configured model provider.',
-    )
+    .description('Generate locale translations of src/content/*/en/* via the Vercel AI Gateway.')
     .option('--check', 'exit non-zero if anything is stale or missing (never calls the API)', false)
     .option('--force', 'regenerate all translations even on cache hit', false)
     .option(

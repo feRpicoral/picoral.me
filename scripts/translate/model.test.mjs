@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, test } from 'node:test';
 import { TRANSLATOR_MODEL } from './config.mjs';
-import { getLanguageModel, resolveMaxOutputTokens, resolveModelConfig } from './model.mjs';
+import { resolveMaxOutputTokens, resolveModelConfig } from './model.mjs';
 
 let savedModel;
 let savedMaxTokens;
@@ -26,12 +26,6 @@ test('resolveModelConfig honors the TRANSLATE_MODEL override', () => {
   process.env.TRANSLATE_MODEL = 'google/gemini-2.5-flash-lite';
 
   assert.equal(resolveModelConfig().modelId, 'google/gemini-2.5-flash-lite');
-});
-
-test('getLanguageModel throws on an unregistered provider', () => {
-  process.env.TRANSLATE_MODEL = 'bogus/whatever';
-
-  assert.throws(() => getLanguageModel());
 });
 
 test('resolveMaxOutputTokens defaults when TRANSLATE_MAX_OUTPUT_TOKENS is unset', () => {
