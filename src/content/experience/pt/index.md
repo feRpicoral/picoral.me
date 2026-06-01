@@ -2,12 +2,12 @@
 education:
   - degree: Bacharelado em Ciência da Computação
     school: University of Colorado Boulder
-    detail: 'CRA na área principal 3,9 / 4,0'
+    detail: 'CRA na área principal: 3,9 / 4,0'
     period:
       start: 2022-08-01T00:00:00.000Z
       end: 2026-05-01T00:00:00.000Z
     location: 'Boulder, CO'
-  - degree: Ênfase em Administração de Empresas
+  - degree: Curso Complementar em Administração de Empresas
     school: University of Colorado Boulder
     detail: 'CRA 3,9 / 4,0'
     period:
@@ -21,11 +21,11 @@ work:
     period:
       start: 2026-09-01T00:00:00.000Z
     summary: >-
-      Retornando ao Google em tempo integral como Engenheiro de Software em Nova
-      York em setembro de 2026, após três estágios na empresa.
+      Retorna ao Google como Engenheiro de Software em Nova York em setembro de
+      2026, após três estágios na empresa.
     highlights:
       - >-
-        Retornando em tempo integral após três estágios no Google em Kirkland
+        Retorna em regime integral após três estágios no Google: Kirkland
         (2023), Sunnyvale (2024) e Nova York (2025).
     tech: []
     type: fulltime
@@ -38,16 +38,16 @@ work:
       start: 2025-05-01T00:00:00.000Z
       end: 2025-08-01T00:00:00.000Z
     summary: >-
-      Trabalho de backend no Google Keep — migrando uma fila Spanner
-      multi-tenant, expandindo a substituição para todos os usuários e avançando
-      em direção ao agente de IA do Keep.
+      Trabalho de backend no Google Keep — migração de uma fila Spanner
+      multi-tenant, rollout da substituta para todos os usuários e
+      desenvolvimento do agente de IA do Keep.
     highlights:
       - >-
-        Liderou o design e a migração completos de uma fila Spanner multi-tenant
-        para três filas single-tenant.
+        Liderou o design e a migração de ponta a ponta de uma fila Spanner
+        multi-tenant para três filas single-tenant.
       - >-
-        Expandiu as novas filas para 15k RPS em produção usando experimentos
-        Mendel.
+        Fez o rollout das novas filas para 15k RPS em produção usando
+        experimentos Mendel.
       - Implementou endpoints gRPC em Java.
       - Criou system prompts para o agente de IA do Keep.
     tech:
@@ -64,12 +64,10 @@ work:
       start: 2025-01-01T00:00:00.000Z
       end: 2025-06-01T00:00:00.000Z
     summary: >-
-      Transitou de CFO para Conselheiro do Conselho na Trius para se dedicar ao
+      Passou de CFO a Conselheiro do Conselho na Trius para se dedicar ao
       estágio no Google em Nova York.
     highlights:
-      - >-
-        Permaneceu como conselheiro da equipe fundadora após deixar o cargo de
-        CFO.
+      - Continuou como conselheiro do time fundador após deixar o cargo de CFO.
     tech: []
     type: founder
     link: 'https://www.linkedin.com/company/101222529'
@@ -80,9 +78,7 @@ work:
     period:
       start: 2023-11-01T00:00:00.000Z
       end: 2025-01-01T00:00:00.000Z
-    summary: >-
-      Cofundou a Trius e liderou a área financeira da empresa como CFO por 14
-      meses.
+    summary: Cofundou a Trius e liderou a área financeira como CFO por 14 meses.
     highlights:
       - Cofundou a empresa.
       - Responsável pela área financeira como CFO por 14 meses.
@@ -97,16 +93,16 @@ work:
       start: 2024-05-01T00:00:00.000Z
       end: 2024-08-01T00:00:00.000Z
     summary: >-
-      Trabalho full-stack de funcionalidades no Data Bridge Console do Google —
-      backend, RPCs, frontend em AngularDart e um backfill de alto throughput no
-      Spanner.
+      Desenvolvimento full-stack de funcionalidades no Data Bridge Console do
+      Google — backend, RPCs, frontend em AngularDart e um backfill de alto
+      throughput no Spanner.
     highlights:
       - >-
         Projetou e implementou tags para o Data Bridge Console do Google,
         melhorando a identificação de recursos e a eficiência de busca.
       - Criou múltiplos RPCs em Java e Kotlin.
       - >-
-        Fez backfill de um banco de dados Spanner em produção com centenas de
+        Fez o backfill de um banco de dados Spanner em produção com centenas de
         milhares de entradas usando queries SQL de alto desempenho.
       - Desenvolveu componentes AngularDart para edição e visualização de tags.
     tech:
@@ -153,13 +149,13 @@ work:
       end: 2023-10-01T00:00:00.000Z
     summary: >-
       Cofundou o AnoniMe, um app social anônimo baseado em localização onde os
-      usuários só interagem com pessoas dentro de uma distância definida.
-      Liderou produto, captação de recursos, marketing e frontend.
+      usuários só interagem com pessoas dentro de um raio definido. Liderou
+      produto, captação, marketing e frontend.
     highlights:
-      - Levou a empresa a uma avaliação de 500K USD em apenas 5 meses.
+      - Levou a empresa a uma valuation de 500K USD em apenas 5 meses.
       - Captou mais de 100K USD em investimentos em menos de 8 meses.
       - Desenvolveu o frontend com React Native e Expo.
-      - Implementou estratégias de marketing altamente eficientes.
+      - Implementou estratégias de marketing de alta eficiência.
       - Gerenciou estratégias de negócio e roadmap de produto.
     tech:
       - React Native
@@ -203,8 +199,8 @@ work:
       start: 2022-10-01T00:00:00.000Z
       end: 2023-02-01T00:00:00.000Z
     summary: >-
-      Selecionado para liderar um pequeno time de desenvolvimento que
-      automatizou o processo de alocação de projetos de conclusão de curso do
+      Selecionado para liderar um pequeno time de desenvolvimento responsável
+      por automatizar o processo de alocação de projetos de conclusão do
       programa de mestrado MENV.
     highlights:
       - >-
@@ -227,9 +223,9 @@ work:
       start: 2021-06-01T00:00:00.000Z
       end: 2022-06-01T00:00:00.000Z
     summary: >-
-      Primeiro cargo de engenharia em tempo integral — trabalho full-stack de
-      dashboard para uma gestora de ativos, um avaliador de fórmulas Excel em
-      AWS Lambda com Kotlin e uma série de POCs de integração.
+      Primeiro emprego como engenheiro — desenvolvimento full-stack de dashboard
+      para uma gestora de ativos, um avaliador de fórmulas Excel em AWS Lambda
+      com Kotlin e uma série de POCs de integração.
     highlights:
       - >-
         Desenvolveu um dashboard para a plataforma web de uma gestora de ativos
@@ -263,8 +259,8 @@ work:
       start: 2020-11-01T00:00:00.000Z
       end: 2022-02-01T00:00:00.000Z
     summary: >-
-      Fundou a Stockvio, uma plataforma que automatizava o cálculo de imposto
-      sobre ganho de capital para pessoas físicas brasileiras que operavam na B3
+      Fundou a Stockvio, uma plataforma que automatizava o cálculo de imposto de
+      renda sobre ganhos de capital para pessoas físicas que operam na B3
       (BOVESPA).
     highlights:
       - >-
@@ -280,7 +276,8 @@ work:
     type: founder
     order: 10
 _source:
-  hash: fa1bf7fa478c04d7
+  hash: 8ddfb17895786c4b
   locale: en
-  translatedAt: '2026-06-01T02:47:02.963Z'
+  translatedAt: '2026-06-01T03:00:04.680Z'
 ---
+

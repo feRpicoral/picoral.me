@@ -3,14 +3,13 @@ slug: visible-referral-bot
 title: Visible Referral Bot
 tagline: >-
   Bot de GitHub Actions que publica automáticamente un código de referido de
-  Visible en el megahilo quincenal de r/Visible, de forma programada e
-  idempotente.
+  Visible en el megahilo quincenal de r/Visible, con horario programado e
+  idempotencia.
 summary: >-
   Automatización open-source con GitHub Actions que encuentra el megahilo
-  quincenal de referidos de r/Visible en Reddit y publica un código de referido
-  configurado, de forma programada e idempotente. Dos variantes — una basada en
-  PRAW y otra en Chromium headless — para lidiar con los cambios de
-  autenticación de Reddit.
+  quincenal de referidos en r/Visible y publica un código configurado, con
+  horario programado e idempotencia. Dos variantes — una basada en PRAW y otra
+  en Chromium headless — para lidiar con los cambios de autenticación de Reddit.
 status: live
 role: 'Solo — Python, Playwright, GitHub Actions'
 period:
@@ -30,10 +29,10 @@ seo:
     Visible referral bot — automatización con GitHub Actions por Fernando
     Picoral.
 _source:
-  hash: 27b9c8b57b57d03f
+  hash: b5caf2f0bc69ba19
   locale: en
-  translatedAt: '2026-05-25T19:46:42.643Z'
+  translatedAt: '2026-06-01T02:14:48.128Z'
 ---
-Una pequeña utilidad open-source que construí para resolver mi propio problema. r/Visible tiene un megahilo quincenal donde los usuarios publican códigos de referido; el mío seguía venciendo antes de que expirara. El bot elimina esa fricción con un GitHub Action programado con cron.
+Una pequeña utilidad open-source que hice para resolver mi propio problema. r/Visible tiene un megahilo quincenal donde los usuarios publican códigos de referido; el mío siempre vencía antes de expirar. El bot elimina esa fricción con un GitHub Action programado por cron.
 
 Dos variantes — una usando PRAW y otra usando un navegador Chromium headless vía Playwright, para los casos en que el flujo de autenticación de Reddit bloquea los tokens de API. Ambas escriben un archivo de estado para registrar el último hilo publicado y así ser idempotentes entre reinicios.

@@ -3,14 +3,13 @@ slug: relay
 title: Relay
 tagline: >-
   Proyecto personal explorando IA de voz en tiempo real. El caso de uso es una
-  recepcionista de clínica; el objetivo real era alcanzar un presupuesto de
-  latencia percibida por el usuario de menos de un segundo con instrumentación
-  completa por tramo.
+  recepcionista de clínica; el objetivo real era lograr una latencia percibida
+  por el usuario menor a un segundo con instrumentación completa por tramo.
 summary: >-
-  Un agente de IA de voz que atiende llamadas entrantes 24/7 — calificando,
-  agendando via Cal.com, transfiriendo a un humano cuando es necesario — con
-  latencia de respuesta menor a un segundo y un dashboard en vivo para
-  operadores con forma de onda, transcripción en streaming y latencia por tramo.
+  Un agente de IA de voz que atiende llamadas entrantes 24/7 — califica, agenda
+  via Cal.com, transfiere a un humano cuando hace falta — con latencia de
+  respuesta menor a un segundo y un dashboard en vivo con forma de onda,
+  transcripción en streaming y latencia por tramo.
 status: live
 role: 'Solo — arquitectura, pipeline de voz, frontend, deploy'
 period:
@@ -37,7 +36,7 @@ order: 2
 hasCaseStudy: true
 seo:
   description: >-
-    Un proyecto personal. Agente de IA de voz sobre LiveKit + Deepgram + Claude
+    Proyecto personal. Agente de IA de voz sobre LiveKit + Deepgram + Claude
     Haiku 4.5 + Cartesia + Twilio, con latencia percibida por el usuario menor a
     un segundo.
   keywords:
@@ -54,7 +53,7 @@ faq:
     a: >-
       Relay es una recepcionista de IA de voz multi-tenant para negocios de
       servicios como clínicas. Atiende llamadas entrantes 24/7, califica leads,
-      agenda citas via Cal.com y transfiere a un humano cuando es necesario. Los
+      agenda citas via Cal.com y transfiere a un humano cuando hace falta. Los
       operadores ven cada llamada en vivo en el dashboard con forma de onda,
       transcripción en streaming y medidor de latencia por tramo.
   - q: ¿Cuál es el presupuesto de latencia de Relay?
@@ -63,16 +62,16 @@ faq:
       desde el fin del habla del usuario hasta el inicio del audio del agente.
       Cada tramo se instrumenta por separado — STT finalize, LLM TTFT, LLM
       total, TTS TTFA, tool total, end-to-end — y se expone como un medidor en
-      vivo que se colorea de rojo cuando algún tramo supera su presupuesto.
+      vivo que se pone rojo cuando algún tramo supera su presupuesto.
   - q: ¿Por qué LiveKit + Deepgram + Cartesia en lugar de un solo proveedor?
     a: >-
-      Cada tramo es el mejor de su clase y reemplazable de forma independiente.
-      LiveKit maneja la terminación SIP desde Twilio y la sala de audio. El STT
-      en streaming de Deepgram incluye VAD y detección de turno en una sola API,
-      eliminando la varianza de 150–300ms de pipelines separados de VAD +
-      silence-timer. El Sonic-3 de Cartesia es TTS genuinamente más rápido que
-      el tiempo real, que es lo que hace posible el presupuesto de menos de un
-      segundo.
+      Cada tramo es el mejor de su clase y se puede reemplazar de forma
+      independiente. LiveKit maneja la terminación SIP desde Twilio y la sala de
+      audio. El STT en streaming de Deepgram incluye VAD y detección de turno en
+      una sola API, eliminando la varianza de 150–300ms de pipelines separados
+      de VAD + temporizador de silencio. Sonic-3 de Cartesia es TTS genuinamente
+      más rápido que el tiempo real, que es lo que hace posible el presupuesto
+      menor a un segundo.
   - q: ¿Cómo funciona el aislamiento multi-tenant en Relay?
     a: >-
       Tres capas — scoping a nivel de fila en Postgres por organizationId,
@@ -81,26 +80,26 @@ faq:
       organización desde los headers SIP para que una ruta mal configurada nunca
       pueda conectarse a la sala de otro tenant.
 _source:
-  hash: 27a8cf3cb223e83b
+  hash: 41c0df5d400e41d4
   locale: en
-  translatedAt: '2026-05-25T19:47:16.684Z'
+  translatedAt: '2026-06-01T02:14:10.377Z'
 ---
 ## Qué hace
 
-Un administrador de clínica se registra, crea una organización y configura un agente — prompt de persona, voz, horario de atención, base de conocimiento de preguntas frecuentes. Apunta un número de Twilio al trunk SIP y listo.
+Un admin de clínica se registra, crea una organización y configura un agente — prompt de persona, voz, horario de atención, base de conocimiento de preguntas frecuentes. Apunta un número de Twilio al SIP trunk y listo.
 
-Una persona llama. Aproximadamente medio segundo después de que termina de hablar, el agente responde con una voz natural. Mientras la llamada está en curso:
+Un llamante marca. Aproximadamente medio segundo después de terminar de hablar, el agente responde con una voz natural. Mientras la llamada está en curso:
 
 1. Una forma de onda en vivo pulsa al ritmo del audio entrante.
-2. La transcripción se completa token a token con etiquetas de hablante por turno.
+2. La transcripción se va completando token a token con etiquetas de hablante por turno.
 3. Un medidor de latencia muestra STT, LLM TTFT, TTS TTFA y p95 end-to-end en tiempo real, con cada tramo en rojo cuando supera su presupuesto.
 4. Cada herramienta que invoca el agente — `check_availability`, `lookup_kb`, `book_appointment`, `transfer_to_human` — aparece en una línea de tiempo inline con input, output y duración.
 
-El operador puede tomar el control de la llamada desde el dashboard en cualquier momento.
+El operador puede tomar la llamada desde el dashboard en cualquier momento.
 
-Cuando la llamada termina, un job de Inngest descarga la grabación, le pide a Claude Sonnet 4.6 que produzca un resumen estructurado, clasifica el resultado (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), puntúa el sentimiento y extrae temas. La página de detalle muestra la grabación en un reproductor con scrubbing y la transcripción resaltando el segmento que se está hablando.
+Cuando la llamada termina, un job de Inngest descarga la grabación, le pide a Claude Sonnet 4.6 que genere un resumen estructurado, clasifica el resultado (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), puntúa el sentimiento y extrae temas. La página de detalle muestra la grabación en un reproductor con scrubbing y la transcripción resaltando el segmento que se está escuchando.
 
-El mismo dashboard incluye campañas salientes (carga de CSV, respeto de horario laboral, reintentos con cooldown), una página de analíticas (volumen, conversión, latencia p95, heatmap por hora y día de la semana) y una integración con Cal.com para agendar citas durante la llamada.
+El mismo dashboard incluye campañas salientes (carga de CSV, respeto de horario laboral, reintentos con cooldown), una página de analíticas (volumen, conversión, latencia p95, heatmap por hora y día de la semana) e integración con Cal.com para agendar citas durante la llamada.
 
 ## Por qué lo construí
 
@@ -112,10 +111,10 @@ No es un producto — es un proyecto personal. Quería construir la experiencia 
 
 - Twilio termina la llamada PSTN y la conecta a LiveKit Cloud via SIP.
 - Un worker Node de larga duración se une a la sala de LiveKit y ejecuta el loop de conversación. El worker se despliega por separado de la app Next.js — las funciones de Vercel no pueden mantener un websocket abierto durante una llamada de 10 minutos.
-- Deepgram maneja STT, VAD y detección de turno en una sola API en streaming. Los eventos de fin de turno disparan el LLM, eliminando la varianza de 150–300ms de pipelines separados de VAD + silence-timer.
+- Deepgram maneja STT, VAD y detección de turno en una sola API en streaming. Los eventos de fin de turno disparan el LLM, eliminando la varianza de 150–300ms de pipelines separados de VAD + temporizador de silencio.
 - Claude Haiku 4.5 conduce la conversación. Los tokens en streaming se dividen oración por oración y se pasan a Cartesia Sonic-3 para que el audio empiece a reproducirse antes de que el LLM termine de generar.
-- El uso de herramientas es nativo al llamado del Anthropic SDK. Cuatro herramientas están disponibles durante la llamada: `check_availability`, `book_appointment`, `lookup_kb`, `transfer_to_human`. Cada herramienta es validada con Zod, registrada con input/output/duración, y el LLM continúa con el resultado de la herramienta como un turno normal.
-- La interrupción adaptativa / barge-in cancela la generación del LLM en curso y vacía la cola de audio del TTS en el momento en que el usuario empieza a hablar.
+- El uso de herramientas es nativo al llamado del Anthropic SDK. Cuatro herramientas están disponibles durante la llamada: `check_availability`, `book_appointment`, `lookup_kb`, `transfer_to_human`. Cada herramienta se valida con Zod, se registra con input/output/duración, y el LLM continúa con el resultado de la herramienta como un turno normal.
+- La interrupción adaptativa / barge-in cancela la generación del LLM en curso y vacía la cola de audio TTS en el momento en que el usuario empieza a hablar.
 - La latencia se instrumenta por tramo y se escribe en la base de datos para el medidor en vivo y el dashboard de analíticas.
 
 ### B2B multi-tenant
@@ -124,4 +123,4 @@ Tres capas de aislamiento de tenant — scoping a nivel de fila en Postgres, gua
 
 ## Estado
 
-Demo en vivo en [relay-five-peach.vercel.app](https://relay-five-peach.vercel.app). El walkthrough en Loom y el caso de estudio completo son los próximos pasos.
+Demo en vivo en [relay-five-peach.vercel.app](https://relay-five-peach.vercel.app). El walkthrough en Loom y el caso de estudio completo vienen después.

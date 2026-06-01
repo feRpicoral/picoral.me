@@ -2,7 +2,7 @@
  * Bump this when changing the prompt template, the per-collection field handlers,
  * or any other input to translation that should invalidate every existing cache entry.
  */
-export const TRANSLATOR_CONFIG_VERSION = 1;
+export const TRANSLATOR_CONFIG_VERSION = 2;
 
 export const TRANSLATOR_MODEL = 'claude-sonnet-4-6';
 

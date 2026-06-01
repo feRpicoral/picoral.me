@@ -21,11 +21,11 @@ work:
     period:
       start: 2026-09-01T00:00:00.000Z
     summary: >-
-      Regresa a Google como Ingeniero de Software de tiempo completo en Nueva
-      York en septiembre de 2026, tras tres pasantías en la empresa.
+      Regresa a Google como Ingeniero de Software en Nueva York en septiembre de
+      2026, tras tres pasantías en la empresa.
     highlights:
       - >-
-        Regresa de tiempo completo tras tres pasantías en Google: Kirkland
+        Regresa a tiempo completo tras tres pasantías en Google: Kirkland
         (2023), Sunnyvale (2024) y Nueva York (2025).
     tech: []
     type: fulltime
@@ -38,18 +38,18 @@ work:
       start: 2025-05-01T00:00:00.000Z
       end: 2025-08-01T00:00:00.000Z
     summary: >-
-      Trabajo de backend en Google Keep — migrando una cola Spanner
-      multi-tenant, escalando el reemplazo a todos los usuarios y avanzando
-      hacia el agente de IA de Keep.
+      Trabajo de backend en Google Keep — migración de una cola Spanner
+      multi-tenant, despliegue del reemplazo a todos los usuarios, y desarrollo
+      del agente de IA de Keep.
     highlights:
       - >-
         Lideró el diseño y la migración de extremo a extremo de una cola Spanner
         multi-tenant a tres colas single-tenant.
       - >-
-        Escaló las nuevas colas a 15k RPS en producción usando experimentos de
+        Desplegó las nuevas colas a 15k RPS en producción usando experimentos de
         Mendel.
       - Implementó endpoints gRPC en Java.
-      - Creó system prompts para el agente de IA de Keep.
+      - Creó los system prompts para el agente de IA de Keep.
     tech:
       - Java
       - gRPC
@@ -79,11 +79,11 @@ work:
       start: 2023-11-01T00:00:00.000Z
       end: 2025-01-01T00:00:00.000Z
     summary: >-
-      Cofundó Trius y lideró la función financiera de la empresa como CFO
-      durante 14 meses.
+      Cofundó Trius y lideró las finanzas de la empresa como CFO durante 14
+      meses.
     highlights:
       - Cofundó la empresa.
-      - Estuvo a cargo de la función financiera como CFO durante 14 meses.
+      - Estuvo a cargo de las finanzas como CFO durante 14 meses.
     tech: []
     type: founder
     link: 'https://www.linkedin.com/company/101222529'
@@ -105,7 +105,7 @@ work:
       - Creó múltiples RPCs en Java y Kotlin.
       - >-
         Realizó el backfill de una base de datos Spanner en producción con
-        cientos de miles de entradas usando consultas SQL de alto rendimiento.
+        cientos de miles de entradas usando queries SQL de alto rendimiento.
       - >-
         Desarrolló componentes en AngularDart para edición y visualización de
         etiquetas.
@@ -130,14 +130,14 @@ work:
       experimentos con lentes de AR.
     highlights:
       - >-
-        Construyó herramientas de software internas para simplificar la
+        Desarrolló herramientas de software interno para simplificar la
         configuración y ejecución de experimentos de investigación.
       - >-
         Creó una aplicación móvil con detección de objetos por IA integrada para
         recolección de datos en campo.
       - >-
         Implementó una plataforma web que permite a investigadores ejecutar
-        estudios usando lentes de AR.
+        estudios con lentes de AR.
     tech:
       - TypeScript
       - React
@@ -154,14 +154,14 @@ work:
       end: 2023-10-01T00:00:00.000Z
     summary: >-
       Cofundó AnoniMe, una app social anónima basada en ubicación donde los
-      usuarios solo interactúan con personas dentro de una distancia
-      determinada. Lideró producto, fundraising, marketing y frontend.
+      usuarios solo interactúan con personas dentro de un radio determinado.
+      Lideró producto, fundraising, marketing y frontend.
     highlights:
       - Llevó la empresa a una valuación de 500K USD en solo 5 meses.
       - Consiguió más de 100K USD en inversiones en menos de 8 meses.
       - Desarrolló el frontend con React Native y Expo.
-      - Implementó estrategias de marketing altamente eficientes.
-      - Gestionó estrategias de negocio y el roadmap de producto.
+      - Implementó estrategias de marketing de alta eficiencia.
+      - Gestionó las estrategias de negocio y el roadmap de producto.
     tech:
       - React Native
       - Expo
@@ -176,7 +176,7 @@ work:
       start: 2023-05-01T00:00:00.000Z
       end: 2023-08-01T00:00:00.000Z
     summary: >-
-      Primera pasantía en Google — construyó un nuevo framework de debug para
+      Primera pasantía en Google — desarrolló un nuevo framework de debug para
       Android Messages y un visor en Jetpack Compose para los datos capturados.
     highlights:
       - >-
@@ -187,7 +187,7 @@ work:
         Diseñó en detalle un logger de debug para Android Messages, trabajando
         con múltiples equipos en el proceso.
       - >-
-        Diseñó y construyó una pantalla en Jetpack Compose para visualizar los
+        Diseñó y desarrolló una pantalla en Jetpack Compose para visualizar los
         datos de debug capturados por el framework.
     tech:
       - Kotlin
@@ -204,18 +204,18 @@ work:
       end: 2023-02-01T00:00:00.000Z
     summary: >-
       Seleccionado para liderar un pequeño equipo de desarrollo que automatizó
-      el proceso de asignación de proyectos finales para el programa de maestría
-      MENV.
+      el proceso de asignación de proyectos de capstone para el programa de
+      maestría MENV.
     highlights:
       - >-
-        Estructuró y asignó tareas en el equipo y ejecutó sprints Agile para
-        mantener la entrega en tiempo.
+        Organizó y asignó tareas en el equipo y condujo sprints Agile para
+        mantener las entregas en tiempo.
       - >-
-        Garantizó la calidad y la entrega puntual frente a un plazo fijo del
+        Garantizó la calidad y la entrega a tiempo frente a un deadline fijo del
         calendario académico.
       - >-
-        Automatizó la asignación de estudiantes a proyectos finales, logrando un
-        aumento del 70% en la satisfacción con las asignaciones.
+        Automatizó la asignación de estudiantes a proyectos de capstone,
+        logrando un aumento del 70% en la satisfacción con los resultados.
     tech: []
     type: contract
     link: 'https://www.colorado.edu/menv/'
@@ -227,23 +227,23 @@ work:
       start: 2021-06-01T00:00:00.000Z
       end: 2022-06-01T00:00:00.000Z
     summary: >-
-      Primer rol de ingeniería de tiempo completo — trabajo full-stack de
-      dashboards para una firma de gestión de activos, un evaluador de fórmulas
-      Excel en AWS Lambda con Kotlin y una serie de POCs de integración.
+      Primer rol de ingeniería a tiempo completo — trabajo full-stack de
+      dashboards para una gestora de activos, un evaluador de fórmulas Excel en
+      AWS Lambda con Kotlin, y una serie de POCs de integración.
     highlights:
       - >-
-        Desarrolló un dashboard para la plataforma web de una firma de gestión
-        de activos — frontend en Angular, backend en Node/Express/MongoDB.
+        Desarrolló un dashboard para la plataforma web de una gestora de activos
+        — frontend en Angular, backend en Node/Express/MongoDB.
       - >-
-        Construyó un AWS Lambda en Kotlin que usaba una hoja de cálculo Excel
-        como motor para cálculos complejos de retorno de inversión.
+        Construyó un AWS Lambda en Kotlin que usaba una planilla de Excel como
+        motor de cálculo para operaciones complejas de retorno de inversión.
       - >-
         Estuvo a cargo de múltiples POCs, incluyendo integraciones con DocuSign,
         Canvas y otros.
       - >-
         Fue uno de los desarrolladores principales de una nueva herramienta
-        interna para una firma de gestión de activos — frontend en React +
-        Next.js, backend en Node/Express/MongoDB.
+        interna para una gestora de activos — frontend en React + Next.js,
+        backend en Node/Express/MongoDB.
     tech:
       - TypeScript
       - Angular
@@ -263,13 +263,13 @@ work:
       start: 2020-11-01T00:00:00.000Z
       end: 2022-02-01T00:00:00.000Z
     summary: >-
-      Fundó Stockvio, una plataforma que automatizaba el cálculo del impuesto a
-      las ganancias de capital para inversores individuales brasileños que
+      Fundó Stockvio, una plataforma que automatizaba el cálculo del impuesto
+      sobre ganancias de capital para inversores individuales brasileños que
       operaban en B3 (BOVESPA).
     highlights:
       - >-
-        Construyó el algoritmo que procesaba los comprobantes de operaciones de
-        corretaje en Node.js.
+        Desarrolló el algoritmo que procesaba los comprobantes de operaciones de
+        corredoras en Node.js.
       - Desarrolló la mayor parte del frontend con Next.js.
       - Desarrolló múltiples endpoints de backend con NestJS.
     tech:
@@ -280,7 +280,8 @@ work:
     type: founder
     order: 10
 _source:
-  hash: 2a1b50602b6acfff
+  hash: c0ff163511ecb1dc
   locale: en
-  translatedAt: '2026-06-01T02:47:46.985Z'
+  translatedAt: '2026-06-01T03:00:06.408Z'
 ---
+
