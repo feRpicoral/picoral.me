@@ -1,6 +1,6 @@
 ---
 company: Trius
-role: Cofundador · CFO
+role: Co-Fundador · CFO
 location: Brasil
 period:
   start: 2023-11
@@ -13,8 +13,8 @@ type: founder
 link: 'https://www.linkedin.com/company/101222529'
 order: 3
 _source:
-  hash: 3d5add249d1f15f8
+  hash: 998d5b94506a3f20
   locale: en
-  translatedAt: '2026-06-01T02:16:20.289Z'
+  translatedAt: '2026-06-01T04:51:51.585Z'
 ---
 

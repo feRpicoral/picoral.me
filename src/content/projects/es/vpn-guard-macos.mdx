@@ -29,10 +29,10 @@ seo:
     VPN Guard macOS — utilidad de bloqueo de dominios en tres capas vinculada a
     verificación de IP de VPN. Por Fernando Picoral.
 _source:
-  hash: b787c4051d7276f6
+  hash: e622405802b75d5a
   locale: en
-  translatedAt: '2026-06-01T02:15:29.280Z'
+  translatedAt: '2026-06-01T04:51:32.405Z'
 ---
-Una pequeña utilidad macOS para verificar el ruteo de VPN. Tres capas independientes — entradas en /etc/hosts, configuración de DNS en /etc/resolver y una regla de filtro de paquetes pf — que deben pasar todas antes de que los dominios configurados resuelvan. Un LaunchDaemon ejecuta la verificación periódicamente con fallo seguro: si alguna verificación falla, los dominios dejan de resolver en lugar de filtrarse.
+Una pequeña utilidad macOS para verificar el enrutamiento VPN. Tres capas independientes — entradas en /etc/hosts, configuración DNS en /etc/resolver y una regla de filtro de paquetes pf — que deben pasar todas antes de que los dominios configurados resuelvan. Un LaunchDaemon ejecuta la verificación periódicamente con fallo seguro: si alguna verificación falla, los dominios dejan de resolver en lugar de filtrarse.
 
-Lo escribí porque las soluciones disponibles dependían de una sola capa (vulnerable a un resolver mal configurado) o eran solo para Windows.
+La escribí porque las soluciones disponibles dependían de una sola capa (vulnerable a un resolver mal configurado) o eran solo para Windows.

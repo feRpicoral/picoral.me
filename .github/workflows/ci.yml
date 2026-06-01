@@ -32,7 +32,7 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
-      # `pnpm build` runs translate:check (offline — never calls Anthropic),
+      # `pnpm build` runs translate:check (offline — never calls the model API),
       # regenerates public/llms.txt, then astro build.
       - name: Build
         run: pnpm build

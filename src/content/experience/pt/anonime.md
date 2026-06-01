@@ -1,6 +1,6 @@
 ---
 company: AnoniMe
-role: Co-Fundador · CEO
+role: Cofundador · CEO
 location: Brasil
 period:
   start: 2022-10
@@ -10,10 +10,10 @@ summary: >-
   os usuários só interagem com pessoas dentro de um raio definido. Liderei
   produto, captação de investimentos, marketing e frontend.
 highlights:
-  - Levei a empresa a uma avaliação de 500K USD em apenas 5 meses.
+  - Levei a empresa a uma valuation de 500K USD em apenas 5 meses.
   - Captei mais de 100K USD em investimentos em menos de 8 meses.
   - Desenvolvi o frontend com React Native e Expo.
-  - Implementei estratégias de marketing com alta eficiência.
+  - Implementei estratégias de marketing altamente eficientes.
   - Gerenciei estratégias de negócio e roadmap de produto.
 tech:
   - React Native
@@ -23,8 +23,8 @@ type: founder
 link: 'https://www.linkedin.com/company/89329053'
 order: 6
 _source:
-  hash: b92cbe97b7ba7a6c
+  hash: 93d142f0cac15123
   locale: en
-  translatedAt: '2026-06-01T02:15:27.466Z'
+  translatedAt: '2026-06-01T04:51:29.351Z'
 ---
 

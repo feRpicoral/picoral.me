@@ -6,9 +6,9 @@ period:
   start: 2021-06
   end: 2022-06
 summary: >-
-  Primer trabajo de ingeniería de tiempo completo — dashboard full-stack para
-  una gestora de activos, un evaluador de fórmulas Excel en AWS Lambda con
-  Kotlin, y una serie de POCs de integración.
+  Primer trabajo de ingeniería full-time — desarrollo de dashboards full-stack
+  para una gestora de activos, un evaluador de fórmulas Excel en AWS Lambda con
+  Kotlin, y varios POCs de integración.
 highlights:
   - >-
     Desarrollé un dashboard para la plataforma web de una gestora de activos —
@@ -36,8 +36,8 @@ type: fulltime
 link: 'https://www.poatek.com/'
 order: 9
 _source:
-  hash: 102f1336a590bb3a
+  hash: eda1277b02851eb7
   locale: en
-  translatedAt: '2026-06-01T02:16:10.048Z'
+  translatedAt: '2026-06-01T04:51:45.464Z'
 ---
 

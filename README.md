@@ -41,7 +41,7 @@ Keystatic is available during local development at `/keystatic`. It is configure
 
 `pnpm build` runs `translate:check` first (so stale translations fail the build with no network call), then regenerates `public/llms.txt`, then runs `astro build`.
 
-Translation requires `ANTHROPIC_API_KEY` in the environment. CI only ever runs `--check`, so the key is needed locally, not on Vercel.
+Translation runs through the [Vercel AI Gateway](https://vercel.com/docs/ai-gateway): one `AI_GATEWAY_API_KEY` reaches any model by its `creator/model` slug, at provider list price with zero markup (also zero with BYOK, configured in the Vercel dashboard). `TRANSLATOR_MODEL` in `scripts/translate/config.mjs` sets the default (`anthropic/claude-sonnet-4.6`); override it per run with the `TRANSLATE_MODEL` env var (e.g. `google/gemini-2.5-flash-lite`, `openai/gpt-5.5`). The key is only needed locally for `pnpm translate`; CI runs `--check` only, so nothing is needed on Vercel.
 
 `pnpm translate` runs through a worker pool (default `--concurrency=4`) tuned for Anthropic's tier-1 output-tokens-per-minute limit on Sonnet 4.6. On higher tiers, pass `--concurrency=8` or more to go faster. The SDK retries 429s up to 5 times with exponential backoff; if a file still errors out, rerun `pnpm translate` and the cache will skip everything that succeeded and only retry the failed file in isolation.
 

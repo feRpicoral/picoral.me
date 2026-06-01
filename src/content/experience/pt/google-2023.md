@@ -7,14 +7,14 @@ period:
   end: 2023-08
 summary: >-
   Primeiro estágio no Google — criei um novo framework de debug para o Android
-  Messages e um visualizador em Jetpack Compose para os dados capturados.
+  Messages e uma tela em Jetpack Compose para visualizar os dados capturados.
 highlights:
   - >-
     Implementei um novo framework de debug para o Android Messages em Kotlin,
     melhorando bastante a experiência de desenvolvimento para outros
     engenheiros.
   - >-
-    Projetei em detalhes um logger de debug para o Android Messages, colaborando
+    Projetei em detalhes um logger de debug para o Android Messages, trabalhando
     com múltiplos times ao longo do processo.
   - >-
     Projetei e desenvolvi uma tela em Jetpack Compose para visualizar os dados
@@ -27,8 +27,8 @@ type: internship
 link: 'https://about.google'
 order: 7
 _source:
-  hash: 3159c81ac7c76658
+  hash: 474666a0a13dae60
   locale: en
-  translatedAt: '2026-06-01T02:15:45.459Z'
+  translatedAt: '2026-06-01T04:51:36.069Z'
 ---
 

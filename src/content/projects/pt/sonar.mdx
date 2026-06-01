@@ -50,26 +50,26 @@ faq:
       Sonar é um workspace de IA multi-agente para times de vendas. Um rep faz
       upload de uma chamada gravada; ~20 segundos depois ele tem pesquisa sobre
       o prospect, análise estruturada da chamada, próximo passo recomendado e
-      rascunho de follow-up com citações linkando cada afirmação a um trecho
-      específico da transcrição.
+      rascunho de e-mail de follow-up com citações linkando cada afirmação a um
+      trecho específico da transcrição.
   - q: Como funciona a orquestração multi-agente do Sonar?
     a: >-
       Quatro nós sequenciais — research, analysis, strategy, writer — cada um
       retornando output estruturado via tool use da Anthropic com schemas Zod.
-      Cada etapa grava uma linha `AgentRunStep` no Postgres; o run pausa em
-      `AWAITING_APPROVAL` após o passo do writer para revisão humana. O writer
+      Cada etapa grava uma linha AgentRunStep no Postgres; o run pausa em
+      AWAITING_APPROVAL após o passo do writer para revisão humana. O writer
       pode ser regerado com feedback do revisor sem re-executar os nós
       anteriores.
   - q: Por que o Sonar usa prompt caching da Anthropic?
     a: >-
       As system messages são cacheadas em todos os nós. Em runs repetidos no
       mesmo workspace, isso reduz os tokens de entrada em cerca de 70%, o que se
-      traduz diretamente em ganhos de latência e custo conforme o contexto do
-      workspace cresce.
+      traduz diretamente em ganhos de latência e custo à medida que o corpus de
+      contexto do workspace cresce.
 _source:
-  hash: 6a3023879ff050a9
+  hash: c8be5ceda29ed647
   locale: en
-  translatedAt: '2026-06-01T02:15:02.663Z'
+  translatedAt: '2026-06-01T04:51:15.950Z'
 ---
 ## O que faz
 
@@ -80,7 +80,7 @@ Um rep de vendas faz upload de uma gravação de chamada. Cerca de vinte segundo
 3. Próximo passo recomendado com talking points e urgência (Claude Sonnet 4.6)
 4. Rascunho de e-mail de follow-up com citações entre colchetes linkando de volta a trechos da transcrição (Claude Sonnet 4.6)
 
-O revisor vê uma UI em split-view: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o trecho correspondente. O revisor pode aprovar, editar o corpo diretamente ou regerar o writer com feedback. A regeração reutiliza o estado anterior de pesquisa, análise e estratégia; só o writer roda novamente.
+O revisor vê uma UI em split-view: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o trecho correspondente. O revisor pode aprovar, editar o corpo diretamente ou regerar o writer com feedback. A regeração reutiliza o estado anterior de research, analysis e strategy; só o writer roda novamente.
 
 ## Por que construí
 
@@ -111,4 +111,4 @@ Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), convites, API keys, log de audit
 
 ## Status
 
-Em desenvolvimento ativo. O pipeline de agentes e a tenancy de workspaces estão funcionando; o polimento da UI e o demo ao vivo estão em andamento.
+Em desenvolvimento ativo. O pipeline de agentes e a tenancy de workspaces estão funcionando; o polimento da UI e a demo ao vivo estão em andamento.

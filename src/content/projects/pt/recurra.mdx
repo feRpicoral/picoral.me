@@ -46,10 +46,10 @@ faq:
   - q: O que é o Recurra?
     a: >-
       Recurra é uma plataforma de cobrança recorrente para negócios locais de
-      serviços — o slogan é 'clientes fiéis, cobranças automáticas.' Gerencia
-      agendamentos recorrentes, cobranças automáticas via Stripe, assinaturas em
-      autoatendimento pelo cliente e integração com o Clover POS para checkout
-      presencial.
+      serviços — o slogan é 'clientes que voltam, cobranças que se repetem.'
+      Gerencia agendamentos recorrentes, cobranças automáticas via Stripe,
+      assinaturas em autoatendimento pelo cliente e uma integração com o Clover
+      POS para checkout presencial.
   - q: Por que um monorepo multi-app para o Recurra?
     a: >-
       Um negócio precisa de três interfaces — painel web do dono, app mobile do
@@ -58,13 +58,13 @@ faq:
       mantém tipos, validações e regras de negócio em um único lugar, acessível
       pelo React Router, Expo e o cliente Kotlin do POS.
 _source:
-  hash: e7f60cab666f15b9
+  hash: 38f22f38440d7ba4
   locale: en
-  translatedAt: '2026-06-01T02:13:45.399Z'
+  translatedAt: '2026-06-01T04:50:38.482Z'
 ---
 ## O que faz
 
-Recurra é uma plataforma de cobrança recorrente para negócios locais de serviços — clientes fiéis, cobranças automáticas. O dono gerencia serviços, agendamentos e clientes por um painel admin em React ou pelo app mobile em Expo. O cliente gerencia suas assinaturas por um portal hospedado. O Stripe cuida das cobranças. Uma integração com o Clover POS escrita em Kotlin permite checkout presencial consultando a assinatura ativa do cliente.
+Recurra é uma plataforma de cobrança recorrente para negócios locais de serviços. O dono gerencia serviços, agendamentos e clientes pelo painel admin em React ou pelo app mobile em Expo. O cliente gerencia suas assinaturas por um portal hospedado. O Stripe cuida das cobranças. Uma integração com o Clover POS escrita em Kotlin permite checkout presencial consultando a assinatura ativa do cliente.
 
 ## Por que construí
 
@@ -74,14 +74,14 @@ Não é um produto — é um projeto pessoal. Queria construir algo que abranges
 
 Monorepo Nx com NPM workspaces. Seis apps:
 
-- `backend` — NestJS com Prisma conectado ao PostgreSQL no RDS, deploy no App Runner.
+- `backend` — NestJS com Prisma conectado ao PostgreSQL no RDS, deployado no App Runner.
 - `web` — React Router 7 SPA em build/client/, hospedado no S3 + CloudFront.
 - `mobile` — Expo.
 - `clover-pos` — Kotlin Android para o Clover Mini.
 - `infra` — AWS CDK com seis stacks: Network, Dns, Database, Backend, Web, Email.
 - `backend-e2e` — testes e2e com Jest.
 
-Tipos compartilhados e schemas Zod ficam em `@recurra/shared` e são importados por todos os apps. As stacks CDK usam o SSM Parameter Store para segredos e um script de entrada que monta a URL do banco a partir do JSON do Secrets Manager.
+Tipos compartilhados e schemas Zod ficam em `@recurra/shared` e são importados por todos os apps. As stacks do CDK usam o SSM Parameter Store para segredos e um script de entrada que monta a URL do banco a partir do JSON do Secrets Manager.
 
 ## Status
 

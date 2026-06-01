@@ -2,15 +2,15 @@
 slug: cite
 title: Cite
 tagline: >-
-  Projeto pessoal explorando RAG agêntico. Cada resposta é embasada por citações
-  inline; clicar em uma abre o documento-fonte exatamente na região que gerou a
-  resposta.
+  Projeto pessoal explorando RAG agêntico. Cada resposta é fundamentada por
+  citações inline; clicar em uma abre o documento-fonte na região exata que a
+  gerou.
 summary: >-
   Um app de chat com recuperação aumentada onde cada resposta do modelo é
-  embasada por citações inline. Clicar em uma citação abre o documento-fonte
-  exatamente na região — página, parágrafo ou trecho — que gerou a resposta.
-  Construído para aprender recuperação agêntica e UX de visualizador de
-  documentos sincronizado.
+  respaldada por citações inline. Clicar em uma citação abre o documento-fonte
+  na região exata — página, parágrafo ou trecho de tokens — que gerou a
+  resposta. Construído para aprender recuperação agêntica e UX de visualizador
+  de documentos sincronizado.
 status: in-development
 role: 'Solo — design, engenharia'
 period:
@@ -44,31 +44,31 @@ faq:
   - q: O que é o Cite?
     a: >-
       Cite é uma aplicação de chat com recuperação aumentada agêntica. Times
-      fazem upload dos seus documentos e fazem perguntas em linguagem natural.
-      Cada resposta é embasada por citações inline — clicar em uma abre o
-      documento-fonte exatamente na região que gerou a resposta, com o trecho
+      fazem upload de documentos e fazem perguntas em linguagem natural. Cada
+      resposta é fundamentada por citações inline — clicar em uma abre o
+      documento-fonte na região exata que gerou a resposta, com o trecho
       relevante destacado.
   - q: O que diferencia o Cite de um chatbot RAG comum?
     a: >-
       Duas coisas. Primeiro, a etapa de recuperação é agêntica — o modelo pode
-      planejar e iterar as buscas antes de responder, em vez de fazer uma única
+      planejar e iterar buscas antes de responder, em vez de fazer uma única
       consulta por similaridade top-k. Segundo, a citação é a interface, não uma
       nota de rodapé. As citações são elementos clicáveis que rolam o
       visualizador de documentos de forma síncrona até o trecho citado, então
-      verificar uma resposta é um clique, não uma busca.
+      verificar é um clique, não uma busca.
 _source:
-  hash: a65753a1def07c23
+  hash: 45526e5b96e09e0e
   locale: en
-  translatedAt: '2026-06-01T02:11:46.484Z'
+  translatedAt: '2026-06-01T04:49:30.644Z'
 ---
 ## O que faz
 
-Times fazem upload dos seus documentos — PDFs, Word, Markdown, transcrições — e conversam com eles em linguagem natural. Cada resposta é embasada por citações inline. Clicar em uma citação abre o documento-fonte exatamente na região que gerou a resposta, com o trecho relevante destacado.
+Times fazem upload de documentos — PDFs, Word, Markdown, transcrições — e conversam com eles em linguagem natural. Cada resposta é fundamentada por citações inline. Clicar em uma citação abre o documento-fonte na região exata que gerou a resposta, com o trecho relevante destacado.
 
 ## Por que construí
 
-Não é um produto — é um projeto pessoal. Chatbots RAG sem citação são infalsificáveis. Embasar as respostas em citações torna o output do modelo verificável, que é justamente o ponto de usar um sistema de recuperação. Também queria criar uma UI onde a citação é a interação principal, não uma nota de rodapé — o visualizador de documentos tem o mesmo peso que o chat.
+Não é um produto — é um projeto pessoal. Chatbots RAG sem citação são infalsificáveis. Fundamentar as respostas em citações torna o output do modelo verificável, que é justamente o ponto de usar um sistema de recuperação. Também queria criar uma UI onde a citação seja a interação principal, não uma nota de rodapé — o visualizador de documentos é tão central quanto o chat.
 
 ## Status
 
-Em desenvolvimento ativo. O pipeline de recuperação e a UI de chat funcionam de ponta a ponta; o foco atual é a lógica de âncoras de região do visualizador de documentos.
+Em desenvolvimento ativo. O pipeline de recuperação e a UI de chat estão funcionando de ponta a ponta; a lógica de âncora de região do visualizador de documentos é o foco atual.

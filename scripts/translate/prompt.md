@@ -15,4 +15,4 @@ Rules:
    - Numbers, dates, currencies, percentages, version numbers, and code identifiers.
 6. When `max_chars` is given, the translation must not exceed it. Prefer being slightly under to overshooting.
 7. Preserve the source facts, claims, technical meaning, and level of emphasis. Do not add new information or remove meaningful information.
-8. Return the result via the `submit_translations` tool.
+8. Return one entry per snippet, each with the snippet's `id` and its translated `text`.

@@ -10,9 +10,9 @@ summary: >-
   renda sobre ganhos de capital para pessoas físicas que operavam na B3
   (BOVESPA).
 highlights:
-  - Desenvolvi em Node.js o algoritmo que processava as notas de corretagem.
+  - Desenvolvi o algoritmo que processava as notas de corretagem em Node.js.
   - Desenvolvi a maior parte do frontend com Next.js.
-  - Desenvolvi múltiplos endpoints de backend com NestJS.
+  - Desenvolvi vários endpoints de backend com NestJS.
 tech:
   - Next.js
   - NestJS
@@ -21,8 +21,8 @@ tech:
 type: founder
 order: 10
 _source:
-  hash: f6b719edb890d4fd
+  hash: 9c9524bdcd7d8186
   locale: en
-  translatedAt: '2026-06-01T02:16:08.749Z'
+  translatedAt: '2026-06-01T04:51:50.097Z'
 ---
 

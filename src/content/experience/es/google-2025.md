@@ -11,8 +11,8 @@ summary: >-
   de Keep.
 highlights:
   - >-
-    Lideré el diseño y la migración de punta a punta de una cola Spanner
-    multi-tenant a tres colas single-tenant.
+    Lideré el diseño e implementación completos de la migración de una cola
+    Spanner multi-tenant a tres colas single-tenant.
   - >-
     Escalé las nuevas colas a 15k RPS en producción usando experimentos de
     Mendel.
@@ -26,8 +26,8 @@ type: internship
 link: 'https://about.google'
 order: 1
 _source:
-  hash: b674d0cb377e2a33
+  hash: 2f00f329b1361169
   locale: en
-  translatedAt: '2026-06-01T02:15:55.271Z'
+  translatedAt: '2026-06-01T04:51:40.438Z'
 ---
 

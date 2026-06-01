@@ -2,19 +2,19 @@
 slug: forge
 title: Forge
 tagline: >-
-  Proyecto personal — benchmark de serving con vLLM para Llama 3.1 8B en un
-  RunPod A5000: BF16 a 2,169 tok/s totales, $0.035 por 1M de tokens, y AWQ
-  conservando el 99.4% de calidad promedio.
+  Proyecto personal - benchmark de serving con vLLM para Llama 3.1 8B en un
+  RunPod A5000: BF16 a 2,169 tok/s totales, $0.035 por 1M de tokens, y AWQ con
+  99.4% de calidad promedio.
 summary: >-
   Un artefacto completo de serving y benchmarking para Llama 3.1 8B autoalojado
   en vLLM. Forge compara BF16 y AWQ-INT4 en un RunPod RTX A5000 en throughput,
   TTFT, TPOT, calidad con lm-evaluation-harness y costo por millón de tokens.
   BF16 fue el ganador económico en la corrida medida: 2,169 tokens totales por
-  segundo y $0.035 por 1M de tokens. AWQ conservó el 99.4% de calidad promedio,
-  pero fue más lento en este setup: 1,017 tokens totales por segundo y $0.074
-  por 1M de tokens.
+  segundo y $0.035 por 1M de tokens. AWQ retuvo 99.4% de calidad promedio, pero
+  fue más lento en este setup: 1,017 tokens totales por segundo y $0.074 por 1M
+  de tokens.
 status: live
-role: 'Solo — Python, vLLM, benchmarking, infra'
+role: 'Solo - Python, vLLM, benchmarking, infra'
 period:
   start: 2026-05
   end: 2026-05
@@ -62,83 +62,83 @@ faq:
   - q: ¿Qué demostró la corrida paga?
     a: >-
       BF16 fue el ganador en este setup A5000/vLLM: 2,169 tokens totales por
-      segundo y $0.035 por 1M de tokens. AWQ-INT4 conservó el 99.4% de calidad
+      segundo y $0.035 por 1M de tokens. AWQ-INT4 retuvo 99.4% de calidad
       promedio, pero fue más lento: 1,017 tokens totales por segundo y $0.074
       por 1M de tokens.
   - q: ¿Para qué sirve el resultado de AWQ si fue más lento?
     a: >-
       Es un resultado negativo útil. AWQ-INT4 mantuvo la calidad cerca de BF16,
       pero no produjo la mejora esperada en throughput ni en costo en la
-      configuración medida del RunPod RTX A5000. La página reporta eso
-      directamente, en lugar de convertir la cuantización en una afirmación
-      genérica de mayor velocidad.
+      configuración medida de RunPod RTX A5000. La página reporta eso
+      directamente, sin convertir la cuantización en una afirmación genérica de
+      mayor velocidad.
   - q: ¿Cómo se mantiene la metodología defendible?
     a: >-
       El hardware, los IDs de modelo, la configuración de vLLM, los niveles de
       concurrencia, la cantidad de prompts, el JSON crudo del benchmark, el JSON
-      crudo de evaluación y el JSON de gráficos están commiteados en el
+      crudo de evaluación y el JSON de gráficas están commiteados en el
       repositorio de Forge. El pipeline completo se ensaya localmente en M1
       antes de usar tiempo de GPU pago.
 _source:
-  hash: 97452e4b42216e8e
+  hash: 2496b701c2dc796b
   locale: en
-  translatedAt: '2026-06-01T02:12:45.366Z'
+  translatedAt: '2026-06-01T04:50:23.706Z'
 ---
 ## Qué es
 
 Un artefacto de ingeniería concreto, no un SaaS. Las piezas entregadas:
 
-- **Serving** — configuración de vLLM por variables de entorno con continuous batching, KV cache y una API de streaming compatible con OpenAI, más métricas nativas de Prometheus y provisioning de Grafana.
-- **Harness de benchmark** — `vllm bench serve` envuelto alrededor de un trace de ShareGPT, barriendo concurrencias 1, 4, 16, 32 y 64 con 256 prompts en cada nivel.
-- **Comparación de modelos** — BF16 `meta-llama/Llama-3.1-8B-Instruct` versus `hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4`.
-- **Evaluación de calidad** — `lm-evaluation-harness` contra el servidor vLLM en ejecución, en MMLU, GSM8K y HellaSwag.
-- **Modelo de costo** — throughput medido convertido en dólares por millón de tokens, comparado con GPT-4o, GPT-4o mini, Claude Sonnet y Claude Haiku.
-- **Gráficos y CI** — el JSON de resultados alimenta el pipeline de gráficos; el CI cubre parsers, validación de configuración, cálculo de costos y transformación de datos para gráficos.
+- **Serving** - configuración de vLLM por variables de entorno con continuous batching, KV cache y una API de streaming compatible con OpenAI, más métricas nativas de Prometheus y provisioning de Grafana.
+- **Harness de benchmark** - `vllm bench serve` envuelto sobre un trace de ShareGPT, barriendo concurrencia 1, 4, 16, 32 y 64 con 256 prompts en cada nivel.
+- **Comparación de modelos** - BF16 `meta-llama/Llama-3.1-8B-Instruct` versus `hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4`.
+- **Evaluación de calidad** - `lm-evaluation-harness` contra el servidor vLLM en ejecución, sobre MMLU, GSM8K y HellaSwag.
+- **Modelo de costo** - throughput medido convertido en dólares por millón de tokens, comparado con GPT-4o, GPT-4o mini, Claude Sonnet y Claude Haiku.
+- **Gráficas y CI** - el JSON de resultados alimenta el pipeline de gráficas; el CI cubre parsers, validación de config, cálculo de costos y transformación de datos para gráficas.
 
 ## Por qué lo construí
 
 Para responder una pregunta de producción con números medidos: ¿conviene autoalojar un modelo abierto en lugar de pagar una API comercial, y la cuantización INT4 mejora la economía en una GPU de 24 GB barata?
 
-Forge responde ambas. Llama 3.1 8B en BF16 sobre el RunPod A5000 fue mucho más barato que las APIs frontier alojadas en costo bruto por token. AWQ-INT4 mantuvo la calidad, pero no mejoró el throughput ni el costo en este setup particular de vLLM/A5000.
+Forge responde ambas. BF16 Llama 3.1 8B en el RunPod A5000 fue mucho más barato que las APIs frontier alojadas en costo bruto por token. AWQ-INT4 mantuvo la calidad, pero no mejoró el throughput ni el costo en este setup particular de vLLM/A5000.
 
 ## Resultado medido
 
-BF16 fue el ganador en throughput. Con concurrencia 64, procesó 2,169 tokens totales por segundo, frente a 1,017 tokens totales por segundo de AWQ-INT4 en el mismo pod A5000.
+BF16 fue el ganador en throughput. A concurrencia 64, sirvió 2,169 tokens totales por segundo, frente a 1,017 tokens totales por segundo de AWQ-INT4 en el mismo pod A5000.
 
-<ProjectImage src="/src/assets/projects/forge/throughput-vs-concurrency.png" alt="Gráfico de líneas comparando el throughput total de tokens de BF16 y AWQ en distintos niveles de concurrencia en Forge." caption="BF16 alcanzó un pico de 2,169 tokens totales por segundo; AWQ alcanzó 1,017." size="chart" />
+<ProjectImage src="/src/assets/projects/forge/throughput-vs-concurrency.png" alt="Gráfica de líneas comparando el throughput total de tokens de BF16 y AWQ en distintos niveles de concurrencia en Forge." caption="BF16 alcanzó un pico de 2,169 tokens totales por segundo; AWQ alcanzó 1,017." size="chart" />
 
-La latencia varía según la métrica. AWQ tuvo menor p99 de time-to-first-token bajo alta concurrencia: 508 ms con concurrencia 64 versus 2,822 ms para BF16. BF16 decodificó más rápido: el mean time per output token con concurrencia 64 fue 52.7 ms versus 88.0 ms para AWQ.
+Latencia dividida por métrica. AWQ tuvo menor p99 de time-to-first-token a alta concurrencia: 508 ms a concurrencia 64 versus 2,822 ms para BF16. BF16 decodificó más rápido: el mean time per output token a concurrencia 64 fue 52.7 ms versus 88.0 ms para AWQ.
 
-<ProjectImage src="/src/assets/projects/forge/ttft-vs-concurrency.png" alt="Gráfico de líneas comparando el p99 de time to first token para BF16 y AWQ en distintos niveles de concurrencia." caption="AWQ tuvo menor p99 de TTFT bajo alta concurrencia en esta corrida." size="chart" />
+<ProjectImage src="/src/assets/projects/forge/ttft-vs-concurrency.png" alt="Gráfica de líneas comparando el p99 de time to first token para BF16 y AWQ en distintos niveles de concurrencia." caption="AWQ tuvo menor p99 de TTFT a alta concurrencia en esta corrida." size="chart" />
 
-<ProjectImage src="/src/assets/projects/forge/tpot-vs-concurrency.png" alt="Gráfico de líneas comparando el mean time per output token de BF16 y AWQ en distintos niveles de concurrencia." caption="BF16 decodificó más rápido, por eso ganó en throughput y costo." size="chart" />
+<ProjectImage src="/src/assets/projects/forge/tpot-vs-concurrency.png" alt="Gráfica de líneas comparando el mean time per output token para BF16 y AWQ en distintos niveles de concurrencia." caption="BF16 decodificó más rápido, por eso ganó en throughput y costo." size="chart" />
 
 ## Costo
 
-A $0.27/hr de cómputo, BF16 costó $0.0346 por 1M de tokens totales al throughput pico medido. AWQ costó $0.0737 por 1M de tokens totales por ser más lento. Frente al precio combinado de GPT-4o de $6.25 por 1M de tokens, los ratios medidos solo de cómputo son aproximadamente 181x más barato para BF16 y 85x más barato para AWQ, antes de almacenamiento y overhead operativo.
+A $0.27/hr de cómputo, BF16 costó $0.0346 por 1M de tokens totales al throughput pico medido. AWQ costó $0.0737 por 1M de tokens totales por ser más lento. Frente al precio combinado de GPT-4o de $6.25 por 1M de tokens, los ratios medidos solo de cómputo son aproximadamente 181x más barato para BF16 y 85x más barato para AWQ, antes de storage y overhead operativo.
 
-<ProjectImage src="/src/assets/projects/forge/cost-per-1m-tokens.png" alt="Gráfico de barras comparando el costo por millón de tokens de BF16 y AWQ en Forge contra precios de APIs comerciales." caption="Costo por token autoalojado solo de cómputo, usando el throughput medido del A5000." size="chart" />
+<ProjectImage src="/src/assets/projects/forge/cost-per-1m-tokens.png" alt="Gráfica de barras comparando el costo por millón de tokens de BF16 y AWQ en Forge contra precios de APIs comerciales." caption="Costo por token autoalojado solo de cómputo, usando el throughput medido del A5000." size="chart" />
 
 ## Calidad
 
-AWQ-INT4 conservó el 99.4% de calidad promedio respecto a BF16 en las tres tareas de evaluación. Perdió 1.97 puntos porcentuales en MMLU, perdió 0.85 puntos en HellaSwag y ganó 1.52 puntos en GSM8K. Es una retención de calidad suficiente para muchos experimentos de serving, pero el benchmark igual favoreció a BF16 porque AWQ fue más lento.
+AWQ-INT4 retuvo 99.4% de calidad promedio versus BF16 en las tres tareas de evaluación. Perdió 1.97 puntos porcentuales en MMLU, perdió 0.85 puntos en HellaSwag y ganó 1.52 puntos en GSM8K. Es una retención de calidad suficiente para muchos experimentos de serving, pero el benchmark igual favoreció a BF16 porque AWQ fue más lento.
 
-<ProjectImage src="/src/assets/projects/forge/quality-retention.png" alt="Gráfico de barras mostrando la retención de calidad de AWQ versus BF16 en GSM8K, HellaSwag, MMLU y el promedio." caption="AWQ conservó el 99.4% de calidad promedio, pero eso no se tradujo en una ventaja de costo aquí." size="chart" />
+<ProjectImage src="/src/assets/projects/forge/quality-retention.png" alt="Gráfica de barras mostrando la retención de calidad de AWQ versus BF16 en GSM8K, HellaSwag, MMLU y el promedio." caption="AWQ retuvo 99.4% de calidad promedio, pero esa retención no se tradujo en una ventaja de costo aquí." size="chart" />
 
 ## Cómo funciona
 
 ### Reproducibilidad como restricción de primer orden
 
-La metodología, el hardware, los IDs de modelo, la configuración exacta de vLLM, la carga de trabajo, las constantes de precios y los resultados generados están commiteados en el repositorio de Forge. Los archivos crudos del benchmark viven en `results/bench/full-*`, los de evaluación en `results/eval/full` y los de gráficos en `results/charts`.
+La metodología, el hardware, los IDs de modelo, la configuración exacta de vLLM, la carga de trabajo, las constantes de precios y los resultados generados están commiteados en el repositorio de Forge. Los archivos crudos del benchmark viven en `results/bench/full-*`, los de evaluación en `results/eval/full` y los de gráficas en `results/charts`.
 
 ### Gate de ensayo en M1
 
-El mismo shell script que corre en RunPod se ejecuta localmente en modo ensayo contra `Qwen/Qwen2.5-0.5B-Instruct`. Eso detecta bugs de parser, configuración, gráficos y orquestación antes de que empiece el tiempo de GPU pago.
+El mismo shell script que corre en RunPod corre localmente en modo ensayo contra `Qwen/Qwen2.5-0.5B-Instruct`. Eso detecta bugs de parser, config, gráficas y orquestación antes de que empiece el tiempo de GPU pago.
 
 ### Cobertura de tests estratégica
 
-Los tests cubren las utilidades críticas alrededor del modelo: cálculo de costos, parsers de resultados, transformación de datos para gráficos, validación de configuración y metadatos del benchmark. La salida del modelo en sí se mide en la corrida paga, no se mockea en unit tests.
+Los tests cubren las utilidades críticas alrededor del modelo: cálculo de costos, parsers de resultados, transformación de datos para gráficas, validación de config y metadata del benchmark. La salida del modelo en sí se mide en la corrida paga, no se mockea en unit tests.
 
 ## Estado
 
-Terminado. El milestone principal de Forge está completo: corridas pagas de serving en BF16 y AWQ, evaluación de calidad, análisis de costos, gráficos, documentación de metodología y guías de reproducción están integrados. El resultado importante es más acotado y más útil que la suposición original: BF16 autoalojado fue extremadamente barato en el A5000, mientras que AWQ-INT4 fue un éxito en retención de calidad pero no en throughput en este setup.
+Terminado. El milestone principal de Forge está completo: corridas pagas de serving BF16 y AWQ, evaluación de calidad, análisis de costos, gráficas, documentación de metodología y guías de reproducción están entregados. El resultado importante es más acotado y más útil que la suposición original: BF16 autoalojado fue extremadamente barato en el A5000, mientras que AWQ-INT4 fue un éxito en retención de calidad, pero no una mejora de throughput en este setup.

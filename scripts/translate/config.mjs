@@ -4,7 +4,10 @@
  */
 export const TRANSLATOR_CONFIG_VERSION = 2;
 
-export const TRANSLATOR_MODEL = 'claude-sonnet-4-6';
+// Committed default translator model as a Vercel AI Gateway slug (`creator/model`,
+// see vercel.com/ai-gateway/models). TRANSLATE_MODEL overrides it for a single local
+// run; editing it here changes it for good (re-translate or `--rehash` afterwards).
+export const TRANSLATOR_MODEL = 'anthropic/claude-sonnet-4.6';
 
 export const SOURCE_LOCALE = 'en';
 export const TARGET_LOCALES = ['pt', 'es'];

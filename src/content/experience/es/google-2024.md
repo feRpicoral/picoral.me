@@ -26,8 +26,8 @@ type: internship
 link: 'https://about.google'
 order: 4
 _source:
-  hash: ed307904cf2c294c
+  hash: 7cd52f3d4b1b01fd
   locale: en
-  translatedAt: '2026-06-01T02:15:45.206Z'
+  translatedAt: '2026-06-01T04:51:37.545Z'
 ---
 

@@ -17,6 +17,9 @@
  *   pnpm translate --check    — exit non-zero if anything is stale or missing.
  *                                Never calls the API.
  *   pnpm translate --force    — regenerate everything, ignoring cache hits.
+ *   pnpm translate --rehash   — re-stamp existing translations to the current
+ *                                model hash without an API call (after a model-id
+ *                                change that did not change the model or content).
  *   pnpm translate --collection=blog --locale=pt
  *                             — narrow scope.
  *
@@ -28,7 +31,6 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Command, InvalidArgumentError } from 'commander';
 import matter from 'gray-matter';
-import { translateSnippets } from './translate/anthropic.mjs';
 import { COLLECTIONS, SOURCE_LOCALE, TARGET_LOCALES } from './translate/config.mjs';
 import { loadEnvFiles } from './translate/env.mjs';
 import { getHandler } from './translate/handlers.mjs';
@@ -41,6 +43,8 @@ import {
   serializeMdx,
   structuralFingerprint,
 } from './translate/mdx.mjs';
+import { resolveModelConfig } from './translate/model.mjs';
+import { translateSnippets } from './translate/translator.mjs';
 import { compareStructuralFingerprints, validateTranslations } from './translate/validate.mjs';
 
 // Imported modules read process.env lazily inside their functions, so populating
@@ -52,9 +56,9 @@ const REPO_ROOT = join(__dirname, '..');
 const CONTENT_DIR = join(REPO_ROOT, 'src', 'content');
 
 /**
- * Picked to fit Anthropic tier-1 output-tokens-per-minute (~8k for Sonnet 4.6).
- * At avg ~2k output tokens per file × 4 concurrent ≈ 8k, sitting at the limit
- * but rarely tripping it. Bump via `--concurrency=N` once on a higher tier.
+ * Conservative default for provider rate limits, which vary by model and tier
+ * (e.g. Anthropic Sonnet tier 1 caps output tokens per minute). Bump via
+ * `--concurrency=N` if your limits allow.
  */
 const DEFAULT_CONCURRENCY = 4;
 
@@ -76,9 +80,14 @@ function parseList(value) {
 function parseArgs(argv) {
   const program = new Command()
     .name('translate-content')
-    .description('Generate locale translations of src/content/*/en/* via the Anthropic API.')
+    .description('Generate locale translations of src/content/*/en/* via the Vercel AI Gateway.')
     .option('--check', 'exit non-zero if anything is stale or missing (never calls the API)', false)
     .option('--force', 'regenerate all translations even on cache hit', false)
+    .option(
+      '--rehash',
+      're-stamp existing translations to the current model hash without an API call (after a model-id change that did not change the model or content)',
+      false,
+    )
     .option(
       '--concurrency <n>',
       'max in-flight API requests',
@@ -93,6 +102,7 @@ function parseArgs(argv) {
   return {
     check: opts.check,
     force: opts.force,
+    rehash: opts.rehash,
     concurrency: opts.concurrency,
     collections: opts.collection,
     locales: opts.locale,
@@ -188,7 +198,7 @@ async function translateOneFile({ collection, sourceRaw, locale, expectedHash })
   return matter.stringify(translatedBody, translatedData);
 }
 
-async function processOne({ collection, sourcePath, locale, check, force }) {
+async function processOne({ collection, sourcePath, locale, check, force, rehash }) {
   const filename = sourcePath.split('/').pop();
   const targetPath = join(CONTENT_DIR, collection, locale, filename);
   const sourceRaw = await readFile(sourcePath, 'utf-8');
@@ -212,6 +222,19 @@ async function processOne({ collection, sourcePath, locale, check, force }) {
     return { status: 'fresh', targetPath };
   }
 
+  if (rehash) {
+    if (!existing) {
+      return {
+        status: 'stale',
+        targetPath,
+        message: 'No existing translation to re-stamp; run `pnpm translate`.',
+      };
+    }
+    existing.data._source = { ...existing.data._source, hash: expectedHash };
+    await writeFile(targetPath, matter.stringify(existing.content, existing.data), 'utf-8');
+    return { status: 'rehashed', targetPath };
+  }
+
   if (check) {
     return {
       status: 'stale',
@@ -232,7 +255,7 @@ async function main() {
   const args = parseArgs(process.argv);
 
   console.log(
-    `${args.check ? 'Checking' : 'Translating'} collections=[${args.collections.join(',')}] locales=[${args.locales.join(',')}] concurrency=${args.concurrency}`,
+    `${args.check ? 'Checking' : 'Translating'} collections=[${args.collections.join(',')}] locales=[${args.locales.join(',')}] model=${resolveModelConfig().modelId} concurrency=${args.concurrency}`,
   );
 
   const tasks = [];
@@ -255,6 +278,7 @@ async function main() {
         locale,
         check: args.check,
         force: args.force,
+        rehash: args.rehash,
       });
       results.push({ collection, sourcePath, locale, ...r });
       if (r.status === 'stale') {
@@ -263,6 +287,8 @@ async function main() {
         console.warn(`  locked  ${locale}  ${rel}  — ${r.message}`);
       } else if (r.status === 'translated') {
         console.log(`  wrote   ${locale}  ${rel}`);
+      } else if (r.status === 'rehashed') {
+        console.log(`  rehash  ${locale}  ${rel}`);
       }
     } catch (e) {
       results.push({ collection, sourcePath, locale, status: 'error', error: e });
@@ -276,6 +302,7 @@ async function main() {
   const wrote = results.filter((r) => r.status === 'translated').length;
   const fresh = results.filter((r) => r.status === 'fresh').length;
   const lockedStale = results.filter((r) => r.status === 'locked-stale').length;
+  const rehashed = results.filter((r) => r.status === 'rehashed').length;
 
   if (args.check) {
     console.log(
@@ -283,6 +310,18 @@ async function main() {
     );
     if (stale > 0) {
       console.error('Run `pnpm translate` to regenerate stale translations.');
+      process.exit(1);
+    }
+    if (errors > 0) process.exit(1);
+    return;
+  }
+
+  if (args.rehash) {
+    console.log(
+      `\nRe-stamped: ${rehashed}. Fresh (skipped): ${fresh}. Missing: ${stale}. Locked: ${lockedStale}. Errors: ${errors}.`,
+    );
+    if (stale > 0) {
+      console.error('Some translations are missing and were not re-stamped; run `pnpm translate`.');
       process.exit(1);
     }
     if (errors > 0) process.exit(1);

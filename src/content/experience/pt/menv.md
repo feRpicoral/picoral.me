@@ -6,23 +6,22 @@ period:
   start: 2022-10
   end: 2023-02
 summary: >-
-  Escolhido para liderar um time pequeno de desenvolvimento na automação do
-  processo de alocação de projetos de conclusão de curso do programa de mestrado
-  MENV.
+  Escolhido para liderar um time pequeno de desenvolvimento automatizando o
+  processo de alocação de projetos de conclusão do mestrado MENV.
 highlights:
   - >-
     Estruturei e distribuí tarefas no time e conduzi sprints Agile para manter
     as entregas no prazo.
-  - Garanti qualidade e entrega dentro do prazo fixo do calendário acadêmico.
+  - Garanti qualidade e entrega dentro de um prazo fixo do calendário acadêmico.
   - >-
     Automatizei a alocação de alunos aos projetos de conclusão, resultando em
-    70% de aumento na satisfação com as alocações.
+    70% de aumento na satisfação com os matches.
 type: contract
 link: 'https://www.colorado.edu/menv/'
 order: 8
 _source:
-  hash: 8b98e1a4eb962bd5
+  hash: cd91af8a30f0b9fb
   locale: en
-  translatedAt: '2026-06-01T02:15:59.362Z'
+  translatedAt: '2026-06-01T04:51:44.633Z'
 ---
 
