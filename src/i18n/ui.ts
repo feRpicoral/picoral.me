@@ -115,16 +115,16 @@ export const ui = {
     'page.notFound.title': 'Página não encontrada',
     'page.notFound.body': 'A página que você procura não existe ou foi movida.',
     'page.notFound.cta': 'Voltar para o início',
-    'home.hero.eyebrow': 'Brasileiro, baseado em Nova York',
+    'home.hero.eyebrow': 'Brasileiro em Nova York',
     'home.hero.title': '/ˌpē-kōˈräl/',
     'home.hero.lead':
-      'Sou Fernando Picoral, engenheiro de software brasileiro baseado em Nova York. Nas horas vagas, brinco com IA — geralmente para aprender a próxima coisa.',
-    'home.hero.ctaProjects': 'Coisas que faço',
+      'Sou Fernando Picoral, engenheiro de software brasileiro em Nova York. Por fora, mexo com IA — quase sempre para aprender alguma coisa nova.',
+    'home.hero.ctaProjects': 'Coisas em que trabalho',
     'home.hero.ctaAbout': 'Sobre mim',
     'home.projects.title': 'Projetos paralelos',
     'home.projects.lead':
-      'Algumas coisas que tenho construído no meu próprio tempo. Nenhuma é produto — existem porque eu quis tentar.',
-    'home.projects.allCta': 'Ver todos →',
+      'Algumas coisas que venho construindo no meu tempo livre. Nenhuma é produto — existem porque eu queria testar alguma coisa.',
+    'home.projects.allCta': 'Todos os projetos →',
     'home.faq.title': 'Perguntas frequentes',
     'about.title': 'Sobre',
     'about.lead':
@@ -203,16 +203,16 @@ export const ui = {
     'page.notFound.title': 'Página no encontrada',
     'page.notFound.body': 'La página que buscas no existe o fue movida.',
     'page.notFound.cta': 'Volver al inicio',
-    'home.hero.eyebrow': 'Brasileño, basado en Nueva York',
+    'home.hero.eyebrow': 'Brasileño en Nueva York',
     'home.hero.title': '/ˌpē-kōˈräl/',
     'home.hero.lead':
-      'Soy Fernando Picoral, ingeniero de software brasileño basado en Nueva York. En paralelo experimento con IA — mayormente para aprender lo siguiente.',
-    'home.hero.ctaProjects': 'Cosas que hago',
+      'Soy Fernando Picoral, ingeniero de software brasileño en Nueva York. En paralelo, experimento con IA — casi siempre para aprender algo nuevo.',
+    'home.hero.ctaProjects': 'Cosas en las que trabajo',
     'home.hero.ctaAbout': 'Sobre mí',
     'home.projects.title': 'Proyectos paralelos',
     'home.projects.lead':
-      'Algunas cosas que he venido construyendo en mi propio tiempo. Ninguno es un producto — existen porque quise probar algo.',
-    'home.projects.allCta': 'Ver todos →',
+      'Algunas cosas que vengo construyendo en mi tiempo libre. Ninguna es un producto — existen porque quería probar algo.',
+    'home.projects.allCta': 'Todos los proyectos →',
     'home.faq.title': 'Preguntas frecuentes',
     'about.title': 'Sobre mí',
     'about.lead':
