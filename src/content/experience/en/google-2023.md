@@ -1,10 +1,11 @@
 ---
+slug: google-2023
 company: Google
 role: STEP Intern
 location: Kirkland, WA · Hybrid
 period:
-  start: '2023-05'
-  end: '2023-08'
+  start: 2023-05-01
+  end: 2023-08-01
 summary: First Google internship — built a new debug framework for Android Messages and a Jetpack Compose viewer for the data it captured.
 highlights:
   - Implemented a new debug framework for Android Messages in Kotlin, significantly improving the developer experience for other engineers.

@@ -1,10 +1,11 @@
 ---
+slug: stockvio
 company: Stockvio
 role: Founder · CEO
 location: Brazil
 period:
-  start: '2020-11'
-  end: '2022-02'
+  start: 2020-11-01
+  end: 2022-02-01
 summary: Founded Stockvio, a platform that automated capital-gains tax calculation for Brazilian individual investors trading on B3 (BOVESPA).
 highlights:
   - Built the algorithm that parsed brokerage trading receipts in Node.js.

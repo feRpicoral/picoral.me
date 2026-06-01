@@ -8,7 +8,7 @@ period:
 location: 'Boulder, CO'
 order: 0
 _source:
-  hash: fcc4165a218206a6
+  hash: 483f6252e078da6c
   locale: en
   translatedAt: '2026-06-01T05:14:11.489Z'
 ---

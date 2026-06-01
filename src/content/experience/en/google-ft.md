@@ -1,9 +1,10 @@
 ---
+slug: google-ft
 company: Google
 role: Software Engineer
 location: New York, NY
 period:
-  start: '2026-09'
+  start: 2026-09-01
   end: null
 summary: Returning to Google full-time as a Software Engineer in New York in September 2026 after three internships with the company.
 highlights:

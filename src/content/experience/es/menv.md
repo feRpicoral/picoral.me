@@ -22,7 +22,7 @@ type: contract
 link: 'https://www.colorado.edu/menv/'
 order: 8
 _source:
-  hash: 4a29c5600fb36826
+  hash: 3200e69dfa54ea35
   locale: en
   translatedAt: '2026-06-01T04:51:44.537Z'
 ---

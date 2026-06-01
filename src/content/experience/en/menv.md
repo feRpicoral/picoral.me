@@ -1,10 +1,11 @@
 ---
+slug: menv
 company: Department of Masters of the Environment — CU Boulder
 role: Engineering Manager
 location: Boulder, CO
 period:
-  start: '2022-10'
-  end: '2023-02'
+  start: 2022-10-01
+  end: 2023-02-01
 summary: Selected to lead a small dev team automating the capstone-project matching process for the MENV master's program.
 highlights:
   - Structured and assigned tasks across the team and ran Agile sprints to keep delivery on schedule.

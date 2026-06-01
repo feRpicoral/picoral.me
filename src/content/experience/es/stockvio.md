@@ -23,7 +23,7 @@ tech:
 type: founder
 order: 10
 _source:
-  hash: 96885a02e8116361
+  hash: 883769fb6041cd3f
   locale: en
   translatedAt: '2026-06-01T04:51:48.053Z'
 ---

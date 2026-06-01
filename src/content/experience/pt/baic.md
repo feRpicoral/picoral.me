@@ -28,7 +28,7 @@ type: research
 link: 'https://www.colorado.edu/center/mortenson/tom-yeh-phd'
 order: 5
 _source:
-  hash: ac204a29216a555d
+  hash: 77a59294ca32d7fa
   locale: en
   translatedAt: '2026-06-01T04:51:33.376Z'
 ---

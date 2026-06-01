@@ -36,7 +36,7 @@ type: fulltime
 link: 'https://www.poatek.com/'
 order: 9
 _source:
-  hash: fe869bae9f41f461
+  hash: d0fa9c1166544dc1
   locale: en
   translatedAt: '2026-06-01T04:51:45.851Z'
 ---

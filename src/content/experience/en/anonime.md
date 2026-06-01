@@ -1,10 +1,11 @@
 ---
+slug: anonime
 company: AnoniMe
 role: Co-Founder · CEO
 location: Brazil
 period:
-  start: '2022-10'
-  end: '2023-10'
+  start: 2022-10-01
+  end: 2023-10-01
 summary: Cofounded AnoniMe, a location-bound anonymous social app where users only engage with people within a set distance. Led product, fundraising, marketing, and frontend.
 highlights:
   - Drove the company to a 500K USD valuation in only 5 months.

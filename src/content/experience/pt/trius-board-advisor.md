@@ -14,7 +14,7 @@ type: founder
 link: 'https://www.linkedin.com/company/101222529'
 order: 2
 _source:
-  hash: 92904ff954d32b21
+  hash: 7738ae659d27c209
   locale: en
   translatedAt: '2026-06-01T04:51:49.428Z'
 ---

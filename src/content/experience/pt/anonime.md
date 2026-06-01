@@ -23,7 +23,7 @@ type: founder
 link: 'https://www.linkedin.com/company/89329053'
 order: 6
 _source:
-  hash: 93d142f0cac15123
+  hash: 3f50e583bedb1c21
   locale: en
   translatedAt: '2026-06-01T04:51:29.351Z'
 ---
