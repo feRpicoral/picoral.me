@@ -26,23 +26,6 @@ export const SITE = {
 
 export type Locale = (typeof SITE.locales)[number];
 
-export const EDUCATION = [
-  {
-    degree: 'Bachelor of Science in Computer Science',
-    school: 'University of Colorado Boulder',
-    detail: 'Major GPA 3.9 / 4.0',
-    period: { start: '2022-08', end: '2026-05' },
-    location: 'Boulder, CO',
-  },
-  {
-    degree: 'Minor in Business Administration',
-    school: 'University of Colorado Boulder',
-    detail: 'GPA 3.9 / 4.0',
-    period: { start: '2023-08', end: '2025-08' },
-    location: 'Boulder, CO',
-  },
-] as const;
-
 export const FOREIGN_LANGUAGES = [
   { language: 'Portuguese', level: 'native' as const },
   { language: 'English', level: 'fluent' as const },

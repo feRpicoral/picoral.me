@@ -1,14 +1,14 @@
 import type { Locale } from '~/config/site.ts';
 import { bcp47 } from '~/i18n/utils.ts';
 
+const PERIOD_DATE_RE = /^(\d{4})-(0[1-9]|1[0-2])(?:-\d{2})?$/;
+
 export function formatPeriodDate(value: string | null | undefined, locale: Locale): string {
   if (!value) return '';
-  const parts = value.split('-');
-  if (parts.length < 2) return value;
-  const [yearStr, monthStr] = parts;
-  const year = Number(yearStr);
-  const month = Number(monthStr);
-  if (!Number.isFinite(year) || !Number.isFinite(month)) return value;
+  const match = PERIOD_DATE_RE.exec(value);
+  if (!match) return value;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
   const date = new Date(Date.UTC(year, month - 1, 1));
   return new Intl.DateTimeFormat(bcp47(locale), {
     month: 'short',

@@ -6,19 +6,21 @@ import type { UiKey } from '~/i18n/ui.ts';
 import { useTranslations } from '~/i18n/utils.ts';
 import { formatPeriodRange } from '~/lib/format.ts';
 
+type WorkItem = CollectionEntry<'experience'>['data']['work'][number];
+
 interface Props {
-  entries: CollectionEntry<'experience'>[];
+  entries: WorkItem[];
   locale: Locale;
 }
 const { entries, locale } = Astro.props;
 const t = useTranslations(locale);
 
-const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
+const sorted = [...entries].sort((a, b) => a.order - b.order);
 ---
 
 <ol class="timeline">
   {sorted.map((entry) => {
-    const { company, role, location, period, summary, highlights, tech, type, link } = entry.data;
+    const { company, role, location, period, summary, highlights, tech, type, link } = entry;
     const periodLabel = formatPeriodRange(period.start, period.end, locale, t('experience.present'));
     const typeLabel = t(`experience.type.${type}` as UiKey);
     return (

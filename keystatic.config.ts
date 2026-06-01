@@ -1,4 +1,4 @@
-import { collection, config, fields } from '@keystatic/core';
+import { collection, config, fields, singleton } from '@keystatic/core';
 import { block } from '@keystatic/core/content-components';
 
 const projectStatusOptions = [
@@ -7,6 +7,29 @@ const projectStatusOptions = [
   { label: 'In development', value: 'in-development' },
   { label: 'Archived', value: 'archived' },
 ] as const;
+
+const employmentTypeOptions = [
+  { label: 'Full-time', value: 'fulltime' },
+  { label: 'Internship', value: 'internship' },
+  { label: 'Founder', value: 'founder' },
+  { label: 'Research', value: 'research' },
+  { label: 'Contract', value: 'contract' },
+] as const;
+
+const PERIOD_DATE_DESCRIPTION =
+  'Only the month and year are shown on the site; the day is ignored. Use the first day of the month.';
+
+const periodFields = () => ({
+  start: fields.date({
+    label: 'Start',
+    description: PERIOD_DATE_DESCRIPTION,
+    validation: { isRequired: true },
+  }),
+  end: fields.date({
+    label: 'End',
+    description: PERIOD_DATE_DESCRIPTION,
+  }),
+});
 
 const projectImage = block({
   label: 'Project image',
@@ -44,8 +67,108 @@ export default config({
       name: 'picoral.me',
     },
     navigation: {
-      Content: ['projects'],
+      Content: ['projects', 'experience'],
     },
+  },
+  singletons: {
+    experience: singleton({
+      label: 'Experience',
+      path: 'src/content/experience/en/index',
+      entryLayout: 'form',
+      format: { contentField: 'content' },
+      schema: {
+        education: fields.array(
+          fields.object(
+            {
+              degree: fields.text({
+                label: 'Degree',
+                validation: { isRequired: true },
+              }),
+              school: fields.text({
+                label: 'School',
+                validation: { isRequired: true },
+              }),
+              detail: fields.text({
+                label: 'Detail',
+                validation: { isRequired: true },
+              }),
+              period: fields.object(periodFields(), {
+                label: 'Period',
+                layout: [6, 6],
+              }),
+              location: fields.text({
+                label: 'Location',
+                validation: { isRequired: true },
+              }),
+            },
+            { label: 'Education item' },
+          ),
+          {
+            label: 'Education',
+            itemLabel: (props) =>
+              props.fields.degree.value || props.fields.school.value || 'Education item',
+          },
+        ),
+        work: fields.array(
+          fields.object(
+            {
+              company: fields.text({
+                label: 'Company',
+                validation: { isRequired: true },
+              }),
+              role: fields.text({
+                label: 'Role',
+                validation: { isRequired: true },
+              }),
+              location: fields.text({
+                label: 'Location',
+                validation: { isRequired: true },
+              }),
+              period: fields.object(periodFields(), {
+                label: 'Period',
+                layout: [6, 6],
+              }),
+              summary: fields.text({
+                label: 'Summary',
+                multiline: true,
+                validation: { isRequired: true },
+              }),
+              highlights: fields.array(
+                fields.text({
+                  label: 'Highlight',
+                  validation: { isRequired: true },
+                }),
+                {
+                  label: 'Highlights',
+                  itemLabel: (props) => props.value,
+                },
+              ),
+              tech: fields.array(fields.text({ label: 'Technology' }), {
+                label: 'Tech',
+                itemLabel: (props) => props.value,
+              }),
+              type: fields.select({
+                label: 'Type',
+                options: employmentTypeOptions,
+                defaultValue: 'fulltime',
+              }),
+              link: fields.url({ label: 'Link' }),
+              order: fields.number({
+                label: 'Order',
+                validation: { isRequired: true },
+              }),
+            },
+            { label: 'Work item' },
+          ),
+          {
+            label: 'Work',
+            itemLabel: (props) =>
+              props.fields.role.value || props.fields.company.value || 'Work item',
+          },
+        ),
+        content: fields.emptyContent({ extension: 'md' }),
+      },
+    }),
   },
   collections: {
     projects: collection({

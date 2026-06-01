@@ -1,15 +1,19 @@
 ---
-import { EDUCATION, type Locale } from '~/config/site.ts';
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '~/config/site.ts';
 import { formatPeriodRange } from '~/lib/format.ts';
 
+type EducationItem = CollectionEntry<'experience'>['data']['education'][number];
+
 interface Props {
+  items: EducationItem[];
   locale: Locale;
 }
-const { locale } = Astro.props;
+const { items, locale } = Astro.props;
 ---
 
 <ol class="edu">
-  {EDUCATION.map((item) => {
+  {items.map((item) => {
     const periodLabel = formatPeriodRange(item.period.start, item.period.end, locale);
     return (
       <li>

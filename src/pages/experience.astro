@@ -7,12 +7,14 @@ import Section from '~/components/ui/Section.astro';
 import { SITE } from '~/config/site.ts';
 import { getLocaleFromUrl, useTranslations } from '~/i18n/utils.ts';
 import Page from '~/layouts/Page.astro';
-import { getLocalizedCollection } from '~/lib/content.ts';
+import { getLocalizedEntry } from '~/lib/content.ts';
 import { breadcrumbSchema } from '~/lib/schema.ts';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
-const entries = await getLocalizedCollection('experience', locale);
+const experience = await getLocalizedEntry('experience', locale, 'index');
+if (!experience) throw new Error(`Missing experience content for locale "${locale}".`);
+const { education, work } = experience.data;
 
 const jsonLd = [
   breadcrumbSchema([
@@ -37,14 +39,14 @@ const jsonLd = [
       <div class="block">
         <h2 class="block-title">{t('experience.education.title')}</h2>
         <div class="timeline-wrap">
-          <EducationList locale={locale} />
+          <EducationList items={education} locale={locale} />
         </div>
       </div>
 
       <div class="block">
         <h2 class="block-title">{t('experience.work.title')}</h2>
         <div class="timeline-wrap">
-          <ExperienceTimeline entries={entries} locale={locale} />
+          <ExperienceTimeline entries={work} locale={locale} />
         </div>
       </div>
     </Container>
