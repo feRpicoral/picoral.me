@@ -1,10 +1,6 @@
 import type { Locale } from '~/config/site.ts';
 import { bcp47 } from '~/i18n/utils.ts';
 
-/**
- * Format period dates with a localized month and year.
- * Unparseable values pass through unchanged.
- */
 export function formatPeriodDate(value: string | null | undefined, locale: Locale): string {
   if (!value) return '';
   const parts = value.split('-');
@@ -14,7 +10,27 @@ export function formatPeriodDate(value: string | null | undefined, locale: Local
   const month = Number(monthStr);
   if (!Number.isFinite(year) || !Number.isFinite(month)) return value;
   const date = new Date(Date.UTC(year, month - 1, 1));
-  return new Intl.DateTimeFormat(bcp47(locale), { month: 'short', year: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat(bcp47(locale), {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
+}
+
+export function formatPeriodRange(
+  startValue: string | null | undefined,
+  endValue: string | null | undefined,
+  locale: Locale,
+  openEndedLabel?: string,
+): string {
+  const start = formatPeriodDate(startValue, locale);
+  if (!endValue) return start && openEndedLabel ? `${start} – ${openEndedLabel}` : start;
+
+  const end = formatPeriodDate(endValue, locale);
+  if (start && end && start === end) return start;
+  if (!start) return end;
+  if (!end) return start;
+  return `${start} – ${end}`;
 }
 
 export function formatLongDate(value: Date | string, locale: Locale): string {

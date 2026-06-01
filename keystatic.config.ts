@@ -26,6 +26,7 @@ const projectImage = block({
       label: 'Size',
       options: [
         { label: 'Prose', value: 'prose' },
+        { label: 'Chart', value: 'chart' },
         { label: 'Wide', value: 'wide' },
       ],
       defaultValue: 'prose',

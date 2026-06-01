@@ -4,7 +4,7 @@ import Pill from '~/components/ui/Pill.astro';
 import { type Locale } from '~/config/site.ts';
 import type { UiKey } from '~/i18n/ui.ts';
 import { useTranslations } from '~/i18n/utils.ts';
-import { formatPeriodDate } from '~/lib/format.ts';
+import { formatPeriodRange } from '~/lib/format.ts';
 
 interface Props {
   entries: CollectionEntry<'experience'>[];
@@ -19,8 +19,7 @@ const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
 <ol class="timeline">
   {sorted.map((entry) => {
     const { company, role, location, period, summary, highlights, tech, type, link } = entry.data;
-    const start = formatPeriodDate(period.start, locale);
-    const end = period.end ? formatPeriodDate(period.end, locale) : t('experience.present');
+    const periodLabel = formatPeriodRange(period.start, period.end, locale, t('experience.present'));
     const typeLabel = t(`experience.type.${type}` as UiKey);
     return (
       <li class="item">
@@ -39,7 +38,7 @@ const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
             <span class="loc">{location}</span>
           </p>
           <p class="dates">
-            <time>{start}</time> – <time>{end}</time>
+            {periodLabel}
           </p>
         </div>
         <p class="summary text-pretty">{summary}</p>
