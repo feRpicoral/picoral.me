@@ -63,7 +63,7 @@ export async function translateSnippets({ locale, snippets, retryFeedback }) {
       system,
       prompt: buildUserMessage(snippets, retryFeedback),
       temperature: 0,
-      maxOutputTokens: 8192,
+      maxOutputTokens: 4096,
       // SDK default is 2; 5 buys headroom for provider rate-limit backoff.
       maxRetries: 5,
     }));
