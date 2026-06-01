@@ -1,20 +1,20 @@
 ---
 company: Trius
-role: Co-fundador · CFO
+role: Co-Fundador · CFO
 location: Brasil
 period:
   start: 2023-11
   end: 2025-01
-summary: Cofundei a Trius e liderei a área financeira da empresa como CFO por 14 meses.
+summary: Cofundou a Trius e liderou a área financeira como CFO por 14 meses.
 highlights:
-  - Cofundei a empresa.
-  - Fui responsável pela área financeira como CFO por 14 meses.
+  - Cofundou a empresa.
+  - Responsável pela área financeira como CFO por 14 meses.
 type: founder
 link: 'https://www.linkedin.com/company/101222529'
 order: 3
 _source:
-  hash: eaf01387311c008a
+  hash: 998d5b94506a3f20
   locale: en
-  translatedAt: '2026-06-01T04:18:44.817Z'
+  translatedAt: '2026-06-01T04:51:51.585Z'
 ---
 

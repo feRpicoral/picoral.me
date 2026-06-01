@@ -2,17 +2,17 @@
 slug: recurra
 title: Recurra
 tagline: >-
-  Proyecto personal — andamiaje de facturación recurrente para negocios de
-  servicios locales. Creado como excusa para aprender Nx, AWS CDK y la capa de
-  facturación completa de principio a fin.
+  Proyecto personal — estructura de facturación recurrente para negocios de
+  servicios locales. Construido como excusa para aprender Nx, AWS CDK y la capa
+  de cobros de punta a punta.
 summary: >-
   Un experimento de facturación por suscripción para negocios de servicios con
-  clientes recurrentes — citas recurrentes, cobros automáticos, autoservicio
-  para clientes. Backend en NestJS, web en React Router 7, móvil en Expo,
-  infraestructura en AWS CDK y un cliente Android en Kotlin para una integración
+  clientes frecuentes — citas recurrentes, cobros automatizados, autogestión del
+  cliente. Backend en NestJS, web en React Router 7, móvil en Expo,
+  infraestructura en AWS CDK, y un cliente Android en Kotlin para integración
   con Clover POS.
 status: archived
-role: 'Solo — backend, web, móvil, infraestructura'
+role: 'Solo — backend, web, móvil, infra'
 period:
   start: 2025-02
 stack:
@@ -33,7 +33,7 @@ order: 4
 hasCaseStudy: true
 seo:
   description: >-
-    Un proyecto personal. Andamiaje de facturación recurrente para negocios de
+    Proyecto personal. Estructura de facturación recurrente para negocios de
     servicios locales — NestJS, React Router 7, Expo, Clover POS en Kotlin, AWS
     CDK, todo en un monorepo Nx.
   keywords:
@@ -46,43 +46,43 @@ faq:
   - q: ¿Qué es Recurra?
     a: >-
       Recurra es una plataforma de facturación recurrente para negocios de
-      servicios locales — el lema es 'negocios recurrentes, una y otra vez'.
-      Maneja citas recurrentes, cobros automáticos a través de Stripe,
-      suscripciones de autoservicio para clientes y una integración con Clover
-      POS para el pago en persona.
+      servicios locales — el lema es 'clientes de siempre, cobros automáticos.'
+      Gestiona citas recurrentes, cobros automatizados vía Stripe, suscripciones
+      de autogestión para clientes, e integración con Clover POS para cobros
+      presenciales.
   - q: ¿Por qué un monorepo multi-app para Recurra?
     a: >-
-      Un negocio necesita tres interfaces — administración web para el dueño,
-      móvil para el dueño y POS para el cliente — compartiendo un backend, un
-      modelo de autenticación y un sistema de facturación. El monorepo Nx con
-      @recurra/shared mantiene tipos, validación y lógica de negocio en un solo
-      lugar entre React Router, Expo y el cliente Kotlin POS.
+      Un negocio necesita tres interfaces — panel web del dueño, app móvil del
+      dueño, POS orientado al cliente — compartiendo un solo backend, un modelo
+      de autenticación y un sistema de cobros. El monorepo Nx con
+      @recurra/shared mantiene tipos, validaciones y lógica de negocio en un
+      único lugar para React Router, Expo y el cliente Kotlin del POS.
 _source:
-  hash: b18387358ea5e941
+  hash: 353159dbfbbb0b9e
   locale: en
-  translatedAt: '2026-06-01T04:18:26.441Z'
+  translatedAt: '2026-06-01T04:50:38.996Z'
 ---
 ## Qué hace
 
-Recurra es una plataforma de facturación recurrente para negocios de servicios locales — negocios recurrentes, una y otra vez. El dueño administra servicios, horarios y clientes desde un panel de administración en React o una app móvil en Expo. El cliente gestiona sus suscripciones desde un portal propio. Stripe se encarga de los cobros. Una integración con Clover POS escrita en Kotlin permite el pago en persona que recupera la suscripción activa del cliente.
+Recurra es una plataforma de facturación recurrente para negocios de servicios locales. El dueño gestiona servicios, horarios y clientes desde un panel admin en React o una app móvil en Expo. El cliente gestiona sus suscripciones desde un portal propio. Stripe maneja los cobros. Una integración con Clover POS escrita en Kotlin permite cobros presenciales que consultan la suscripción activa del cliente.
 
 ## Por qué lo construí
 
-No es un producto — es un proyecto personal. Quería construir algo que abarcara web + móvil + POS + infraestructura AWS en un solo monorepo, en parte para aprender Nx y CDK correctamente, y en parte porque la facturación por suscripción para negocios de servicios locales es un dominio que me parece genuinamente interesante (y consistentemente desatendido).
+No es un producto — es un proyecto personal. Quería construir algo que abarcara web + móvil + POS + infraestructura en AWS en un solo monorepo, en parte para aprender Nx y CDK en serio, y en parte porque la facturación por suscripción para negocios de servicios locales es un dominio que me parece genuinamente interesante (y consistentemente desatendido).
 
 ## Cómo funciona
 
-Monorepo Nx con espacios de trabajo NPM. Seis apps:
+Monorepo Nx con NPM workspaces. Seis apps:
 
-- `backend` — NestJS con Prisma contra PostgreSQL en RDS, desplegado en App Runner.
-- `web` — SPA de React Router 7 en build/client/, alojada en S3 + CloudFront.
+- `backend` — NestJS con Prisma sobre PostgreSQL en RDS, desplegado en App Runner.
+- `web` — React Router 7 SPA en build/client/, alojado en S3 + CloudFront.
 - `mobile` — Expo.
 - `clover-pos` — Kotlin Android para Clover Mini.
 - `infra` — AWS CDK con seis stacks: Network, Dns, Database, Backend, Web, Email.
-- `backend-e2e` — Pruebas e2e con Jest.
+- `backend-e2e` — tests e2e con Jest.
 
-Tipos compartidos y esquemas Zod viven en `@recurra/shared` y son importados por cada app. Los stacks de CDK usan SSM Parameter Store para secretos y un script de entrada que construye la URL de la base de datos a partir del JSON de Secrets Manager.
+Los tipos compartidos y los schemas Zod viven en `@recurra/shared` y son importados por todas las apps. Los stacks de CDK usan SSM Parameter Store para los secretos y un script de entrada que construye la URL de la base de datos a partir del JSON de Secrets Manager.
 
 ## Estado
 
-En desarrollo activo. El backend, la web de administración y la infraestructura están implementados; la app Clover POS y la app móvil para el dueño son los siguientes pasos.
+En desarrollo activo. El backend, el panel web de administración y la infra ya están en marcha; la app Clover POS y la app móvil del dueño son los próximos pasos.

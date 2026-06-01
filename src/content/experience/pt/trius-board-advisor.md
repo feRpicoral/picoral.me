@@ -1,23 +1,21 @@
 ---
 company: Trius
-role: Conselheiro Consultivo
+role: Conselheiro do Conselho
 location: Brasil
 period:
   start: 2025-01
   end: 2025-06
 summary: >-
-  Saí do cargo de CFO para me tornar Conselheiro Consultivo na Trius, focando no
+  Saí do cargo de CFO para Conselheiro do Conselho na Trius para focar no
   estágio no Google em Nova York.
 highlights:
-  - >-
-    Continuei como conselheiro da equipe fundadora após me afastar do cargo de
-    CFO.
+  - Continuei como conselheiro do time fundador após deixar o cargo de CFO.
 type: founder
 link: 'https://www.linkedin.com/company/101222529'
 order: 2
 _source:
-  hash: 9b6fc710944db187
+  hash: 92904ff954d32b21
   locale: en
-  translatedAt: '2026-06-01T04:18:43.697Z'
+  translatedAt: '2026-06-01T04:51:49.428Z'
 ---
 

@@ -2,16 +2,16 @@
 slug: sonar
 title: Sonar
 tagline: >-
-  Projeto pessoal explorando orquestração multiagente. O caso de uso é revisão
-  de chamadas de vendas; o objetivo real foi aprender o uso de ferramentas da
-  Anthropic, cache de prompts e estado persistente do agente.
+  Projeto pessoal explorando orquestração multi-agente. O caso de uso é revisão
+  de chamadas de vendas; o objetivo real foi aprender tool use da Anthropic,
+  prompt caching e estado persistente de agentes.
 summary: >-
-  Um pipeline multiagente que transforma a gravação de uma chamada de vendas em
-  pesquisa, análise, um próximo passo recomendado e um rascunho de e-mail de
-  acompanhamento com citações que remetem à transcrição. Construído sobre Claude
-  Sonnet 4.6 + Haiku 4.5, Groq Whisper e Tavily.
+  Um pipeline multi-agente que transforma uma gravação de chamada de vendas em
+  pesquisa, análise, próximo passo recomendado e rascunho de e-mail de follow-up
+  com citações linkando de volta à transcrição. Construído com Claude Sonnet 4.6
+  + Haiku 4.5, Groq Whisper e Tavily.
 status: in-development
-role: 'Solo — design, engenharia, implantação'
+role: 'Solo — design, engenharia, deploy'
 period:
   start: 2025-09
 stack:
@@ -34,9 +34,9 @@ order: 1
 hasCaseStudy: true
 seo:
   description: >-
-    Um projeto pessoal. Pipeline multiagente que transforma gravações de
-    chamadas de vendas em pesquisa, análise, próximos passos e rascunhos de
-    acompanhamento com base em citações.
+    Projeto pessoal. Pipeline multi-agente que transforma gravações de chamadas
+    de vendas em pesquisa, análise, próximo passo e rascunhos de follow-up com
+    citações.
   keywords:
     - multi-agent
     - AI sales enablement
@@ -45,71 +45,70 @@ seo:
     - Whisper transcription
     - Tavily
 faq:
-  - q: O que é Sonar?
+  - q: O que é o Sonar?
     a: >-
-      Sonar é um espaço de trabalho de IA multiagente para equipes de vendas. Um
-      representante faz o upload de uma chamada de vendas gravada; cerca de 20
-      segundos depois, ele tem pesquisa sobre o prospect, análise estruturada da
-      chamada, um próximo passo recomendado e um rascunho de e-mail de
-      acompanhamento com citações que remetem cada afirmação a um segmento
-      específico da transcrição.
-  - q: Como funciona a orquestração multiagente do Sonar?
+      Sonar é um workspace de IA multi-agente para times de vendas. Um rep faz
+      upload de uma chamada gravada; ~20 segundos depois ele tem pesquisa sobre
+      o prospect, análise estruturada da chamada, próximo passo recomendado e
+      rascunho de e-mail de follow-up com citações linkando cada afirmação a um
+      trecho específico da transcrição.
+  - q: Como funciona a orquestração multi-agente do Sonar?
     a: >-
-      Quatro nós de agente sequenciais — pesquisa, análise, estratégia, redator
-      — cada um retornando saída estruturada através do uso de ferramentas da
-      Anthropic com esquemas Zod. Cada etapa grava uma linha `AgentRunStep` no
-      Postgres; a execução pausa em `AWAITING_APPROVAL` após a etapa do redator
-      para revisão humana. O redator pode ser regenerado com feedback do revisor
-      sem reexecutar os nós anteriores.
-  - q: Por que o Sonar usa cache de prompts da Anthropic?
+      Quatro nós sequenciais — research, analysis, strategy, writer — cada um
+      retornando output estruturado via tool use da Anthropic com schemas Zod.
+      Cada etapa grava uma linha AgentRunStep no Postgres; o run pausa em
+      AWAITING_APPROVAL após o passo do writer para revisão humana. O writer
+      pode ser regerado com feedback do revisor sem re-executar os nós
+      anteriores.
+  - q: Por que o Sonar usa prompt caching da Anthropic?
     a: >-
-      Mensagens do sistema são cacheadas em cada nó. Em execuções repetidas
-      contra o mesmo espaço de trabalho, isso corta os tokens de entrada em
-      cerca de 70%, o que se compõe diretamente em ganhos de latência e custo à
-      medida que o corpus de contexto do espaço de trabalho cresce.
+      As system messages são cacheadas em todos os nós. Em runs repetidos no
+      mesmo workspace, isso reduz os tokens de entrada em cerca de 70%, o que se
+      traduz diretamente em ganhos de latência e custo à medida que o corpus de
+      contexto do workspace cresce.
 _source:
-  hash: 62591e9460abba75
+  hash: c8be5ceda29ed647
   locale: en
-  translatedAt: '2026-06-01T04:18:34.906Z'
+  translatedAt: '2026-06-01T04:51:15.950Z'
 ---
 ## O que faz
 
-Um representante de vendas faz o upload de uma gravação de chamada. Cerca de vinte segundos depois, o Sonar retorna:
+Um rep de vendas faz upload de uma gravação de chamada. Cerca de vinte segundos depois, o Sonar retorna:
 
 1. Pesquisa sobre a empresa do prospect (Tavily + Claude Haiku 4.5)
-2. Análise estruturada da chamada — tópicos, pontos problemáticos, objeções, itens de ação, sentimento (Claude Sonnet 4.6)
-3. Um próximo passo recomendado com pontos de discussão e urgência (Claude Sonnet 4.6)
-4. Um rascunho de e-mail de acompanhamento com citações entre colchetes que remetem a segmentos específicos da transcrição (Claude Sonnet 4.6)
+2. Análise estruturada da chamada — tópicos, dores, objeções, itens de ação, sentimento (Claude Sonnet 4.6)
+3. Próximo passo recomendado com talking points e urgência (Claude Sonnet 4.6)
+4. Rascunho de e-mail de follow-up com citações entre colchetes linkando de volta a trechos da transcrição (Claude Sonnet 4.6)
 
-O revisor vê uma interface de visualização dividida: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o segmento correspondente. O revisor pode aprovar, editar o corpo no local ou regenerar o redator com feedback. A regeneração reutiliza o estado anterior de pesquisa, análise e estratégia; apenas o redator é executado novamente.
+O revisor vê uma UI em split-view: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o trecho correspondente. O revisor pode aprovar, editar o corpo diretamente ou regerar o writer com feedback. A regeração reutiliza o estado anterior de research, analysis e strategy; só o writer roda novamente.
 
-## Por que eu o construí
+## Por que construí
 
-Não é um produto — é um projeto pessoal. Eu queria um único codebase que exercitasse a pilha moderna de IA de ponta a ponta: orquestração multiagente com estado persistente, manipulação de áudio real, uso de ferramentas estruturadas, cache de prompts e o formato B2B multi-tenant. A revisão de chamadas de vendas foi o domínio porque o fluxo de trabalho é genuinamente linear com rollback, que é o ponto ideal para grafos de agentes.
+Não é um produto — é um projeto pessoal. Queria uma codebase que exercitasse a stack moderna de IA de ponta a ponta: orquestração multi-agente com estado persistente, processamento real de áudio, tool use estruturado, prompt caching e o formato B2B multi-tenant. Revisão de chamadas de vendas foi o domínio escolhido porque o fluxo é genuinamente linear-com-rollback, que é o ponto ideal para grafos de agentes.
 
 ## Como funciona
 
-### Orquestração multiagente
+### Orquestração multi-agente
 
-- Quatro nós sequenciais (pesquisa, transcrição, análise, estratégia, redator)
-- Cada nó retorna saída estruturada via uso de ferramentas da Anthropic + um esquema Zod. Sem saídas de texto livre.
-- Cada etapa grava uma linha `AgentRunStep`. A execução pausa em `AWAITING_APPROVAL` após a etapa do redator.
-- O cache de prompts da Anthropic está habilitado em mensagens do sistema — redução de ~70% nos tokens de entrada em execuções repetidas.
-- A regeneração do redator reutiliza o estado upstream.
-- Execução em segundo plano via manipulador de rota `after()` do Next.js 16 (`maxDuration = 300`).
+- Quatro nós sequenciais (research, transcription, analysis, strategy, writer)
+- Cada nó retorna output estruturado via tool use da Anthropic + um schema Zod. Sem outputs em texto livre.
+- Cada etapa grava uma linha `AgentRunStep`. O run pausa em `AWAITING_APPROVAL` após o passo do writer.
+- Prompt caching da Anthropic habilitado nas system messages — redução de ~70% nos tokens de entrada em runs repetidos.
+- A regeração do writer reutiliza o estado dos nós anteriores.
+- Execução em background via route handler `after()` do Next.js 16 (`maxDuration = 300`).
 
 ### Processamento de áudio
 
-- O upload por arrastar e soltar vai do navegador para o Supabase Storage via URL assinado. O servidor não está no caminho do upload.
-- Groq Whisper Large v3 transcreve com timestamps em nível de segmento.
-- Tipo MIME e limite de 100 MB aplicados tanto na ação do servidor quanto na política do bucket.
-- O redator recebe segmentos de transcrição marcados com índices entre colchetes; as citações referenciam esses índices.
-- A visualização dividida rola o segmento citado para visualização ao passar o mouse.
+- Upload por drag-and-drop vai direto do browser para o Supabase Storage via signed URL. O servidor não está no caminho do upload.
+- Groq Whisper Large v3 transcreve com timestamps por segmento.
+- Tipo MIME e limite de 100 MB aplicados tanto na server action quanto na bucket policy.
+- O writer recebe os segmentos da transcrição marcados com índices entre colchetes; as citações referenciam esses índices.
+- A UI em split-view rola até o segmento citado ao passar o mouse.
 
 ### B2B multi-tenant
 
-Espaços de trabalho, papéis (`OWNER`, `ADMIN`, `MEMBER`), convites, chaves de API, log de auditoria. Três camadas de isolamento — escopo em nível de linha do Postgres, proteções na camada de aplicação em cada ação do servidor e políticas de Supabase Storage com chave por ID do espaço de trabalho.
+Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), convites, API keys, log de auditoria. Três camadas de isolamento — escopo por linha no Postgres, guards na camada de aplicação em cada server action e bucket policies do Supabase Storage com chave por workspace ID.
 
 ## Status
 
-Em desenvolvimento ativo. O pipeline de agentes + a tenância do espaço de trabalho estão funcionando; o polimento da UI e a demonstração ao vivo estão em andamento.
+Em desenvolvimento ativo. O pipeline de agentes e a tenancy de workspaces estão funcionando; o polimento da UI e a demo ao vivo estão em andamento.

@@ -6,23 +6,23 @@ period:
   start: 2021-06
   end: 2022-06
 summary: >-
-  Primer puesto de ingeniería a tiempo completo: desarrollo full-stack de
-  dashboards para una firma de gestión de activos, un evaluador de fórmulas de
-  Excel en AWS Lambda con Kotlin y una serie de POCs de integración.
+  Primer trabajo de ingeniería full-time — desarrollo de dashboards full-stack
+  para una gestora de activos, un evaluador de fórmulas Excel en AWS Lambda con
+  Kotlin, y varios POCs de integración.
 highlights:
   - >-
-    Desarrollé un dashboard para la plataforma web de una firma de gestión de
-    activos: frontend en Angular, backend en Node/Express/MongoDB.
+    Desarrollé un dashboard para la plataforma web de una gestora de activos —
+    frontend en Angular, backend en Node/Express/MongoDB.
   - >-
-    Creé una AWS Lambda en Kotlin que usaba una hoja de cálculo de Excel como
-    CPU para cálculos complejos de retorno de inversión.
+    Construí una AWS Lambda en Kotlin que usaba una planilla de Excel como motor
+    de cálculo para retornos de inversión complejos.
   - >-
-    Fui responsable de múltiples POCs, incluyendo integraciones con DocuSign,
-    Canvas y otras.
+    Lideré múltiples POCs, incluyendo integraciones con DocuSign, Canvas y
+    otros.
   - >-
     Fui uno de los desarrolladores principales de una nueva herramienta interna
-    para una firma de gestión de activos: frontend en React + Next.js, backend
-    en Node/Express/MongoDB.
+    para una gestora de activos — frontend en React + Next.js, backend en
+    Node/Express/MongoDB.
 tech:
   - TypeScript
   - Angular
@@ -36,8 +36,8 @@ type: fulltime
 link: 'https://www.poatek.com/'
 order: 9
 _source:
-  hash: b133e3ba621f1f11
+  hash: eda1277b02851eb7
   locale: en
-  translatedAt: '2026-06-01T04:18:44.503Z'
+  translatedAt: '2026-06-01T04:51:45.464Z'
 ---
 

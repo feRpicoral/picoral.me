@@ -1,29 +1,29 @@
 ---
 company: Department of Masters of the Environment — CU Boulder
-role: Gerente de Ingeniería
+role: Engineering Manager
 location: 'Boulder, CO'
 period:
   start: 2022-10
   end: 2023-02
 summary: >-
-  Seleccionado para liderar un pequeño equipo de desarrollo que automatizó el
-  proceso de asignación de proyectos finales para el programa de maestría MENV.
+  Seleccionado para liderar un equipo pequeño de desarrollo que automatizó el
+  proceso de asignación de proyectos capstone del programa de maestría MENV.
 highlights:
   - >-
-    Estructuré y asigné tareas al equipo, y dirigí sprints ágiles para mantener
-    la entrega a tiempo.
+    Organicé y asigné tareas en el equipo y conduje sprints Agile para mantener
+    las entregas en tiempo.
   - >-
-    Garanticé la calidad y la entrega oportuna frente a una fecha límite
-    académica estricta.
+    Garanticé la calidad y el cumplimiento de plazos ante una fecha límite fija
+    del calendario académico.
   - >-
-    Automatización de la asignación de estudiantes a proyectos finales, lo que
-    resultó en un aumento del 70% en la satisfacción con la asignación.
+    Automaticé la asignación de estudiantes a proyectos capstone, lo que resultó
+    en un aumento del 70% en la satisfacción con las asignaciones.
 type: contract
 link: 'https://www.colorado.edu/menv/'
 order: 8
 _source:
-  hash: 1933d48d1bfa1d4c
+  hash: 4a29c5600fb36826
   locale: en
-  translatedAt: '2026-06-01T04:18:42.356Z'
+  translatedAt: '2026-06-01T04:51:44.537Z'
 ---
 
