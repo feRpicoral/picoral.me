@@ -6,7 +6,7 @@ export const TRANSLATOR_CONFIG_VERSION = 2;
 
 // Committed default model, as an OpenRouter slug (see openrouter.ai/models).
 // TRANSLATE_MODEL overrides it for a single local run; edit this to change it for good.
-export const TRANSLATOR_MODEL = 'google/gemini-2.5-flash-lite';
+export const TRANSLATOR_MODEL = 'anthropic/claude-sonnet-4.6';
 
 export const SOURCE_LOCALE = 'en';
 export const TARGET_LOCALES = ['pt', 'es'];
