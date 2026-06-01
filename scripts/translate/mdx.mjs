@@ -24,6 +24,7 @@ const CONTAINER_BLOCKS = new Set([
   'tableRow',
   'footnoteDefinition',
 ]);
+const TRANSLATABLE_MDX_ATTRIBUTES = new Map([['ProjectImage', new Set(['alt', 'caption'])]]);
 
 const fullProcessor = () =>
   unified().use(remarkParse).use(remarkFrontmatter, ['yaml']).use(remarkMdx).use(remarkStringify, {
@@ -73,6 +74,30 @@ function* iterateLeaves(node) {
   }
 }
 
+function* iterateMdxAttributes(node) {
+  if (
+    (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') &&
+    typeof node.name === 'string'
+  ) {
+    const translatable = TRANSLATABLE_MDX_ATTRIBUTES.get(node.name);
+    if (translatable) {
+      for (const attr of node.attributes ?? []) {
+        if (
+          attr.type === 'mdxJsxAttribute' &&
+          translatable.has(attr.name) &&
+          typeof attr.value === 'string' &&
+          attr.value.trim()
+        ) {
+          yield { node, nodeName: node.name, attr };
+        }
+      }
+    }
+  }
+  for (const child of node.children ?? []) {
+    yield* iterateMdxAttributes(child);
+  }
+}
+
 function serializePhrasing(children) {
   const writer = phrasingWriter();
   const fake = { type: 'paragraph', children };
@@ -103,6 +128,7 @@ function parsePhrasing(text) {
 export function extractBodySnippets(tree) {
   const snippets = [];
   const leaves = [];
+  const mdxAttributes = [];
   let i = 0;
   for (const node of iterateLeaves(tree)) {
     const text = serializePhrasing(node.children ?? []);
@@ -118,7 +144,24 @@ export function extractBodySnippets(tree) {
     leaves.push(node);
     i += 1;
   }
-  return { snippets, leaves };
+  const nextComponentIndexes = new Map();
+  const seenComponents = new WeakMap();
+  for (const { node, nodeName, attr } of iterateMdxAttributes(tree)) {
+    let componentIndex = seenComponents.get(node);
+    if (componentIndex === undefined) {
+      componentIndex = nextComponentIndexes.get(nodeName) ?? 0;
+      seenComponents.set(node, componentIndex);
+      nextComponentIndexes.set(nodeName, componentIndex + 1);
+    }
+    const id = `mdx:${nodeName}[${componentIndex}].${attr.name}`;
+    snippets.push({
+      id,
+      kind: `mdx:${nodeName}.${attr.name}`,
+      text: attr.value,
+    });
+    mdxAttributes.push({ id, attr });
+  }
+  return { snippets, leaves, mdxAttributes };
 }
 
 /**
@@ -149,7 +192,7 @@ export function localizeInternalLinks(tree, locale, defaultLocale, allLocales) {
 /**
  * Mutate the tree in place by replacing leaf children with translated phrasing.
  */
-export function injectBodyTranslations(leaves, byId) {
+export function injectBodyTranslations(leaves, byId, mdxAttributes = []) {
   leaves.forEach((node, i) => {
     const translated = byId[`body:${i}`];
     if (translated === undefined) {
@@ -157,6 +200,13 @@ export function injectBodyTranslations(leaves, byId) {
     }
     node.children = parsePhrasing(translated);
   });
+  for (const { id, attr } of mdxAttributes) {
+    const translated = byId[id];
+    if (translated === undefined) {
+      throw new Error(`Missing translation for ${id}`);
+    }
+    attr.value = translated;
+  }
 }
 
 /**

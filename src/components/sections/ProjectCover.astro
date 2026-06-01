@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+const widths = [640, 960, 1200, 1600].filter((width) => width <= src.width);
+if (!widths.includes(src.width)) widths.push(src.width);
+---
+
+<figure class="project-cover">
+  <Image
+    src={src}
+    alt={alt}
+    widths={widths}
+    sizes="(min-width: 64rem) 64rem, calc(100vw - 2rem)"
+    format="webp"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+  />
+</figure>
+
+<style>
+  .project-cover {
+    margin: -1rem auto 3rem;
+    width: min(100%, var(--container-content));
+  }
+  .project-cover :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+  }
+</style>
