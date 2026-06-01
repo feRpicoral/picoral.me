@@ -19,5 +19,4 @@ tech:
   - TypeScript
 type: founder
 link: https://www.linkedin.com/company/89329053
-order: 6
 ---

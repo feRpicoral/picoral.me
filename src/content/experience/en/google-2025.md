@@ -18,5 +18,4 @@ tech:
   - Spanner
 type: internship
 link: https://about.google
-order: 1
 ---

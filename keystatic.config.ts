@@ -202,7 +202,7 @@ export default config({
       path: 'src/content/experience/en/*',
       slugField: 'slug',
       format: { contentField: 'content' },
-      columns: ['company', 'role', 'order'],
+      columns: ['company', 'role'],
       schema: {
         slug: fields.slug({
           name: {
@@ -258,10 +258,6 @@ export default config({
           defaultValue: 'fulltime',
         }),
         link: fields.url({ label: 'Link' }),
-        order: fields.number({
-          label: 'Order',
-          validation: { isRequired: true },
-        }),
         content: fields.emptyContent({ extension: 'md' }),
       },
     }),
@@ -270,7 +266,7 @@ export default config({
       path: 'src/content/education/en/*',
       slugField: 'slug',
       format: { contentField: 'content' },
-      columns: ['degree', 'school', 'order'],
+      columns: ['degree', 'school'],
       schema: {
         slug: fields.slug({
           name: {
@@ -296,10 +292,6 @@ export default config({
         period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
         location: fields.text({
           label: 'Location',
-          validation: { isRequired: true },
-        }),
-        order: fields.number({
-          label: 'Order',
           validation: { isRequired: true },
         }),
         content: fields.emptyContent({ extension: 'md' }),

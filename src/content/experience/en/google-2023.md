@@ -17,5 +17,4 @@ tech:
   - Protocol Buffers
 type: internship
 link: https://about.google
-order: 7
 ---

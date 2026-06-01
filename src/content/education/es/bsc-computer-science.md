@@ -6,9 +6,8 @@ period:
   start: 2022-08
   end: 2026-05
 location: 'Boulder, CO'
-order: 0
 _source:
-  hash: 483f6252e078da6c
+  hash: a913ca6394452327
   locale: en
   translatedAt: '2026-06-01T05:14:11.489Z'
 ---

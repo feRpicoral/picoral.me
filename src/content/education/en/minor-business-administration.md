@@ -7,5 +7,4 @@ period:
   start: 2023-08-01
   end: 2025-08-01
 location: Boulder, CO
-order: 1
 ---

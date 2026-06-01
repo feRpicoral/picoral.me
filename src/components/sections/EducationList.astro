@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '~/config/site.ts';
-import { formatPeriodRange } from '~/lib/format.ts';
+import { formatPeriodRange, periodSortKey } from '~/lib/format.ts';
 
 interface Props {
   items: CollectionEntry<'education'>[];
@@ -9,7 +9,9 @@ interface Props {
 }
 const { items, locale } = Astro.props;
 
-const sorted = [...items].sort((a, b) => a.data.order - b.data.order);
+const sorted = [...items].sort((a, b) =>
+  periodSortKey(b.data.period).localeCompare(periodSortKey(a.data.period)),
+);
 ---
 
 <ol class="edu">

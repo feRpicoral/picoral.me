@@ -11,5 +11,4 @@ highlights:
   - Returning full-time after three Google internships across Kirkland (2023), Sunnyvale (2024), and New York (2025).
 type: fulltime
 link: https://about.google
-order: 0
 ---

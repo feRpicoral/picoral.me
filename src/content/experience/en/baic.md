@@ -18,5 +18,4 @@ tech:
   - Python
 type: research
 link: https://www.colorado.edu/center/mortenson/tom-yeh-phd
-order: 5
 ---

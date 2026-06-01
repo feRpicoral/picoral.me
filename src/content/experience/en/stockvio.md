@@ -17,5 +17,4 @@ tech:
   - Node.js
   - TypeScript
 type: founder
-order: 10
 ---

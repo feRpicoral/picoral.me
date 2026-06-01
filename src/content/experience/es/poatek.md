@@ -34,9 +34,8 @@ tech:
   - MongoDB
 type: fulltime
 link: 'https://www.poatek.com/'
-order: 9
 _source:
-  hash: eab32963eb416282
+  hash: e9dcd26cf35c5b17
   locale: en
   translatedAt: '2026-06-01T04:51:45.464Z'
 ---

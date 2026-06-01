@@ -17,6 +17,17 @@ export function formatPeriodDate(value: string | null | undefined, locale: Local
   }).format(date);
 }
 
+/**
+ * Sort key for timelines, ordered most-recent-first when compared descending. An
+ * open-ended period (no `end`) is treated as ongoing and sorts ahead of any ended
+ * one; equal ends fall back to the start. Month precision, so a `YYYY-MM-DD` source
+ * and a `YYYY-MM` translation compare identically.
+ */
+export function periodSortKey(period: { start: string; end?: string | null }): string {
+  const end = period.end ? period.end.slice(0, 7) : '9999-99';
+  return `${end}|${period.start.slice(0, 7)}`;
+}
+
 export function formatPeriodRange(
   startValue: string | null | undefined,
   endValue: string | null | undefined,

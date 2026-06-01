@@ -14,9 +14,8 @@ highlights:
     Sunnyvale (2024) e Nova York (2025).
 type: fulltime
 link: 'https://about.google'
-order: 0
 _source:
-  hash: d811cfc6a02feab8
+  hash: 685405d50a855d32
   locale: en
   translatedAt: '2026-06-01T04:51:40.672Z'
 ---

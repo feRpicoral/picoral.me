@@ -25,9 +25,8 @@ tech:
   - Protocol Buffers
 type: internship
 link: 'https://about.google'
-order: 7
 _source:
-  hash: ab1502340626657c
+  hash: 161ae2c4d845e59c
   locale: en
   translatedAt: '2026-06-01T04:51:36.768Z'
 ---

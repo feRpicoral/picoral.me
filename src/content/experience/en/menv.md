@@ -13,5 +13,4 @@ highlights:
   - Automated the student-to-capstone matching, resulting in a 70% increase in match satisfaction.
 type: contract
 link: https://www.colorado.edu/menv/
-order: 8
 ---

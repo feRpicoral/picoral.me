@@ -23,5 +23,4 @@ tech:
   - MongoDB
 type: fulltime
 link: https://www.poatek.com/
-order: 9
 ---

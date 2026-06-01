@@ -122,7 +122,6 @@ const experience = defineCollection({
     tech: z.array(z.string()).optional(),
     type: employmentType,
     link: z.string().url().optional(),
-    order: z.number(),
     _source: sourceMarker,
   }),
 });
@@ -143,7 +142,6 @@ const education = defineCollection({
       end: periodDate.nullable().optional(),
     }),
     location: z.string(),
-    order: z.number(),
     _source: sourceMarker,
   }),
 });
