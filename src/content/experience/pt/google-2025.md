@@ -7,15 +7,17 @@ period:
   end: 2025-08
 summary: >-
   Trabalho de backend no Google Keep — migrando uma fila Spanner multi-tenant,
-  expandindo a substituição para todos os usuários e avançando no agente de IA
+  escalando a substituição para todos os usuários e construindo o agente de IA
   do Keep.
 highlights:
   - >-
-    Liderou o design e a migração completos de uma fila Spanner multi-tenant
+    Liderei o design ponta a ponta e a migração de uma fila Spanner multi-tenant
     para três filas single-tenant.
-  - Expandiu as novas filas para 15k RPS em produção usando experimentos Mendel.
-  - Implementou endpoints gRPC em Java.
-  - Criou system prompts para o agente de IA do Keep.
+  - >-
+    Escalei as novas filas para 15 mil RPS em produção usando experimentos
+    Mendel.
+  - Implementei endpoints gRPC em Java.
+  - Criei prompts de sistema para o agente de IA do Keep.
 tech:
   - Java
   - gRPC
@@ -24,8 +26,8 @@ type: internship
 link: 'https://about.google'
 order: 1
 _source:
-  hash: 5a398b51ea585fd3
+  hash: afc4f8b48339cc30
   locale: en
-  translatedAt: '2026-06-01T02:15:56.292Z'
+  translatedAt: '2026-06-01T04:18:40.167Z'
 ---
 

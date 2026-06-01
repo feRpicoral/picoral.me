@@ -1,22 +1,25 @@
 ---
 company: Google
-role: Ingeniero de Software Intern
+role: Ingeniero de Software en Prácticas
 location: 'Sunnyvale, CA · Presencial'
 period:
   start: 2024-05
   end: 2024-08
 summary: >-
-  Trabajo full-stack en Google's Data Bridge Console — backend, RPCs, frontend
-  en AngularDart y un backfill de alto rendimiento en Spanner.
+  Desarrollo full-stack de funcionalidades en la consola Data Bridge de Google:
+  backend, RPCs, frontend en AngularDart y un backfill de Spanner de alto
+  rendimiento.
 highlights:
   - >-
-    Diseñé e implementé tags para Google's Data Bridge Console, mejorando la
-    identificación de recursos y la eficiencia de búsqueda.
+    Diseñé e implementé etiquetas para la consola Data Bridge de Google,
+    mejorando la identificación y eficiencia de búsqueda de recursos.
   - Creé múltiples RPCs en Java y Kotlin.
   - >-
-    Hice backfill de una base de datos Spanner en producción con cientos de
-    miles de entradas usando queries SQL de alto rendimiento.
-  - Desarrollé componentes en AngularDart para edición y visualización de tags.
+    Realicé un backfill de una base de datos Spanner en producción activa con
+    cientos de miles de entradas usando consultas SQL de alto rendimiento.
+  - >-
+    Desarrollé componentes en AngularDart para la edición y visualización de
+    etiquetas.
 tech:
   - Java
   - Kotlin
@@ -26,8 +29,8 @@ type: internship
 link: 'https://about.google'
 order: 4
 _source:
-  hash: ed307904cf2c294c
+  hash: eb1e0aa1870b9ef4
   locale: en
-  translatedAt: '2026-06-01T02:15:45.206Z'
+  translatedAt: '2026-06-01T04:18:40.018Z'
 ---
 

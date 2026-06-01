@@ -6,18 +6,18 @@ period:
   start: 2026-09
   end: null
 summary: >-
-  Voltando ao Google como Engenheiro de Software em Nova York em setembro de
-  2026, após três estágios na empresa.
+  Volto para o Google em regime integral como Engenheiro de Software em Nova
+  York em setembro de 2026, após três estágios na empresa.
 highlights:
   - >-
-    Voltando em tempo integral após três estágios no Google: Kirkland (2023),
+    Volto em regime integral após três estágios no Google: Kirkland (2023),
     Sunnyvale (2024) e Nova York (2025).
 type: fulltime
 link: 'https://about.google'
 order: 0
 _source:
-  hash: 0618272877e7e0c2
+  hash: 8e82a43e459f8d2a
   locale: en
-  translatedAt: '2026-06-01T02:15:54.277Z'
+  translatedAt: '2026-06-01T04:18:40.939Z'
 ---
 

@@ -2,17 +2,17 @@
 slug: cite
 title: Cite
 tagline: >-
-  Proyecto personal para explorar RAG agéntico. Cada respuesta está respaldada
-  por citas en línea; al hacer clic en una se abre el documento fuente en la
-  región exacta que la generó.
+  Proyecto personal que explora RAG agéntico. Cada respuesta se basa en citas en
+  línea; al hacer clic en una se abre el documento fuente en la región exacta
+  que la generó.
 summary: >-
-  Una app de chat con recuperación aumentada donde cada respuesta del modelo
-  viene respaldada por citas en línea. Al hacer clic en una cita se abre el
-  documento fuente en la región exacta — página, párrafo o fragmento de texto —
-  que generó la respuesta. Construida para aprender recuperación agéntica y UX
-  de visor de documentos sincronizado.
+  Una aplicación de chat con recuperación aumentada donde cada respuesta del
+  modelo está respaldada por citas en línea. Al hacer clic en una cita se abre
+  el documento fuente en la región exacta —página, párrafo o fragmento de token—
+  que generó la respuesta. Creado para aprender sobre recuperación agéntica y la
+  experiencia de usuario de visor de documentos sincronizado.
 status: in-development
-role: 'Solo — diseño, ingeniería'
+role: 'Solista — diseño, ingeniería'
 period:
   start: 2026-03
 stack:
@@ -31,7 +31,7 @@ order: 3
 hasCaseStudy: true
 seo:
   description: >-
-    Un proyecto personal. RAG agéntico con citas en línea clicables y un visor
+    Un proyecto personal. RAG agéntico con citas en línea clickeables y un visor
     de documentos sincronizado que salta a la región fuente exacta.
   keywords:
     - agentic RAG
@@ -42,32 +42,32 @@ seo:
 faq:
   - q: ¿Qué es Cite?
     a: >-
-      Cite es una aplicación de chat con recuperación aumentada agéntica. Los
+      Cite es una aplicación de chat agéntica con recuperación aumentada. Los
       equipos suben sus documentos y hacen preguntas en lenguaje natural. Cada
-      respuesta está respaldada por citas en línea — al hacer clic en una se
-      abre el documento fuente en la región exacta que generó la respuesta, con
-      el fragmento relevante resaltado.
+      respuesta se basa en citas en línea; al hacer clic en una se abre el
+      documento fuente en la región exacta que generó la respuesta, con el
+      fragmento relevante resaltado.
   - q: ¿En qué se diferencia Cite de un chatbot RAG típico?
     a: >-
-      En dos cosas. Primero, el paso de recuperación es agéntico — el modelo
-      puede planificar e iterar recuperaciones antes de responder, en lugar de
-      hacer una única búsqueda por similitud top-k. Segundo, la cita es la
-      interfaz, no una nota al pie. Las citas son elementos clicables que
-      desplazan sincrónicamente el visor de documentos hasta el fragmento
-      citado, así la verificación es un clic en lugar de una búsqueda.
+      Dos cosas. Primero, el paso de recuperación es agéntico —el modelo puede
+      planificar e iterar las recuperaciones antes de responder, en lugar de una
+      única búsqueda de similitud top-k. Segundo, la cita es la interfaz de
+      usuario, no una nota al pie. Las citas son manejadores clickeables que
+      desplazan sincrónicamente el visor del documento al fragmento citado, por
+      lo que la verificación es un clic en lugar de una búsqueda.
 _source:
-  hash: d64e9c8592c14ea5
+  hash: 22de64271a2cc252
   locale: en
-  translatedAt: '2026-06-01T02:11:45.626Z'
+  translatedAt: '2026-06-01T04:18:11.360Z'
 ---
-## Qué hace
+## Lo que hace
 
-Los equipos suben sus documentos — PDFs, Word, Markdown, transcripciones — y chatean con ellos en lenguaje natural. Cada respuesta está respaldada por citas en línea. Al hacer clic en una cita se abre el documento fuente en la región exacta que generó la respuesta, con el fragmento relevante resaltado.
+Los equipos suben sus documentos —PDFs, Word, Markdown, transcripciones— y chatean con ellos en lenguaje natural. Cada respuesta se basa en citas en línea. Al hacer clic en una cita se abre el documento fuente en la región exacta que generó la respuesta, con el fragmento relevante resaltado.
 
 ## Por qué lo construí
 
-No es un producto — es un proyecto personal. Los chatbots RAG sin citas son infalsificables. El respaldo con citas hace que el output del modelo sea verificable, que es el punto central de usar un sistema de recuperación. También quería diseñar una UI donde la cita sea la interacción principal, no una nota al pie — el visor de documentos tiene el mismo peso que el chat.
+No es un producto — es un proyecto personal. Los chatbots RAG sin citas no son falsables. La fundamentación con citas hace que la salida del modelo sea verificable, que es el propósito de usar un sistema de recuperación. También quería diseñar una interfaz de usuario donde la cita sea la interacción principal, no una nota al pie — el visor de documentos es de igual importancia que el chat.
 
 ## Estado
 
-En desarrollo activo. El pipeline de recuperación y la UI de chat funcionan de punta a punta; la lógica de anclaje de regiones del visor de documentos es el foco actual.
+En desarrollo activo. El pipeline de recuperación y la interfaz de chat funcionan de extremo a extremo; la lógica de anclaje de región del visor de documentos es el enfoque actual.

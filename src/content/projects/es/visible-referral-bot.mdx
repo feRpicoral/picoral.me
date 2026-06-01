@@ -1,17 +1,17 @@
 ---
 slug: visible-referral-bot
-title: Visible Referral Bot
+title: Bot de Referidos Visible
 tagline: >-
-  Bot de GitHub Actions que publica automáticamente un código de referido de
-  Visible en el megahilo quincenal de r/Visible, con horario programado e
-  idempotencia.
+  Bot de GitHub Actions que publica automáticamente un código de referido móvil
+  de Visible en el megathread quincenal de r/Visible, programado e idempotente.
 summary: >-
-  Automatización open-source con GitHub Actions que encuentra el megahilo
-  quincenal de referidos en r/Visible y publica un código configurado, con
-  horario programado e idempotencia. Dos variantes — una basada en PRAW y otra
-  en Chromium headless — para lidiar con los cambios de autenticación de Reddit.
+  Automatización de código abierto de GitHub Actions que encuentra el megathread
+  quincenal de referidos de r/Visible en Reddit y publica un código de referido
+  configurado, programado e idempotente. Dos variantes —una basada en PRAW y
+  otra en Chromium headless vía Playwright— para lidiar con los cambios de
+  autenticación de Reddit.
 status: live
-role: 'Solo — Python, Playwright, GitHub Actions'
+role: 'Individual — Python, Playwright, GitHub Actions'
 period:
   start: 2025-09
 stack:
@@ -26,13 +26,13 @@ featured: false
 hasCaseStudy: false
 seo:
   description: >-
-    Visible referral bot — automatización con GitHub Actions por Fernando
+    Bot de referidos Visible — Automatización de GitHub Actions por Fernando
     Picoral.
 _source:
-  hash: b5caf2f0bc69ba19
+  hash: 36392cf3da6f584b
   locale: en
-  translatedAt: '2026-06-01T02:14:48.128Z'
+  translatedAt: '2026-06-01T04:18:35.457Z'
 ---
-Una pequeña utilidad open-source que hice para resolver mi propio problema. r/Visible tiene un megahilo quincenal donde los usuarios publican códigos de referido; el mío siempre vencía antes de expirar. El bot elimina esa fricción con un GitHub Action programado por cron.
+Una pequeña utilidad de código abierto que construí para resolver un problema personal. r/Visible tiene un megathread quincenal donde los usuarios publican códigos de referido; los míos caducaban antes de que se vencieran. El bot resuelve la fricción con una GitHub Action programada como cron.
 
-Dos variantes — una usando PRAW y otra usando un navegador Chromium headless vía Playwright, para los casos en que el flujo de autenticación de Reddit bloquea los tokens de API. Ambas escriben un archivo de estado para registrar el último hilo publicado y así ser idempotentes entre reinicios.
+Dos variantes —una usa PRAW y la otra un navegador Chromium headless vía Playwright para casos donde el flujo de autenticación de Reddit bloquea los tokens de API. Ambas escriben un archivo de estado para rastrear el último thread publicado, de modo que sean idempotentes tras reinicios.

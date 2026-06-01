@@ -3,16 +3,16 @@ slug: relay
 title: Relay
 tagline: >-
   Projeto pessoal explorando IA de voz em tempo real. O caso de uso é uma
-  recepcionista de clínica; o objetivo de verdade era atingir um orçamento de
-  latência percebida pelo usuário abaixo de um segundo, com instrumentação
-  completa por trecho.
+  recepcionista de clínica; o objetivo real era atingir um orçamento de latência
+  percebida pelo usuário abaixo de um segundo com instrumentação completa por
+  trecho.
 summary: >-
-  Um agente de IA de voz que atende chamadas recebidas 24/7 — qualificando,
+  Um agente de IA de voz que atende chamadas telefônicas 24/7 — qualificando,
   agendando via Cal.com, transferindo para um humano quando necessário — com
-  latência de resposta abaixo de um segundo e um painel ao vivo mostrando forma
-  de onda, transcrição em streaming e latência por trecho.
+  latência de resposta inferior a um segundo e um painel de operador ao vivo
+  mostrando forma de onda, transcrição em streaming e latência por trecho.
 status: live
-role: 'Solo — arquitetura, pipeline de voz, frontend, deploy'
+role: 'Sozinho — arquitetura, pipeline de voz, frontend, deploy'
 period:
   start: 2025-11
 stack:
@@ -37,9 +37,9 @@ order: 2
 hasCaseStudy: true
 seo:
   description: >-
-    Projeto pessoal. Agente de IA de voz com LiveKit + Deepgram + Claude Haiku
-    4.5 + Cartesia + Twilio, com latência percebida pelo usuário abaixo de um
-    segundo.
+    Um projeto pessoal. Agente de IA de voz em LiveKit + Deepgram + Claude Haiku
+    4.5 + Cartesia + Twilio, atingindo latência percebida pelo usuário abaixo de
+    um segundo.
   keywords:
     - voice AI
     - LiveKit
@@ -52,76 +52,76 @@ seo:
 faq:
   - q: O que é o Relay?
     a: >-
-      Relay é uma recepcionista de IA de voz multi-tenant para empresas de
-      serviços como clínicas. Atende chamadas recebidas 24/7, qualifica leads,
-      agenda consultas via Cal.com e transfere para um humano quando necessário.
-      Os operadores acompanham cada chamada ao vivo no painel com forma de onda,
-      transcrição em streaming e medidor de latência por trecho.
+      Relay é uma recepcionista de IA de voz multilocatária para empresas de
+      serviços como clínicas. Ele atende chamadas recebidas 24/7, qualifica
+      leads, agenda compromissos via Cal.com e transfere para um humano quando
+      necessário. Operadores acompanham cada chamada ao vivo no painel com forma
+      de onda, transcrição em streaming e medidor de latência por trecho.
   - q: Qual é o orçamento de latência do Relay?
     a: >-
-      A meta é p95 ≤ 900ms de resposta percebida pelo usuário, medida do fim da
-      fala do usuário até o início do áudio do agente. Cada trecho é
-      instrumentado separadamente — STT finalize, LLM TTFT, LLM total, TTS TTFA,
-      tool total, end-to-end — e exibido como um medidor ao vivo que fica
-      vermelho quando algum trecho ultrapassa o orçamento.
+      O alvo é p95 ≤ 900ms de resposta percebida pelo usuário, medida do fim da
+      fala do usuário ao início do áudio do agente. Cada trecho é instrumentado
+      separadamente — STT finalizado, LLM TTFT, LLM total, TTS TTFA, ferramenta
+      total, fim a fim — e exposto como um medidor ao vivo colorido de vermelho
+      quando qualquer trecho excede seu orçamento.
   - q: Por que LiveKit + Deepgram + Cartesia em vez de um único provedor?
     a: >-
-      Cada trecho é o melhor da categoria e pode ser substituído
-      individualmente. LiveKit cuida da terminação SIP do Twilio e da sala de
-      áudio. O STT em streaming do Deepgram embute VAD e detecção de turno em
-      uma única API, eliminando a variância de 150–300ms de pipelines separados
-      de VAD + silence-timer. O Sonic-3 da Cartesia é um TTS genuinamente mais
-      rápido que o tempo real, o que torna o orçamento abaixo de um segundo
-      possível.
-  - q: Como funciona o isolamento multi-tenant no Relay?
+      Cada trecho é o melhor da categoria e substituível individualmente. O
+      LiveKit gerencia a terminação SIP do Twilio e a sala de áudio. O STT em
+      streaming da Deepgram agrupa VAD e detecção de turno em uma única API,
+      eliminando a variação de 150–300ms de pipelines separados de VAD +
+      temporizador de silêncio. O Sonic-3 da Cartesia é um TTS genuinamente mais
+      rápido que o tempo real, o que possibilita o orçamento inferior a um
+      segundo.
+  - q: Como funciona o isolamento multilocatário no Relay?
     a: >-
-      Três camadas — escopo por linha no Postgres via organizationId, guards na
-      camada de aplicação em cada server action, e credenciais de sub-conta do
-      Twilio por organização. O worker do LiveKit lê a organização nos headers
-      SIP, então uma rota mal configurada nunca consegue entrar na sala de outro
-      tenant.
+      Três camadas — escopo de linha do Postgres por organizationId, proteções
+      na camada de aplicação em cada ação do servidor e credenciais de subconta
+      Twilio por organização. O worker do LiveKit lê a organização dos
+      cabeçalhos SIP para que uma rota mal configurada nunca possa se conectar à
+      sala de outro locatário.
 _source:
-  hash: 75487d9b5f66883c
+  hash: fa1620d2645fd31f
   locale: en
-  translatedAt: '2026-06-01T02:14:14.422Z'
+  translatedAt: '2026-06-01T04:18:31.042Z'
 ---
 ## O que faz
 
-Um admin de clínica se cadastra, cria uma organização e configura um agente — prompt de persona, voz, horário de funcionamento, base de conhecimento de FAQ. Aponta um número do Twilio para o SIP trunk e pronto.
+Um administrador de clínica se cadastra, cria uma organização e configura um agente — prompt de persona, voz, horário comercial, base de conhecimento de FAQ. Eles apontam um número Twilio para o tronco SIP e pronto.
 
-Um chamador liga. Cerca de meio segundo depois de terminar de falar, o agente responde com uma voz natural. Enquanto a chamada está em andamento:
+Um chamador liga. Cerca de meio segundo após ele terminar de falar, o agente responde em uma voz natural. Enquanto a chamada está em andamento:
 
-1. Uma forma de onda ao vivo pulsa conforme o áudio chega.
-2. A transcrição vai aparecendo token a token com rótulos de falante por turno.
-3. Um medidor de latência mostra STT, LLM TTFT, TTS TTFA e p95 end-to-end em tempo real, com cada trecho ficando vermelho quando ultrapassa o orçamento.
-4. Cada ferramenta que o agente invoca — `check_availability`, `lookup_kb`, `book_appointment`, `transfer_to_human` — aparece em uma timeline inline com entrada, saída e duração.
+1. Uma forma de onda ao vivo pulsa com o áudio recebido.
+2. A transcrição é preenchida token por token com rótulos de locutor por turno.
+3. Um medidor de latência mostra STT, LLM TTFT, TTS TTFA e p95 de ponta a ponta em tempo real, com cada trecho colorido de vermelho quando acima do orçamento.
+4. Qualquer ferramenta que o agente invoca — `check_availability`, `lookup_kb`, `book_appointment`, `transfer_to_human` — aparece em uma linha do tempo inline com entrada, saída e duração.
 
-O operador pode assumir a chamada pelo painel a qualquer momento.
+O operador pode assumir a chamada do painel a qualquer momento.
 
-Quando a chamada encerra, um job do Inngest busca a gravação, pede ao Claude Sonnet 4.6 para gerar um resumo estruturado, classifica o resultado (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), pontua o sentimento e extrai tópicos. A página de detalhes exibe a gravação em um player com scrubbing, com o trecho sendo falado destacado na transcrição.
+Quando a chamada é encerrada, um job do Inngest puxa a gravação, pede ao Claude Sonnet 4.6 para produzir um resumo estruturado, classifica o resultado (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), pontua o sentimento e extrai tópicos. A página de detalhes mostra a gravação em um player que pode ser avançado com a transcrição destacando o segmento falado no momento.
 
-O mesmo painel inclui campanhas de saída (upload de CSV, respeito ao horário comercial, retentativas com cooldown), uma página de analytics (volume, conversão, latência p95, heatmap por hora e dia da semana) e integração com Cal.com para agendamento durante a chamada.
+O mesmo painel envia campanhas de saída (upload de CSV, respeito ao horário comercial, novas tentativas com cooldown), uma página de análise (volume, conversão, latência p95, mapa de calor por dia da semana e hora) e uma integração com Cal.com para agendar compromissos durante a chamada.
 
-## Por que construí
+## Por que eu construí
 
-Não é um produto — é um projeto pessoal. Queria construir a experiência de IA voltada ao usuário final mais difícil que conseguia imaginar (voz) em uma stack onde o orçamento de latência é a restrição principal. O caso de uso de recepcionista de clínica é o exemplo canônico porque tem volume real e consequências reais para chamadas perdidas, o que torna a meta de latência significativa em vez de acadêmica.
+Não é um produto — é um projeto pessoal. Eu queria construir a experiência de IA mais difícil voltada para o usuário que eu pudesse imaginar (voz) em uma stack onde o orçamento de latência é a restrição principal. O caso de uso da recepcionista de clínica é o exemplo canônico porque tem volume real e consequências reais para chamadas perdidas, o que torna o alvo de latência significativo em vez de acadêmico.
 
 ## Como funciona
 
 ### Pipeline de voz em tempo real
 
 - O Twilio termina a chamada PSTN e a conecta ao LiveKit Cloud via SIP.
-- Um worker Node de longa duração entra na sala do LiveKit e executa o loop de conversa. O worker é deployado separadamente da aplicação Next.js — funções do Vercel não conseguem manter um websocket aberto por uma chamada de 10 minutos.
-- O Deepgram cuida de STT, VAD e detecção de turno em uma única API de streaming. Eventos de fim de turno disparam o LLM, eliminando a variância de 150–300ms de pipelines separados de VAD + silence-timer.
-- Claude Haiku 4.5 conduz a conversa. Os tokens em streaming são divididos frase a frase e enviados ao Cartesia Sonic-3, então o áudio começa a tocar antes de o LLM terminar de gerar.
-- O uso de ferramentas é nativo à chamada do Anthropic SDK. Quatro ferramentas estão disponíveis durante a chamada: `check_availability`, `book_appointment`, `lookup_kb`, `transfer_to_human`. Cada ferramenta é validada com Zod, registrada com entrada/saída/duração, e o LLM continua com o resultado da ferramenta como um turno normal.
-- Interrupção adaptativa / barge-in cancela a geração do LLM em andamento e limpa a fila de áudio do TTS no momento em que o usuário começa a falar.
-- A latência é instrumentada por trecho e gravada no banco de dados para o medidor ao vivo e o painel de analytics.
+- Um worker Node de longa duração entra na sala LiveKit e executa o loop de conversação. O worker é implantado separadamente do aplicativo Next.js — as funções Vercel não podem manter um websocket aberto por uma chamada de 10 minutos.
+- O Deepgram gerencia STT, VAD e detecção de turno em uma única API de streaming. Eventos de fim de turno disparam o LLM, eliminando a variação de 150–300ms de pipelines separados de VAD + temporizador de silêncio.
+- O Claude Haiku 4.5 executa a conversação. Tokens transmitidos são divididos frase por frase e entregues ao Cartesia Sonic-3 para que o áudio comece a tocar antes que o LLM termine de gerar.
+- O uso de ferramentas é nativo na chamada do SDK da Anthropic. Quatro ferramentas estão disponíveis durante a chamada: `check_availability`, `book_appointment`, `lookup_kb`, `transfer_to_human`. Cada ferramenta é validada por Zod, registrada com entrada/saída/duração, e o LLM continua com o resultado da ferramenta como um turno normal.
+- Interrupção adaptativa / barge-in cancela a geração do LLM em andamento e esvazia a fila de áudio TTS no momento em que o usuário começa a falar.
+- A latência é instrumentada por trecho e gravada no banco de dados para o medidor ao vivo e o painel de análise.
 
-### Multi-tenant B2B
+### B2B Multilocatário
 
-Três camadas de isolamento de tenant — escopo por linha no Postgres, guards na camada de aplicação em cada server action, e credenciais de sub-conta do Twilio por organização. O worker do LiveKit lê a org nos headers SIP, então uma rota mal configurada nunca consegue entrar na sala de outro tenant.
+Três camadas de isolamento de locatário — escopo de linha do Postgres, proteções na camada de aplicação em cada ação do servidor e credenciais de subconta Twilio por organização. O worker do LiveKit lê a organização dos cabeçalhos SIP para que uma rota mal configurada nunca possa se conectar à sala de outro locatário.
 
 ## Status
 
-Demo ao vivo em [relay-five-peach.vercel.app](https://relay-five-peach.vercel.app). Walkthrough no Loom e case study completo são os próximos passos.
+Demonstração ao vivo em [relay-five-peach.vercel.app](https://relay-five-peach.vercel.app). Um walkthrough no Loom e um estudo de caso completo virão a seguir.

@@ -1,16 +1,18 @@
 ---
 slug: visible-referral-bot
-title: Visible Referral Bot
+title: Bot de Indicação Visible
 tagline: >-
-  Bot de GitHub Actions que posta automaticamente um código de indicação do
-  Visible no megathread quinzenal do r/Visible, de forma agendada e idempotente.
+  Bot do GitHub Actions que posta automaticamente um código de indicação da
+  Visible no megathread quinzenal do r/Visible, no horário programado e de forma
+  idempotente.
 summary: >-
-  Automação open-source com GitHub Actions que encontra o megathread quinzenal
-  de indicações do r/Visible e posta um código configurado, de forma agendada e
-  idempotente. Duas variantes — uma com PRAW, outra com Chromium headless — para
-  lidar com as mudanças de autenticação do Reddit.
+  Automação open-source do GitHub Actions que encontra o megathread quinzenal de
+  indicações do r/Visible no Reddit e posta um código de indicação configurado,
+  no horário programado e com idempotência. Duas variantes — uma baseada em
+  PRAW, outra em headless Chromium — para lidar com as mudanças de autenticação
+  do Reddit.
 status: live
-role: 'Solo — Python, Playwright, GitHub Actions'
+role: 'Individual — Python, Playwright, GitHub Actions'
 period:
   start: 2025-09
 stack:
@@ -24,12 +26,12 @@ order: 20
 featured: false
 hasCaseStudy: false
 seo:
-  description: Visible referral bot — automação com GitHub Actions por Fernando Picoral.
+  description: Bot de indicação Visible — automação do GitHub Actions por Fernando Picoral.
 _source:
-  hash: e4cb2ee3d4858974
+  hash: ff8471cbb7897268
   locale: en
-  translatedAt: '2026-06-01T02:14:48.052Z'
+  translatedAt: '2026-06-01T04:18:35.399Z'
 ---
-Um utilitário open-source que criei para resolver um problema meu. O r/Visible tem um megathread quinzenal onde os usuários postam códigos de indicação; o meu sempre expirava antes de ser usado. O bot resolve isso com um GitHub Action agendado via cron.
+Uma pequena utilidade open-source que criei para resolver um problema pessoal. O r/Visible tem um megathread quinzenal onde os usuários postam códigos de indicação; o meu ficava desatualizado antes de expirar. O bot resolve o atrito com um GitHub Action agendado via cron.
 
-Duas variantes — uma usando PRAW, outra com um navegador Chromium headless via Playwright, para os casos em que o fluxo de autenticação do Reddit bloqueia tokens de API. As duas gravam um arquivo de estado para rastrear o último thread postado, garantindo idempotência entre reinicializações.
+Duas variantes — uma usando PRAW, outra usando um navegador Chromium headless via Playwright para casos em que o fluxo de autenticação do Reddit bloqueia tokens de API. Ambas escrevem um arquivo de estado para rastrear o último thread postado, garantindo idempotência após reinícios.

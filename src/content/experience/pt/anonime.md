@@ -1,20 +1,20 @@
 ---
 company: AnoniMe
-role: Co-Fundador · CEO
+role: Co-fundador · CEO
 location: Brasil
 period:
   start: 2022-10
   end: 2023-10
 summary: >-
-  Cofundei a AnoniMe, um app de rede social anônima baseada em localização onde
-  os usuários só interagem com pessoas dentro de um raio definido. Liderei
-  produto, captação de investimentos, marketing e frontend.
+  Cofundei a AnoniMe, um app social anônimo baseado em localização onde usuários
+  só interagem com pessoas a uma certa distância. Liderança de produto, captação
+  de recursos, marketing e frontend.
 highlights:
-  - Levei a empresa a uma avaliação de 500K USD em apenas 5 meses.
-  - Captei mais de 100K USD em investimentos em menos de 8 meses.
+  - Levei a empresa a uma avaliação de 500 mil USD em apenas 5 meses.
+  - Consegui mais de 100 mil USD em investimentos em menos de 8 meses.
   - Desenvolvi o frontend com React Native e Expo.
-  - Implementei estratégias de marketing com alta eficiência.
-  - Gerenciei estratégias de negócio e roadmap de produto.
+  - Implementei estratégias de marketing de alta eficiência.
+  - Gerenciei estratégias de negócios e roadmap de produto.
 tech:
   - React Native
   - Expo
@@ -23,8 +23,8 @@ type: founder
 link: 'https://www.linkedin.com/company/89329053'
 order: 6
 _source:
-  hash: b92cbe97b7ba7a6c
+  hash: 421d79ae17c7b1a9
   locale: en
-  translatedAt: '2026-06-01T02:15:27.466Z'
+  translatedAt: '2026-06-01T04:18:36.873Z'
 ---
 
