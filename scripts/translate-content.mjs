@@ -28,7 +28,6 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Command, InvalidArgumentError } from 'commander';
 import matter from 'gray-matter';
-import { translateSnippets } from './translate/anthropic.mjs';
 import { COLLECTIONS, SOURCE_LOCALE, TARGET_LOCALES } from './translate/config.mjs';
 import { loadEnvFiles } from './translate/env.mjs';
 import { getHandler } from './translate/handlers.mjs';
@@ -41,6 +40,8 @@ import {
   serializeMdx,
   structuralFingerprint,
 } from './translate/mdx.mjs';
+import { resolveModelConfig } from './translate/model.mjs';
+import { translateSnippets } from './translate/translator.mjs';
 import { compareStructuralFingerprints, validateTranslations } from './translate/validate.mjs';
 
 // Imported modules read process.env lazily inside their functions, so populating
@@ -52,9 +53,8 @@ const REPO_ROOT = join(__dirname, '..');
 const CONTENT_DIR = join(REPO_ROOT, 'src', 'content');
 
 /**
- * Picked to fit Anthropic tier-1 output-tokens-per-minute (~8k for Sonnet 4.6).
- * At avg ~2k output tokens per file × 4 concurrent ≈ 8k, sitting at the limit
- * but rarely tripping it. Bump via `--concurrency=N` once on a higher tier.
+ * Conservative default for OpenRouter rate limits, which vary by model and
+ * account credit balance. Bump via `--concurrency=N` if your limits allow.
  */
 const DEFAULT_CONCURRENCY = 4;
 
@@ -76,7 +76,7 @@ function parseList(value) {
 function parseArgs(argv) {
   const program = new Command()
     .name('translate-content')
-    .description('Generate locale translations of src/content/*/en/* via the Anthropic API.')
+    .description('Generate locale translations of src/content/*/en/* via OpenRouter.')
     .option('--check', 'exit non-zero if anything is stale or missing (never calls the API)', false)
     .option('--force', 'regenerate all translations even on cache hit', false)
     .option(
@@ -232,7 +232,7 @@ async function main() {
   const args = parseArgs(process.argv);
 
   console.log(
-    `${args.check ? 'Checking' : 'Translating'} collections=[${args.collections.join(',')}] locales=[${args.locales.join(',')}] concurrency=${args.concurrency}`,
+    `${args.check ? 'Checking' : 'Translating'} collections=[${args.collections.join(',')}] locales=[${args.locales.join(',')}] model=${resolveModelConfig().modelId} concurrency=${args.concurrency}`,
   );
 
   const tasks = [];

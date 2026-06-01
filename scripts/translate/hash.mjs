@@ -2,7 +2,8 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TRANSLATOR_CONFIG_VERSION, TRANSLATOR_MODEL } from './config.mjs';
+import { TRANSLATOR_CONFIG_VERSION } from './config.mjs';
+import { resolveModelConfig } from './model.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROMPT_PATH = join(__dirname, 'prompt.md');
@@ -22,7 +23,7 @@ export async function computeSourceHash({ sourceContent, locale }) {
   const prompt = await loadPromptOnce();
   const h = createHash('sha256');
   h.update(`v${TRANSLATOR_CONFIG_VERSION}\n`);
-  h.update(`${TRANSLATOR_MODEL}\n`);
+  h.update(`${resolveModelConfig().modelId}\n`);
   h.update(`${locale}\n`);
   h.update(`${prompt.length}:${prompt}\n`);
   h.update(`${sourceContent.length}:${sourceContent}`);
