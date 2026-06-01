@@ -4,6 +4,29 @@ import { glob } from 'astro/loaders';
 const projectStatus = z.enum(['live', 'beta', 'in-development', 'archived']);
 const employmentType = z.enum(['fulltime', 'internship', 'founder', 'research', 'contract']);
 
+function isPeriodDate(value: string): boolean {
+  const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(value);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = match[3] ? Number(match[3]) : 1;
+  if (month < 1 || month > 12) return false;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day
+  );
+}
+
+/**
+ * Periods are entered with a date picker but rendered month + year only (the day is
+ * ignored). Accepts `YYYY-MM` (translated files) or `YYYY-MM-DD`, and coerces a
+ * YAML-parsed Date back to a string.
+ */
+const periodDate = z.preprocess(
+  (value) => (value instanceof Date ? value.toISOString().slice(0, 10) : value),
+  z.string().refine(isPeriodDate, 'Use YYYY-MM or YYYY-MM-DD.'),
+);
+
 /** Preserve the full relative path (locale/slug) as the entry id, e.g. `en/cite`. */
 const pathBasedId = ({ entry }: { entry: string }) => entry.replace(/\.(md|mdx)$/, '');
 
@@ -86,12 +109,13 @@ const experience = defineCollection({
     generateId: pathBasedId,
   }),
   schema: z.object({
+    slug: z.string().optional(),
     company: z.string(),
     role: z.string(),
     location: z.string(),
     period: z.object({
-      start: z.string(),
-      end: z.string().nullable().optional(),
+      start: periodDate,
+      end: periodDate.nullable().optional(),
     }),
     summary: z.string(),
     highlights: z.array(z.string()),
@@ -115,8 +139,8 @@ const education = defineCollection({
     school: z.string(),
     detail: z.string(),
     period: z.object({
-      start: z.string(),
-      end: z.string().nullable().optional(),
+      start: periodDate,
+      end: periodDate.nullable().optional(),
     }),
     location: z.string(),
     order: z.number(),

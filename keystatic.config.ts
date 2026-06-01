@@ -16,6 +16,21 @@ const employmentTypeOptions = [
   { label: 'Contract', value: 'contract' },
 ] as const;
 
+const PERIOD_DATE_DESCRIPTION =
+  'Only the month and year are shown on the site; the day is ignored. Use the first day of the month.';
+
+const periodFields = () => ({
+  start: fields.date({
+    label: 'Start',
+    description: PERIOD_DATE_DESCRIPTION,
+    validation: { isRequired: true },
+  }),
+  end: fields.date({
+    label: 'End',
+    description: PERIOD_DATE_DESCRIPTION,
+  }),
+});
+
 const projectImage = block({
   label: 'Project image',
   schema: {
@@ -96,16 +111,7 @@ export default config({
           label: 'Role',
           validation: { isRequired: true },
         }),
-        period: fields.object(
-          {
-            start: fields.text({
-              label: 'Start',
-              validation: { isRequired: true },
-            }),
-            end: fields.text({ label: 'End' }),
-          },
-          { label: 'Period', layout: [6, 6] },
-        ),
+        period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
         stack: fields.array(
           fields.text({
             label: 'Technology',
@@ -219,16 +225,7 @@ export default config({
           label: 'Location',
           validation: { isRequired: true },
         }),
-        period: fields.object(
-          {
-            start: fields.text({
-              label: 'Start',
-              validation: { isRequired: true },
-            }),
-            end: fields.text({ label: 'End' }),
-          },
-          { label: 'Period', layout: [6, 6] },
-        ),
+        period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
         summary: fields.text({
           label: 'Summary',
           multiline: true,
@@ -296,16 +293,7 @@ export default config({
           label: 'Detail',
           validation: { isRequired: true },
         }),
-        period: fields.object(
-          {
-            start: fields.text({
-              label: 'Start',
-              validation: { isRequired: true },
-            }),
-            end: fields.text({ label: 'End' }),
-          },
-          { label: 'Period', layout: [6, 6] },
-        ),
+        period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
         location: fields.text({
           label: 'Location',
           validation: { isRequired: true },
