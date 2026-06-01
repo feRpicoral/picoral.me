@@ -21,9 +21,8 @@ tech:
   - Node.js
   - TypeScript
 type: founder
-order: 10
 _source:
-  hash: 96885a02e8116361
+  hash: c801e6ccb5583373
   locale: en
   translatedAt: '2026-06-01T04:51:48.053Z'
 ---

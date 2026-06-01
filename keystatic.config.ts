@@ -8,6 +8,29 @@ const projectStatusOptions = [
   { label: 'Archived', value: 'archived' },
 ] as const;
 
+const employmentTypeOptions = [
+  { label: 'Full-time', value: 'fulltime' },
+  { label: 'Internship', value: 'internship' },
+  { label: 'Founder', value: 'founder' },
+  { label: 'Research', value: 'research' },
+  { label: 'Contract', value: 'contract' },
+] as const;
+
+const PERIOD_DATE_DESCRIPTION =
+  'Only the month and year are shown on the site; the day is ignored. Use the first day of the month.';
+
+const periodFields = () => ({
+  start: fields.date({
+    label: 'Start',
+    description: PERIOD_DATE_DESCRIPTION,
+    validation: { isRequired: true },
+  }),
+  end: fields.date({
+    label: 'End',
+    description: PERIOD_DATE_DESCRIPTION,
+  }),
+});
+
 const projectImage = block({
   label: 'Project image',
   schema: {
@@ -44,7 +67,7 @@ export default config({
       name: 'picoral.me',
     },
     navigation: {
-      Content: ['projects'],
+      Content: ['projects', 'experience', 'education'],
     },
   },
   collections: {
@@ -181,6 +204,106 @@ export default config({
             ProjectImage: projectImage,
           },
         }),
+      },
+    }),
+    experience: collection({
+      label: 'Work experience',
+      path: 'src/content/experience/en/*',
+      slugField: 'slug',
+      format: { contentField: 'content' },
+      columns: ['company', 'role'],
+      schema: {
+        slug: fields.slug({
+          name: {
+            label: 'Slug',
+            validation: { isRequired: true },
+          },
+          slug: {
+            label: 'File slug',
+          },
+        }),
+        company: fields.text({
+          label: 'Company',
+          validation: { isRequired: true },
+        }),
+        role: fields.text({
+          label: 'Role',
+          validation: { isRequired: true },
+        }),
+        location: fields.text({
+          label: 'Location',
+          validation: { isRequired: true },
+        }),
+        period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
+        summary: fields.text({
+          label: 'Summary',
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        highlights: fields.array(
+          fields.text({
+            label: 'Highlight',
+            multiline: true,
+            validation: { isRequired: true },
+          }),
+          {
+            label: 'Highlights',
+            itemLabel: (props) => props.value,
+          },
+        ),
+        tech: fields.array(
+          fields.text({
+            label: 'Technology',
+            validation: { isRequired: true },
+          }),
+          {
+            label: 'Tech',
+            itemLabel: (props) => props.value,
+          },
+        ),
+        type: fields.select({
+          label: 'Type',
+          options: employmentTypeOptions,
+          defaultValue: 'fulltime',
+        }),
+        link: fields.url({ label: 'Link' }),
+        content: fields.emptyContent({ extension: 'md' }),
+      },
+    }),
+    education: collection({
+      label: 'Education',
+      path: 'src/content/education/en/*',
+      slugField: 'slug',
+      format: { contentField: 'content' },
+      columns: ['degree', 'school'],
+      schema: {
+        slug: fields.slug({
+          name: {
+            label: 'Slug',
+            validation: { isRequired: true },
+          },
+          slug: {
+            label: 'File slug',
+          },
+        }),
+        degree: fields.text({
+          label: 'Degree',
+          validation: { isRequired: true },
+        }),
+        school: fields.text({
+          label: 'School',
+          validation: { isRequired: true },
+        }),
+        detail: fields.text({
+          label: 'Detail',
+          validation: { isRequired: true },
+        }),
+        period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
+        location: fields.text({
+          label: 'Location',
+          validation: { isRequired: true },
+        }),
+        content: fields.emptyContent({ extension: 'md' }),
       },
     }),
   },

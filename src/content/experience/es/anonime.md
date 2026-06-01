@@ -21,9 +21,8 @@ tech:
   - TypeScript
 type: founder
 link: 'https://www.linkedin.com/company/89329053'
-order: 6
 _source:
-  hash: 1cbe9ae60598ee37
+  hash: 719cbdaa32811884
   locale: en
   translatedAt: '2026-06-01T04:51:33.237Z'
 ---

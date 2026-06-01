@@ -22,9 +22,8 @@ tech:
   - Spanner
 type: internship
 link: 'https://about.google'
-order: 1
 _source:
-  hash: 1e5f0f9d6b015644
+  hash: d99638f13dd3193d
   locale: en
   translatedAt: '2026-06-01T04:51:40.337Z'
 ---

@@ -11,9 +11,8 @@ highlights:
   - Estuve a cargo de las finanzas como CFO durante 14 meses.
 type: founder
 link: 'https://www.linkedin.com/company/101222529'
-order: 3
 _source:
-  hash: 196a9f544656c22c
+  hash: b843f61510d78f50
   locale: en
   translatedAt: '2026-06-01T04:51:52.980Z'
 ---

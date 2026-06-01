@@ -1,10 +1,11 @@
 ---
+slug: poatek
 company: Poatek
 role: Software Engineer
 location: Porto Alegre, Brazil
 period:
-  start: '2021-06'
-  end: '2022-06'
+  start: 2021-06-01
+  end: 2022-06-01
 summary: First full-time engineering role — full-stack dashboard work for an asset-management firm, an AWS Lambda Excel-formula evaluator in Kotlin, and a string of integration POCs.
 highlights:
   - Developed a dashboard for the web platform of an asset-management firm — Angular frontend, Node/Express/MongoDB backend.
@@ -22,5 +23,4 @@ tech:
   - MongoDB
 type: fulltime
 link: https://www.poatek.com/
-order: 9
 ---

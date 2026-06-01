@@ -26,9 +26,8 @@ tech:
   - Python
 type: research
 link: 'https://www.colorado.edu/center/mortenson/tom-yeh-phd'
-order: 5
 _source:
-  hash: ac204a29216a555d
+  hash: ef3f72fe393a0c48
   locale: en
   translatedAt: '2026-06-01T04:51:33.376Z'
 ---

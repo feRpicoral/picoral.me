@@ -4,7 +4,7 @@ import Pill from '~/components/ui/Pill.astro';
 import { type Locale } from '~/config/site.ts';
 import type { UiKey } from '~/i18n/ui.ts';
 import { useTranslations } from '~/i18n/utils.ts';
-import { formatPeriodRange } from '~/lib/format.ts';
+import { formatPeriodRange, periodSortKey } from '~/lib/format.ts';
 
 interface Props {
   entries: CollectionEntry<'experience'>[];
@@ -13,7 +13,9 @@ interface Props {
 const { entries, locale } = Astro.props;
 const t = useTranslations(locale);
 
-const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
+const sorted = [...entries].sort((a, b) =>
+  periodSortKey(b.data.period).localeCompare(periodSortKey(a.data.period)),
+);
 ---
 
 <ol class="timeline">

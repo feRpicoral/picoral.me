@@ -11,9 +11,8 @@ highlights:
   - Responsável pela área financeira como CFO por 14 meses.
 type: founder
 link: 'https://www.linkedin.com/company/101222529'
-order: 3
 _source:
-  hash: 998d5b94506a3f20
+  hash: c34d282049d31fc2
   locale: en
   translatedAt: '2026-06-01T04:51:51.585Z'
 ---

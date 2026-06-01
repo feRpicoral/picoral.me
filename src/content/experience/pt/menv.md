@@ -18,9 +18,8 @@ highlights:
     70% de aumento na satisfação com os matches.
 type: contract
 link: 'https://www.colorado.edu/menv/'
-order: 8
 _source:
-  hash: cd91af8a30f0b9fb
+  hash: 0889af3957bc3382
   locale: en
   translatedAt: '2026-06-01T04:51:44.633Z'
 ---

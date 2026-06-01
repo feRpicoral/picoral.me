@@ -12,7 +12,7 @@ export const TRANSLATOR_MODEL = 'anthropic/claude-sonnet-4.6';
 export const SOURCE_LOCALE = 'en';
 export const TARGET_LOCALES = ['pt', 'es'];
 
-export const COLLECTIONS = ['blog', 'projects', 'experience', 'pages'];
+export const COLLECTIONS = ['blog', 'projects', 'experience', 'education', 'pages'];
 
 export const LOCALE_NAMES = {
   pt: 'Brazilian Portuguese',

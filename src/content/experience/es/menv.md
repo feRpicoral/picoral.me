@@ -20,9 +20,8 @@ highlights:
     en un aumento del 70% en la satisfacción con las asignaciones.
 type: contract
 link: 'https://www.colorado.edu/menv/'
-order: 8
 _source:
-  hash: 4a29c5600fb36826
+  hash: 9fec22b8a24cf4e0
   locale: en
   translatedAt: '2026-06-01T04:51:44.537Z'
 ---

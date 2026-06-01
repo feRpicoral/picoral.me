@@ -13,6 +13,7 @@ import { breadcrumbSchema } from '~/lib/schema.ts';
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 const entries = await getLocalizedCollection('experience', locale);
+const educationEntries = await getLocalizedCollection('education', locale);
 
 const jsonLd = [
   breadcrumbSchema([
@@ -37,7 +38,7 @@ const jsonLd = [
       <div class="block">
         <h2 class="block-title">{t('experience.education.title')}</h2>
         <div class="timeline-wrap">
-          <EducationList locale={locale} />
+          <EducationList items={educationEntries} locale={locale} />
         </div>
       </div>
 

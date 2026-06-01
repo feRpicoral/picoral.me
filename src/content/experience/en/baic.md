@@ -1,10 +1,11 @@
 ---
+slug: baic
 company: Brain, AI, and Child Laboratory — CU Boulder
 role: Research Intern
 location: Boulder, CO
 period:
-  start: '2022-09'
-  end: '2023-12'
+  start: 2022-09-01
+  end: 2023-12-01
 summary: Research intern at Dr. Tom Yeh's BAIC laboratory, building the internal software needed to run human-AI interaction studies — from in-field data collection to AR-glasses experiments.
 highlights:
   - Built internal software tools to streamline the setup and execution of research experiments.
@@ -17,5 +18,4 @@ tech:
   - Python
 type: research
 link: https://www.colorado.edu/center/mortenson/tom-yeh-phd
-order: 5
 ---
