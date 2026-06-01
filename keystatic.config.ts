@@ -111,7 +111,16 @@ export default config({
           label: 'Role',
           validation: { isRequired: true },
         }),
-        period: fields.object(periodFields(), { label: 'Period', layout: [6, 6] }),
+        period: fields.object(
+          {
+            start: fields.text({
+              label: 'Start',
+              validation: { isRequired: true },
+            }),
+            end: fields.text({ label: 'End' }),
+          },
+          { label: 'Period', layout: [6, 6] },
+        ),
         stack: fields.array(
           fields.text({
             label: 'Technology',
