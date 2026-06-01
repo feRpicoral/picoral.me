@@ -23,9 +23,9 @@ test('resolveModelConfig falls back to the config default when TRANSLATE_MODEL i
 });
 
 test('resolveModelConfig honors the TRANSLATE_MODEL override', () => {
-  process.env.TRANSLATE_MODEL = 'google/gemini-2.5-flash-lite';
+  process.env.TRANSLATE_MODEL = 'anthropic/claude-sonnet-4.6';
 
-  assert.equal(resolveModelConfig().modelId, 'google/gemini-2.5-flash-lite');
+  assert.equal(resolveModelConfig().modelId, 'anthropic/claude-sonnet-4.6');
 });
 
 test('getLanguageModel throws a clear error when OPENROUTER_API_KEY is unset', () => {
