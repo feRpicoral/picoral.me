@@ -68,7 +68,7 @@ faq:
       restritas. Entre os caminhos que respeitam suas regras, recomenda o mais
       rápido e mostra alternativas quando existem.
 _source:
-  hash: 5600a242b9c5bf45
+  hash: 68ade1915562a1d9
   locale: en
   translatedAt: '2026-07-05T04:02:25.332Z'
 ---
@@ -76,7 +76,7 @@ _source:
 
 Desvia é navegação guiada por voz com um controle que os grandes apps não têm: áreas que você mesmo desenha. Toque no mapa, trace uma região que prefere não cruzar, escolha o nível de restrição e dirija. A rota recalcula para respeitá-la, com trânsito em tempo real e instruções claras em voz o tempo todo.
 
-<ProjectImage src="/src/assets/projects/desvia/draw-area.png" alt="Tela de desenho de área do Desvia em um celular: um polígono traçado sobre o mapa com pontos âmbar arrastáveis e um botão 'Concluir contorno'." caption="Desenhando uma área: toque no mapa para traçar a região que prefere não cruzar." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/draw-area.png" alt="Tela de desenho de área do Desvia em um celular: um polígono traçado sobre o mapa com pontos âmbar arrastáveis e um botão 'Concluir contorno'." caption="Desenhando uma área: toque no mapa para traçar a região que prefere não cruzar." size="phone" />
 
 ## Por que construí
 
@@ -88,19 +88,19 @@ Todo app de navegação otimiza por tempo e trânsito; nenhum deixa você dizer 
 
 As áreas têm dois níveis. **Evitar se possível** é o pedido suave — a rota contorna sempre que houver uma alternativa razoável, mas pode entrar em último caso. **Nunca entrar** é a regra firme — o trajeto nunca cruza aquela área, sem exceções. As mesmas áreas te acompanham em todas as rotas.
 
-<ProjectImage src="/src/assets/projects/desvia/time-warning.png" alt="Tela de alerta do Desvia: 'Entrando em Feira de domingo', ativa agora e válida até 14h, explicando que a área de evitar se possível não pôde ser contornada e por isso está usando o caminho mais curto." caption="Uma área 'evitar se possível' só entra em vigor na janela de horário configurada — o Desvia avisa quando a rota precisa passar por ela." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/time-warning.png" alt="Tela de alerta do Desvia: 'Entrando em Feira de domingo', ativa agora e válida até 14h, explicando que a área de evitar se possível não pôde ser contornada e por isso está usando o caminho mais curto." caption="Uma área 'evitar se possível' só entra em vigor na janela de horário configurada — o Desvia avisa quando a rota precisa passar por ela." size="phone" />
 
 ### Roteamento que respeita os polígonos
 
 As rotas candidatas vêm do GraphHopper; o backend então valida cada uma contra os polígonos desenhados pelo motorista no Supabase Postgres com PostGIS antes de oferecê-la — assim uma área "nunca entrar" é de fato respeitada, não apenas desejada. Entre as rotas que passam, o Desvia recomenda a mais rápida e mostra alternativas quando existem.
 
-<ProjectImage src="/src/assets/projects/desvia/route.png" alt="Tela de rota do Desvia para o Aeroporto de Congonhas com duas opções: uma rota recomendada de 22 minutos que contorna a área, e uma rota mais rápida de 19 minutos marcada por passar pela 'Feira'." caption="Duas rotas disponíveis: a recomendada contorna sua área; a mais rápida que corta por ela aparece sinalizada." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/route.png" alt="Tela de rota do Desvia para o Aeroporto de Congonhas com duas opções: uma rota recomendada de 22 minutos que contorna a área, e uma rota mais rápida de 19 minutos marcada por passar pela 'Feira'." caption="Duas rotas disponíveis: a recomendada contorna sua área; a mais rápida que corta por ela aparece sinalizada." size="phone" />
 
 ### Um GPS de verdade em volta disso
 
 Trânsito em tempo real que ajusta o ETA durante o trajeto, manobras em card grande com voz, e lugares salvos — casa, trabalho, os frequentes — para iniciar uma rota sem precisar digitar.
 
-<ProjectImage src="/src/assets/projects/desvia/map.png" alt="Tela inicial do Desvia em um celular: mapa com uma área de desvio salva destacada em âmbar tracejado, barra de busca 'Para onde vamos?' e atalhos para Casa, Trabalho e Áreas acima dos destinos recentes." caption="A tela inicial: lugares salvos, destinos recentes e suas áreas a um toque." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/map.png" alt="Tela inicial do Desvia em um celular: mapa com uma área de desvio salva destacada em âmbar tracejado, barra de busca 'Para onde vamos?' e atalhos para Casa, Trabalho e Áreas acima dos destinos recentes." caption="A tela inicial: lugares salvos, destinos recentes e suas áreas a um toque." size="phone" />
 
 ## Status
 

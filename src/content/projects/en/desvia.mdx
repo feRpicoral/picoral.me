@@ -49,7 +49,7 @@ faq:
 
 Desvia is turn-by-turn navigation with one control the big apps don't have: areas you draw yourself. Tap the map, trace a region you'd rather not cross, choose how strict it is, and drive. The route recalculates to respect it, with real-time traffic and clear, spoken maneuvers the whole way.
 
-<ProjectImage src="/src/assets/projects/desvia/draw-area.png" alt="Desvia's area-drawing screen on a phone: a polygon traced over the map with draggable amber points and a 'Concluir contorno' button." caption="Drawing an area: tap the map to trace the region you'd rather not cross." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/draw-area.png" alt="Desvia's area-drawing screen on a phone: a polygon traced over the map with draggable amber points and a 'Concluir contorno' button." caption="Drawing an area: tap the map to trace the region you'd rather not cross." size="phone" />
 
 ## Why I built it
 
@@ -61,19 +61,19 @@ Every navigation app optimizes for time and traffic; none of them let you say "j
 
 Areas come in two strengths. **Avoid if possible** is the gentle request — the route goes around whenever there's a reasonable alternative, but may enter as a last resort. **Never enter** is the firm rule — the path never crosses that area, no exceptions. The same areas travel with you across every route.
 
-<ProjectImage src="/src/assets/projects/desvia/time-warning.png" alt="Desvia alert screen: 'Entrando em Feira de domingo', active now and valid until 14h, explaining that an avoid-if-possible area couldn't be skipped so it is taking the shorter route." caption="An 'avoid if possible' area only bites in its time window — Desvia says so when a route has to pass through." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/time-warning.png" alt="Desvia alert screen: 'Entrando em Feira de domingo', active now and valid until 14h, explaining that an avoid-if-possible area couldn't be skipped so it is taking the shorter route." caption="An 'avoid if possible' area only bites in its time window — Desvia says so when a route has to pass through." size="phone" />
 
 ### Routing that respects the polygons
 
 Candidate routes come from GraphHopper; the backend then validates each one against the driver's drawn polygons in Supabase Postgres with PostGIS before it's offered, so a "never enter" area is enforced rather than hoped for. Among the routes that pass, Desvia recommends the fastest and surfaces alternatives when they exist.
 
-<ProjectImage src="/src/assets/projects/desvia/route.png" alt="Desvia route screen to Aeroporto de Congonhas offering two options: a recommended 22-minute route that goes around the area, and a faster 19-minute route flagged for cutting through 'Feira'." caption="Two routes on offer: the recommended one goes around your area; the faster one that cuts through is flagged." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/route.png" alt="Desvia route screen to Aeroporto de Congonhas offering two options: a recommended 22-minute route that goes around the area, and a faster 19-minute route flagged for cutting through 'Feira'." caption="Two routes on offer: the recommended one goes around your area; the faster one that cuts through is flagged." size="phone" />
 
 ### A real GPS around it
 
 Real-time traffic that adjusts the ETA as you drive, large-card turn-by-turn maneuvers with voice, and saved places — home, work, the regulars — to start a route without typing.
 
-<ProjectImage src="/src/assets/projects/desvia/map.png" alt="Desvia home screen on a phone: a map with a saved avoid-area outlined in dashed amber, a 'Para onde vamos?' search bar, and Casa, Trabalho and Áreas shortcuts above recent destinations." caption="The home screen: saved places, recent destinations, and your areas one tap away." size="chart" />
+<ProjectImage src="/src/assets/projects/desvia/map.png" alt="Desvia home screen on a phone: a map with a saved avoid-area outlined in dashed amber, a 'Para onde vamos?' search bar, and Casa, Trabalho and Áreas shortcuts above recent destinations." caption="The home screen: saved places, recent destinations, and your areas one tap away." size="phone" />
 
 ## Status
 
