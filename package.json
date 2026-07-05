@@ -12,7 +12,7 @@
     "check": "astro check",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "test": "node --test scripts/translate/*.test.mjs",
+    "test": "node --test scripts/translate/*.test.mjs src/lib/*.test.mjs",
     "translate": "node scripts/translate-content.mjs",
     "translate:check": "node scripts/translate-content.mjs --check",
     "dates": "node scripts/build-git-dates.mjs"
