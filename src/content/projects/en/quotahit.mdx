@@ -59,7 +59,7 @@ QuotaHit compresses a field rep's day into one tool. From the desk, the rep pros
 3. **A WhatsApp assistant** — send an audio after the visit; it becomes a structured visit, order, or expense record awaiting confirmation.
 4. **Reporting** — weekly sales, conversion per visit, expenses by category, and how much route optimization saved on fuel.
 
-<ProjectImage src="/src/assets/projects/quotahit/prospecting.png" alt="QuotaHit prospecting screen: a split list and map of companies filtered by CNAE and city, with two rows selected and a lasso polygon drawn over map pins." caption="Prospecting: filter by niche and city, then lasso companies off the map and send them to a route." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/prospecting.png" alt="QuotaHit prospecting screen: a split list and map of companies filtered by CNAE and city, with two rows selected and a lasso polygon drawn over map pins." caption="Prospecting: filter by niche and city, then lasso companies off the map and send them to a route." size="chart" />
 
 ## Why I built it
 
@@ -75,19 +75,19 @@ Company search runs on Google BigQuery over public Receita Federal data — CNPJ
 
 Routes mix clients due for a revisit with new prospects, optimize the stop order against live traffic through Google Routes, and show distance, time, and a fuel-cost estimate before the rep leaves — computed from their car's consumption and the region's weekly average fuel price. Stops are drag-to-reorder; navigation hands off to Google Maps or Waze.
 
-<ProjectImage src="/src/assets/projects/quotahit/routes.png" alt="QuotaHit route builder: a drag-to-reorder list of seven stops beside an optimized route on the map, with total distance, time-with-traffic, and fuel cost." caption="The day's route: drag to reorder, optimized against live traffic, with a real fuel cost before you drive." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/routes.png" alt="QuotaHit route builder: a drag-to-reorder list of seven stops beside an optimized route on the map, with total distance, time-with-traffic, and fuel cost." caption="The day's route: drag to reorder, optimized against live traffic, with a real fuel cost before you drive." size="chart" />
 
 ### A WhatsApp assistant that removes data entry
 
 After a visit, the rep sends an audio or a one-line text to QuotaHit's number. OpenAI transcription plus a structuring step turn it into a visit, order, follow-up, or expense — which waits for a one-tap confirmation in the app. Revisit reminders come back through the same WhatsApp thread.
 
-<ProjectImage src="/src/assets/projects/quotahit/whatsapp-assistant.png" alt="QuotaHit WhatsApp assistant screen: a QR to open the chat beside a conversation where a voice note becomes a structured visit record and two expenses awaiting confirmation." caption="Speak, and it writes: a voice note becomes a structured visit or expense, saved only after you confirm." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/whatsapp-assistant.png" alt="QuotaHit WhatsApp assistant screen: a QR to open the chat beside a conversation where a voice note becomes a structured visit record and two expenses awaiting confirmation." caption="Speak, and it writes: a voice note becomes a structured visit or expense, saved only after you confirm." size="chart" />
 
 ### Reporting the week
 
 Sales and average ticket, cost per visit, expenses by category, fuel saved by optimization, and portfolio coverage — how many clients are on-cadence versus overdue.
 
-<ProjectImage src="/src/assets/projects/quotahit/reports.png" alt="QuotaHit reports dashboard: sales, average ticket, expenses, fuel saved, and kilometres tiles above weekly sales, conversion, expense-by-category, and portfolio-coverage charts." caption="The week in numbers: sales, conversion per visit, expenses, and fuel saved by routing." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/reports.png" alt="QuotaHit reports dashboard: sales, average ticket, expenses, fuel saved, and kilometres tiles above weekly sales, conversion, expense-by-category, and portfolio-coverage charts." caption="The week in numbers: sales, conversion per visit, expenses, and fuel saved by routing." size="chart" />
 
 The whole thing ships as one Next.js app on `quotahit.app`, deployed on Vercel in São Paulo (region `gru1`), with scheduled jobs on Supabase `pg_cron` and subscriptions billed through Mercado Pago (Pix or card).
 

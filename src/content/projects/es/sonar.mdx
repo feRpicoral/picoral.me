@@ -71,7 +71,7 @@ faq:
       aproximadamente un 70%, lo que se traduce en mejoras de latencia y costo a
       medida que crece el corpus de contexto del workspace.
 _source:
-  hash: 5c75b7aa1d127086
+  hash: 983d4c8d285c1371
   locale: en
   translatedAt: '2026-07-05T03:01:09.793Z'
 ---
@@ -84,11 +84,11 @@ Un representante de ventas sube una grabación de llamada. Unos veinte segundos 
 3. Un próximo paso recomendado con puntos de conversación y urgencia (Claude Sonnet 4.6)
 4. Un borrador de correo de seguimiento con citas entre corchetes que vinculan a segmentos de la transcripción (Claude Sonnet 4.6)
 
-<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Dashboard del workspace de Sonar mostrando conteos de leads, llamadas y ejecuciones de agentes junto con ejecuciones recientes y leads recientes." caption="El dashboard del workspace: leads, llamadas y ejecuciones de agentes de un vistazo." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Dashboard del workspace de Sonar mostrando conteos de leads, llamadas y ejecuciones de agentes junto con ejecuciones recientes y leads recientes." caption="El dashboard del workspace: leads, llamadas y ejecuciones de agentes de un vistazo." size="chart" />
 
 El revisor ve una UI de vista dividida: el correo a la izquierda, la transcripción a la derecha. Al pasar el cursor sobre una cita se resalta el segmento correspondiente. El revisor puede aprobar, editar el cuerpo directamente o regenerar el redactor con feedback. La regeneración reutiliza el estado previo de investigación, análisis y estrategia; solo vuelve a ejecutarse el redactor.
 
-<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Pantalla de aprobación de correo en Sonar: un borrador de seguimiento a la izquierda con chips de citas numerados, y la transcripción de la llamada a la derecha con los segmentos citados marcados." caption="Aprobar y enviar: cada afirmación del borrador enlaza al segmento de la transcripción del que proviene." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Pantalla de aprobación de correo en Sonar: un borrador de seguimiento a la izquierda con chips de citas numerados, y la transcripción de la llamada a la derecha con los segmentos citados marcados." caption="Aprobar y enviar: cada afirmación del borrador enlaza al segmento de la transcripción del que proviene." size="chart" />
 
 ## Por qué lo construí
 
@@ -105,7 +105,7 @@ No es un producto — es un proyecto personal. Quería un único codebase que ej
 - La regeneración del redactor reutiliza el estado de los nodos anteriores.
 - Ejecución en background mediante el route handler `after()` de Next.js 16 (`maxDuration = 300`).
 
-<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Visor de ejecución de agentes de Sonar mostrando los cinco nodos del pipeline — transcripción, investigación, análisis, estrategia, redacción — con el estado por nodo mientras la ejecución está en curso." caption="El visor de ejecución: cada nodo reporta su estado en vivo; la ejecución se pausa para aprobación tras el redactor." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Visor de ejecución de agentes de Sonar mostrando los cinco nodos del pipeline — transcripción, investigación, análisis, estrategia, redacción — con el estado por nodo mientras la ejecución está en curso." caption="El visor de ejecución: cada nodo reporta su estado en vivo; la ejecución se pausa para aprobación tras el redactor." size="chart" />
 
 ### Procesamiento de audio
 

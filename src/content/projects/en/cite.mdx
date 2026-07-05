@@ -49,7 +49,7 @@ faq:
 
 Teams upload their documents — PDFs, Word, HTML, Markdown — and chat with them in natural language. Every answer is grounded by inline citations. Clicking a citation opens the source document at the exact region that produced the answer, with the relevant span highlighted, and an automated judge scores whether that source actually supports the claim.
 
-<ProjectImage src="/src/assets/projects/cite/cited-answer.png" alt="Cite answer view: a question and Cite's response with numbered citation chips, next to a source panel showing the exact highlighted passage marked Supported with a 0.92 confidence score." caption="Every claim carries a citation; the source panel shows the exact passage, scored Supported · 0.92 by the judge." size="wide" />
+<ProjectImage src="/src/assets/projects/cite/cited-answer.png" alt="Cite answer view: a question and Cite's response with numbered citation chips, next to a source panel showing the exact highlighted passage marked Supported with a 0.92 confidence score." caption="Every claim carries a citation; the source panel shows the exact passage, scored Supported · 0.92 by the judge." size="chart" />
 
 ## Why I built it
 
@@ -65,7 +65,7 @@ The model plans and iterates retrievals before answering: hybrid vector + keywor
 
 Clicking a citation opens the source in a side viewer, scrolled to the precise span — a bounding box on a PDF page (via LlamaParse layout parsing) or a text range in HTML — highlighted in the evidence stream. A resizable split snaps back when you're done.
 
-<ProjectImage src="/src/assets/projects/cite/citation-viewer.png" alt="Cite document viewer showing page 12 of an MSA PDF with the cited clause highlighted and anchored to citation marker 1." caption="Click a citation, and the viewer jumps to the exact page and span it came from." size="prose" />
+<ProjectImage src="/src/assets/projects/cite/citation-viewer.png" alt="Cite document viewer showing page 12 of an MSA PDF with the cited clause highlighted and anchored to citation marker 1." caption="Click a citation, and the viewer jumps to the exact page and span it came from." size="chart" />
 
 ### Citation auditing
 

@@ -80,7 +80,7 @@ faq:
       Não. O QuotaHit roda no navegador no celular e no computador — sem
       instalação, e as atualizações chegam na hora.
 _source:
-  hash: 0cbf204550d17491
+  hash: 418523fface4e926
   locale: en
   translatedAt: '2026-07-05T03:00:18.082Z'
 ---
@@ -93,7 +93,7 @@ O QuotaHit concentra o dia de um representante em uma ferramenta só. No escrit�
 3. **Assistente no WhatsApp** — mande um áudio depois da visita; ele vira um registro estruturado de visita, pedido ou despesa aguardando confirmação.
 4. **Relatórios** — vendas semanais, conversão por visita, despesas por categoria e quanto a otimização de rota economizou em combustível.
 
-<ProjectImage src="/src/assets/projects/quotahit/prospecting.png" alt="Tela de prospecção do QuotaHit: lista e mapa divididos com empresas filtradas por CNAE e cidade, duas linhas selecionadas e um polígono de laço desenhado sobre os pins do mapa." caption="Prospecção: filtre por nicho e cidade, depois selecione empresas no mapa com um laço e envie para uma rota." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/prospecting.png" alt="Tela de prospecção do QuotaHit: lista e mapa divididos com empresas filtradas por CNAE e cidade, duas linhas selecionadas e um polígono de laço desenhado sobre os pins do mapa." caption="Prospecção: filtre por nicho e cidade, depois selecione empresas no mapa com um laço e envie para uma rota." size="chart" />
 
 ## Por que construí
 
@@ -109,19 +109,19 @@ A busca de empresas roda no Google BigQuery sobre os dados públicos da Receita 
 
 As rotas misturam clientes com revisita pendente e novos prospects, otimizam a ordem das paradas com trânsito em tempo real via Google Routes, e mostram distância, tempo e estimativa de custo de combustível antes de o rep sair — calculados com base no consumo do carro e no preço médio semanal da região. As paradas são reordenáveis por arrastar; a navegação passa para o Google Maps ou o Waze.
 
-<ProjectImage src="/src/assets/projects/quotahit/routes.png" alt="Construtor de rotas do QuotaHit: lista de sete paradas reordenável por arrastar ao lado de uma rota otimizada no mapa, com distância total, tempo com trânsito e custo de combustível." caption="A rota do dia: arraste para reordenar, otimizada com trânsito em tempo real e com o custo real de combustível antes de sair." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/routes.png" alt="Construtor de rotas do QuotaHit: lista de sete paradas reordenável por arrastar ao lado de uma rota otimizada no mapa, com distância total, tempo com trânsito e custo de combustível." caption="A rota do dia: arraste para reordenar, otimizada com trânsito em tempo real e com o custo real de combustível antes de sair." size="chart" />
 
 ### Um assistente no WhatsApp que elimina o preenchimento manual
 
 Depois da visita, o rep manda um áudio ou um texto curto para o número do QuotaHit. A transcrição do OpenAI mais uma etapa de estruturação transformam isso em uma visita, pedido, follow-up ou despesa — que aguarda uma confirmação com um toque no app. Os lembretes de revisita voltam pelo mesmo thread do WhatsApp.
 
-<ProjectImage src="/src/assets/projects/quotahit/whatsapp-assistant.png" alt="Tela do assistente WhatsApp do QuotaHit: QR code para abrir o chat ao lado de uma conversa onde um áudio vira um registro estruturado de visita e duas despesas aguardando confirmação." caption="Fale, e ele escreve: um áudio vira uma visita ou despesa estruturada, salva só depois que você confirmar." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/whatsapp-assistant.png" alt="Tela do assistente WhatsApp do QuotaHit: QR code para abrir o chat ao lado de uma conversa onde um áudio vira um registro estruturado de visita e duas despesas aguardando confirmação." caption="Fale, e ele escreve: um áudio vira uma visita ou despesa estruturada, salva só depois que você confirmar." size="chart" />
 
 ### Relatório da semana
 
 Vendas e ticket médio, custo por visita, despesas por categoria, combustível economizado pela otimização e cobertura da carteira — quantos clientes estão em dia versus em atraso.
 
-<ProjectImage src="/src/assets/projects/quotahit/reports.png" alt="Dashboard de relatórios do QuotaHit: cards de vendas, ticket médio, despesas, combustível economizado e quilômetros acima de gráficos semanais de vendas, conversão, despesas por categoria e cobertura da carteira." caption="A semana em números: vendas, conversão por visita, despesas e combustível economizado pela roteirização." size="wide" />
+<ProjectImage src="/src/assets/projects/quotahit/reports.png" alt="Dashboard de relatórios do QuotaHit: cards de vendas, ticket médio, despesas, combustível economizado e quilômetros acima de gráficos semanais de vendas, conversão, despesas por categoria e cobertura da carteira." caption="A semana em números: vendas, conversão por visita, despesas e combustível economizado pela roteirização." size="chart" />
 
 Tudo roda como um app Next.js em `quotahit.app`, hospedado na Vercel em São Paulo (região `gru1`), com jobs agendados no Supabase `pg_cron` e assinaturas cobradas pelo Mercado Pago (Pix ou cartão).
 

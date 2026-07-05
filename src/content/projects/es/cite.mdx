@@ -76,7 +76,7 @@ faq:
       fragmentos, genera embeddings con Voyage 3 Large y los indexa, mostrando
       el estado de ingesta por documento.
 _source:
-  hash: 1b9965182c1daeb2
+  hash: b7e02efad5947333
   locale: en
   translatedAt: '2026-07-05T02:59:43.989Z'
 ---
@@ -84,7 +84,7 @@ _source:
 
 Los equipos suben sus documentos — PDFs, Word, HTML, Markdown — y chatean con ellos en lenguaje natural. Cada respuesta está respaldada por citas en línea. Al hacer clic en una cita se abre el documento fuente en la región exacta que generó la respuesta, con el fragmento relevante resaltado, y un juez automatizado evalúa si esa fuente realmente sustenta la afirmación.
 
-<ProjectImage src="/src/assets/projects/cite/cited-answer.png" alt="Vista de respuesta de Cite: una pregunta y la respuesta de Cite con chips de citas numerados, junto a un panel fuente que muestra el pasaje exacto resaltado, marcado como Supported con un puntaje de confianza de 0.92." caption="Cada afirmación lleva una cita; el panel fuente muestra el pasaje exacto, calificado Supported · 0.92 por el juez." size="wide" />
+<ProjectImage src="/src/assets/projects/cite/cited-answer.png" alt="Vista de respuesta de Cite: una pregunta y la respuesta de Cite con chips de citas numerados, junto a un panel fuente que muestra el pasaje exacto resaltado, marcado como Supported con un puntaje de confianza de 0.92." caption="Cada afirmación lleva una cita; el panel fuente muestra el pasaje exacto, calificado Supported · 0.92 por el juez." size="chart" />
 
 ## Por qué lo construí
 
@@ -100,7 +100,7 @@ El modelo planifica e itera recuperaciones antes de responder: búsqueda híbrid
 
 Al hacer clic en una cita se abre la fuente en un panel lateral, desplazado hasta el fragmento preciso — un bounding box en una página PDF (vía análisis de diseño de LlamaParse) o un rango de texto en HTML — resaltado en el flujo de evidencia. Un panel redimensionable vuelve a su posición cuando terminás.
 
-<ProjectImage src="/src/assets/projects/cite/citation-viewer.png" alt="Visor de documentos de Cite mostrando la página 12 de un PDF de MSA con la cláusula citada resaltada y anclada al marcador de cita 1." caption="Al hacer clic en una cita, el visor salta a la página y el fragmento exacto de donde proviene." size="prose" />
+<ProjectImage src="/src/assets/projects/cite/citation-viewer.png" alt="Visor de documentos de Cite mostrando la página 12 de un PDF de MSA con la cláusula citada resaltada y anclada al marcador de cita 1." caption="Al hacer clic en una cita, el visor salta a la página y el fragmento exacto de donde proviene." size="chart" />
 
 ### Auditoría de citas
 

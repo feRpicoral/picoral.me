@@ -80,7 +80,7 @@ faq:
       SIP, então uma rota mal configurada nunca consegue entrar na sala de outro
       tenant.
 _source:
-  hash: a3631b1add28153f
+  hash: 1eb00dfe49861c4a
   locale: en
   translatedAt: '2026-07-05T03:00:31.343Z'
 ---
@@ -95,17 +95,17 @@ Um chamador liga. Cerca de meio segundo depois de terminar de falar, o agente re
 3. Um medidor de latência mostra STT, LLM TTFT, TTS TTFA e p95 end-to-end em tempo real, com cada trecho ficando vermelho quando ultrapassa o budget.
 4. Cada tool que o agente invoca — `check_availability`, `lookup_kb`, `book_appointment`, `transfer_to_human` — aparece em uma timeline inline com input, output e duração.
 
-<ProjectImage src="/src/assets/projects/relay/live-call.png" alt="Visualização de chamada ao vivo do Relay: forma de onda pulsando, transcrição em streaming com labels de falante e sentimento, medidor de latência com seis trechos e timeline inline de tools." caption="Uma chamada em andamento: forma de onda, transcrição em streaming, medidor de latência por trecho e as tool calls do agente, tudo ao vivo." size="wide" />
+<ProjectImage src="/src/assets/projects/relay/live-call.png" alt="Visualização de chamada ao vivo do Relay: forma de onda pulsando, transcrição em streaming com labels de falante e sentimento, medidor de latência com seis trechos e timeline inline de tools." caption="Uma chamada em andamento: forma de onda, transcrição em streaming, medidor de latência por trecho e as tool calls do agente, tudo ao vivo." size="chart" />
 
 O operador pode assumir a chamada pelo dashboard a qualquer momento.
 
 Quando a chamada encerra, um job do Inngest puxa a gravação, pede ao Claude Sonnet 4.6 para gerar um resumo estruturado, classifica o resultado (`SCHEDULED`, `QUALIFIED`, `TRANSFERRED`, `NOT_QUALIFIED`, `NO_ANSWER`), pontua o sentimento e extrai tópicos. A página de detalhe exibe a gravação em um player com scrubbing, com a transcrição destacando o trecho sendo falado.
 
-<ProjectImage src="/src/assets/projects/relay/dashboard.png" alt="Dashboard do operador do Relay: tiles de chamadas-hoje, agentes-ativos, números-conectados e conversão acima de uma lista de chamadas em andamento, uma lista de chamadas recentes e gráficos de resultados-do-dia e volume-de-chamadas." caption="O dashboard do operador: chamadas ao vivo, resultados recentes e as métricas que uma clínica realmente usa." size="wide" />
+<ProjectImage src="/src/assets/projects/relay/dashboard.png" alt="Dashboard do operador do Relay: tiles de chamadas-hoje, agentes-ativos, números-conectados e conversão acima de uma lista de chamadas em andamento, uma lista de chamadas recentes e gráficos de resultados-do-dia e volume-de-chamadas." caption="O dashboard do operador: chamadas ao vivo, resultados recentes e as métricas que uma clínica realmente usa." size="chart" />
 
 O mesmo dashboard inclui campanhas de saída (upload de CSV, respeito ao horário comercial, retentativas com cooldown), uma página de analytics (volume, conversão, latência p95, heatmap por hora e dia da semana) e integração com Cal.com para agendamento durante a chamada.
 
-<ProjectImage src="/src/assets/projects/relay/campaigns.png" alt="Tela de campanhas de saída do Relay mostrando uma campanha em execução com progresso das chamadas, janelas de horário comercial e configurações de retentativa." caption="Campanhas de saída: upload de CSV, janelas de horário comercial e retentativas com cooldown." size="wide" />
+<ProjectImage src="/src/assets/projects/relay/campaigns.png" alt="Tela de campanhas de saída do Relay mostrando uma campanha em execução com progresso das chamadas, janelas de horário comercial e configurações de retentativa." caption="Campanhas de saída: upload de CSV, janelas de horário comercial e retentativas com cooldown." size="chart" />
 
 ## Por que construí
 

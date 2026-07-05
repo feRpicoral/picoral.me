@@ -54,11 +54,11 @@ A sales rep uploads a call recording. About twenty seconds later, Sonar returns:
 3. A recommended next step with talking points and urgency (Claude Sonnet 4.6)
 4. A follow-up email draft with bracketed citations linking back to transcript segments (Claude Sonnet 4.6)
 
-<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Sonar workspace dashboard showing lead, call, and agent-run counts alongside recent runs and recent leads." caption="The workspace dashboard: leads, calls, and agent runs at a glance." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Sonar workspace dashboard showing lead, call, and agent-run counts alongside recent runs and recent leads." caption="The workspace dashboard: leads, calls, and agent runs at a glance." size="chart" />
 
 The reviewer sees a split-view UI: email on the left, transcript on the right. Hovering a citation highlights the matching segment. The reviewer can approve, edit the body in place, or regenerate the writer with feedback. Regeneration reuses the prior research, analysis, and strategy state; only the writer runs again.
 
-<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Sonar email-approval screen: a follow-up draft on the left with numbered citation chips, and the call transcript on the right with the cited segments marked." caption="Approve & send: every claim in the draft links to the transcript segment it came from." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Sonar email-approval screen: a follow-up draft on the left with numbered citation chips, and the call transcript on the right with the cited segments marked." caption="Approve & send: every claim in the draft links to the transcript segment it came from." size="chart" />
 
 ## Why I built it
 
@@ -75,7 +75,7 @@ Not a product — a personal project. I wanted one codebase that exercised the m
 - Writer regeneration reuses upstream state.
 - Background execution via Next.js 16's `after()` route handler (`maxDuration = 300`).
 
-<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Sonar agent-run viewer showing the five pipeline nodes — transcription, research, analysis, strategy, writer — with per-node status while the run is in progress." caption="The run viewer: each node reports status live; the run pauses for approval after the writer." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Sonar agent-run viewer showing the five pipeline nodes — transcription, research, analysis, strategy, writer — with per-node status while the run is in progress." caption="The run viewer: each node reports status live; the run pauses for approval after the writer." size="chart" />
 
 ### Audio processing
 

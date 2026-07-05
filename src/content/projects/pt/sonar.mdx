@@ -70,7 +70,7 @@ faq:
       se traduz em ganhos de latência e custo à medida que o corpus de contexto
       do workspace cresce.
 _source:
-  hash: 1838165ac7b7dc65
+  hash: 39ec7186f2ab7178
   locale: en
   translatedAt: '2026-07-05T03:00:57.733Z'
 ---
@@ -83,11 +83,11 @@ Um rep de vendas faz upload de uma gravação de chamada. Cerca de vinte segundo
 3. Próximo passo recomendado com talking points e urgência (Claude Sonnet 4.6)
 4. Rascunho de follow-up com citações entre colchetes linkando de volta a trechos da transcrição (Claude Sonnet 4.6)
 
-<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Dashboard do workspace do Sonar mostrando contagens de leads, chamadas e execuções de agente, além de execuções e leads recentes." caption="O dashboard do workspace: leads, chamadas e execuções de agente de relance." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Dashboard do workspace do Sonar mostrando contagens de leads, chamadas e execuções de agente, além de execuções e leads recentes." caption="O dashboard do workspace: leads, chamadas e execuções de agente de relance." size="chart" />
 
 O revisor vê uma UI em tela dividida: e-mail à esquerda, transcrição à direita. Passar o mouse sobre uma citação destaca o trecho correspondente. O revisor pode aprovar, editar o corpo diretamente ou regerar o redator com feedback. A regeração reutiliza o estado anterior de pesquisa, análise e estratégia; só o redator executa novamente.
 
-<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Tela de aprovação de e-mail do Sonar: rascunho de follow-up à esquerda com chips de citação numerados, e a transcrição da chamada à direita com os trechos citados marcados." caption="Aprovar e enviar: cada afirmação no rascunho linka ao trecho da transcrição de onde veio." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Tela de aprovação de e-mail do Sonar: rascunho de follow-up à esquerda com chips de citação numerados, e a transcrição da chamada à direita com os trechos citados marcados." caption="Aprovar e enviar: cada afirmação no rascunho linka ao trecho da transcrição de onde veio." size="chart" />
 
 ## Por que eu construí
 
@@ -104,7 +104,7 @@ Não é um produto — é um projeto pessoal. Queria uma base de código que exe
 - A regeração do redator reutiliza o estado dos nós anteriores.
 - Execução em background via route handler `after()` do Next.js 16 (`maxDuration = 300`).
 
-<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Visualizador de execução de agente do Sonar mostrando os cinco nós do pipeline — transcrição, pesquisa, análise, estratégia, redação — com status por nó enquanto a execução está em andamento." caption="O visualizador de execução: cada nó reporta o status em tempo real; a execução pausa para aprovação após o redator." size="wide" />
+<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Visualizador de execução de agente do Sonar mostrando os cinco nós do pipeline — transcrição, pesquisa, análise, estratégia, redação — com status por nó enquanto a execução está em andamento." caption="O visualizador de execução: cada nó reporta o status em tempo real; a execução pausa para aprovação após o redator." size="chart" />
 
 ### Processamento de áudio
 
