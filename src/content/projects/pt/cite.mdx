@@ -2,16 +2,18 @@
 slug: cite
 title: Cite
 tagline: >-
-  Projeto pessoal explorando RAG agêntico. Cada resposta é fundamentada por
-  citações inline; clicar em uma abre o documento-fonte na região exata que a
-  gerou.
+  Projeto pessoal explorando RAG agêntico. Cada resposta vem com citações
+  inline; clicar em uma abre o documento-fonte na região exata que gerou a
+  resposta, e um juiz automatizado avalia se a fonte realmente sustenta a
+  afirmação.
 summary: >-
-  Um app de chat com recuperação aumentada onde cada resposta do modelo é
-  respaldada por citações inline. Clicar em uma citação abre o documento-fonte
-  na região exata — página, parágrafo ou trecho de tokens — que gerou a
-  resposta. Construído para aprender recuperação agêntica e UX de visualizador
-  de documentos sincronizado.
-status: in-development
+  Um chat com RAG onde cada resposta do modelo é respaldada por citações inline.
+  Clicar em uma citação abre o documento-fonte na região exata — página,
+  parágrafo ou trecho de tokens — que gerou a resposta, e um juiz LLM classifica
+  cada citação como Suportada, Parcial ou Não Suportada. Construído para
+  aprender recuperação agêntica, ancoragem de citações e UX de visualizador de
+  documentos sincronizado.
+status: live
 role: 'Solo — design, engenharia'
 period:
   start: 2026-03
@@ -20,55 +22,94 @@ stack:
   - TypeScript
   - Tailwind v4
   - shadcn/ui (Radix Nova)
-  - Anthropic SDK
-  - PostgreSQL with pgvector
+  - Anthropic SDK (Sonnet 4.6 + Haiku 4.5)
+  - Voyage 3 Large embeddings + Voyage Rerank 2.5
+  - LlamaParse
+  - Supabase (Auth + Postgres + pgvector)
+  - Prisma
+  - Inngest
   - Yarn 4
 links:
-  live: 'https://cite-eosin.vercel.app'
+  live: 'https://cite.picoral.me'
   repo: 'https://github.com/feRpicoral/cite'
 featured: true
 order: 3
 hasCaseStudy: true
 seo:
   description: >-
-    Projeto pessoal. RAG agêntico com citações inline clicáveis e um
-    visualizador de documentos sincronizado que salta direto para a região-fonte
-    exata.
+    Um projeto pessoal. RAG agêntico com citações inline clicáveis, um
+    visualizador de documentos sincronizado que salta para a região exata da
+    fonte, e um juiz LLM que avalia cada citação.
   keywords:
     - agentic RAG
     - retrieval-augmented generation
     - citation grounding
     - document viewer
     - pgvector
+    - citation verification
 faq:
   - q: O que é o Cite?
     a: >-
-      Cite é uma aplicação de chat com recuperação aumentada agêntica. Times
+      Cite é uma aplicação de chat com recuperação agêntica aumentada. Times
       fazem upload de documentos e fazem perguntas em linguagem natural. Cada
-      resposta é fundamentada por citações inline — clicar em uma abre o
+      resposta é respaldada por citações inline — clicar em uma abre o
       documento-fonte na região exata que gerou a resposta, com o trecho
       relevante destacado.
   - q: O que diferencia o Cite de um chatbot RAG comum?
     a: >-
-      Duas coisas. Primeiro, a etapa de recuperação é agêntica — o modelo pode
-      planejar e iterar buscas antes de responder, em vez de fazer uma única
-      consulta por similaridade top-k. Segundo, a citação é a interface, não uma
-      nota de rodapé. As citações são elementos clicáveis que rolam o
+      Duas coisas. Primeiro, a recuperação é agêntica — o modelo planeja e itera
+      buscas híbridas de vetor + palavra-chave com reranking antes de responder,
+      em vez de uma única busca por similaridade top-k. Segundo, a citação é a
+      interface, não uma nota de rodapé. As citações são clicáveis e rolam o
       visualizador de documentos de forma síncrona até o trecho citado, então
       verificar é um clique, não uma busca.
+  - q: Como as citações são verificadas?
+    a: >-
+      Um juiz automatizado compara cada afirmação citada com o trecho-fonte e a
+      classifica como Suportada, Parcial ou Não Suportada, com uma pontuação de
+      confiança e um raciocínio curto. Transforma "confie no modelo" em
+      "verifique a evidência".
+  - q: Quais formatos de arquivo o Cite aceita?
+    a: >-
+      PDF, DOCX, HTML e Markdown, até 100 MB cada. O LlamaParse cuida do parsing
+      de PDF com reconhecimento de layout; o Cite divide em chunks, gera
+      embeddings com Voyage 3 Large e os indexa, mostrando o status de ingestão
+      por documento.
 _source:
-  hash: 45526e5b96e09e0e
+  hash: 82cca26198ca0e0b
   locale: en
-  translatedAt: '2026-06-01T04:49:30.644Z'
+  translatedAt: '2026-07-05T02:59:43.996Z'
 ---
 ## O que faz
 
-Times fazem upload de documentos — PDFs, Word, Markdown, transcrições — e conversam com eles em linguagem natural. Cada resposta é fundamentada por citações inline. Clicar em uma citação abre o documento-fonte na região exata que gerou a resposta, com o trecho relevante destacado.
+Times fazem upload de documentos — PDFs, Word, HTML, Markdown — e conversam com eles em linguagem natural. Cada resposta é respaldada por citações inline. Clicar em uma citação abre o documento-fonte na região exata que gerou a resposta, com o trecho relevante destacado, e um juiz automatizado avalia se aquela fonte realmente sustenta a afirmação.
+
+<ProjectImage src="/src/assets/projects/cite/cited-answer.png" alt="Tela de resposta do Cite: uma pergunta e a resposta do Cite com chips de citação numerados, ao lado de um painel de fonte mostrando o trecho exato destacado, marcado como Suportado com pontuação de confiança 0,92." caption="Cada afirmação carrega uma citação; o painel de fonte mostra o trecho exato, avaliado como Suportado · 0,92 pelo juiz." size="wide" />
 
 ## Por que construí
 
-Não é um produto — é um projeto pessoal. Chatbots RAG sem citação são infalsificáveis. Fundamentar as respostas em citações torna o output do modelo verificável, que é justamente o ponto de usar um sistema de recuperação. Também queria criar uma UI onde a citação seja a interação principal, não uma nota de rodapé — o visualizador de documentos é tão central quanto o chat.
+Não é um produto — é um projeto pessoal. Chatbots RAG sem citação são infalsificáveis. Ancoragem por citação torna a saída do modelo verificável, que é o ponto central de usar um sistema de recuperação. Também queria criar uma UI onde a citação é a interação principal, não uma nota de rodapé — o visualizador de documentos tem o mesmo peso que o chat — e fechar o ciclo com um juiz que avalia se a fonte citada realmente sustenta a afirmação.
+
+## Como funciona
+
+### Recuperação agêntica
+
+O modelo planeja e itera recuperações antes de responder: busca híbrida de vetor + palavra-chave sobre pgvector, decomposição de sub-queries para perguntas compostas, e Voyage Rerank 2.5 sobre o conjunto de candidatos. Ele faz uma verificação de suficiência antes de responder — ou diz que não consegue.
+
+### O visualizador de citações
+
+Clicar em uma citação abre a fonte em um painel lateral, rolado até o trecho exato — uma bounding box em uma página de PDF (via parsing de layout do LlamaParse) ou um intervalo de texto em HTML — destacado no fluxo de evidências. Um painel redimensionável volta ao estado original quando você termina.
+
+<ProjectImage src="/src/assets/projects/cite/citation-viewer.png" alt="Visualizador de documentos do Cite mostrando a página 12 de um PDF de MSA com a cláusula citada destacada e ancorada à marcação de citação 1." caption="Clique em uma citação e o visualizador salta para a página e o trecho exatos de onde ela veio." size="prose" />
+
+### Auditoria de citações
+
+Um juiz automatizado classifica cada citação como Suportada, Parcial ou Não Suportada, com uma pontuação de confiança e um raciocínio curto. Admins têm um dashboard para triar as fracas — filtrar por afirmações não suportadas em contexto, com raciocínio por citação em vez de um único número opaco.
+
+### Colaboração e multitenancy
+
+Presença ao vivo, sincronização de mensagens em tempo real e comentários encadeados em mensagens e regiões de documentos mantêm o time trabalhando sobre uma única fonte de verdade. Os documentos ficam dentro do workspace da organização, visíveis apenas para membros por papel. A interface está disponível em inglês e português brasileiro.
 
 ## Status
 
-Em desenvolvimento ativo. O pipeline de recuperação e a UI de chat estão funcionando de ponta a ponta; a lógica de âncora de região do visualizador de documentos é o foco atual.
+No ar em [cite.picoral.me](https://cite.picoral.me). O pipeline de recuperação agêntica, o visualizador de citações e o juiz estão funcionando de ponta a ponta; o foco atual é polir a colaboração.

@@ -3,14 +3,15 @@ slug: sonar
 title: Sonar
 tagline: >-
   Proyecto personal para explorar orquestación multi-agente. El caso de uso es
-  la revisión de llamadas de ventas; el objetivo real era aprender sobre tool
-  use de Anthropic, prompt caching y estado persistente de agentes.
+  revisión de llamadas de ventas; el objetivo real fue aprender Anthropic tool
+  use, prompt caching y estado persistente de agentes de punta a punta.
 summary: >-
-  Un pipeline multi-agente que convierte una grabación de llamada de ventas en
-  investigación, análisis, un próximo paso recomendado y un borrador de
-  seguimiento con citas que enlazan al transcript. Construido sobre Claude
-  Sonnet 4.6 + Haiku 4.5, Groq Whisper y Tavily.
-status: in-development
+  Un pipeline multi-agente que convierte una llamada de ventas grabada en
+  investigación del prospecto, un análisis estructurado de la llamada, un
+  próximo paso recomendado y un correo de seguimiento donde cada afirmación está
+  citada con referencia a un segmento específico de la transcripción. Construido
+  sobre Claude Sonnet 4.6 + Haiku 4.5, Groq Whisper y Tavily.
+status: live
 role: 'Solo — diseño, ingeniería, despliegue'
 period:
   start: 2025-09
@@ -22,19 +23,21 @@ stack:
   - Groq Whisper Large v3
   - Tavily
   - Supabase Storage
-  - PostgreSQL
+  - PostgreSQL + pgvector
   - Prisma
+  - Stripe
+  - Resend
   - Tailwind v4
   - shadcn/ui
 links:
-  live: 'https://sonar-cyan-seven.vercel.app'
+  live: 'https://sonar.picoral.me'
   repo: 'https://github.com/feRpicoral/sonar'
 featured: true
 order: 1
 hasCaseStudy: true
 seo:
   description: >-
-    Un proyecto personal. Pipeline multi-agente que convierte grabaciones de
+    Proyecto personal. Pipeline multi-agente que convierte grabaciones de
     llamadas de ventas en investigación, análisis, próximo paso y borradores de
     seguimiento con citas.
   keywords:
@@ -48,28 +51,29 @@ faq:
   - q: ¿Qué es Sonar?
     a: >-
       Sonar es un workspace de IA multi-agente para equipos de ventas. Un
-      representante sube una llamada grabada; ~20 segundos después tiene
-      investigación sobre el prospecto, análisis estructurado de la llamada, un
-      próximo paso recomendado y un borrador de seguimiento con citas que
-      enlazan cada afirmación a un segmento específico del transcript.
+      representante sube una llamada grabada; unos veinte segundos después tiene
+      investigación del prospecto, un análisis estructurado de la llamada, un
+      próximo paso recomendado y un borrador de correo de seguimiento con citas
+      que vinculan cada afirmación a un segmento específico de la transcripción.
   - q: ¿Cómo funciona la orquestación multi-agente de Sonar?
     a: >-
-      Cuatro nodos secuenciales — research, analysis, strategy, writer — cada
-      uno devuelve output estructurado mediante Anthropic tool use con schemas
+      Una ejecución de cinco nodos — transcripción, seguida de cuatro nodos de
+      agentes Claude para investigación, análisis, estrategia y redacción — cada
+      uno devuelve output estructurado mediante Anthropic tool use con esquemas
       Zod. Cada paso escribe una fila AgentRunStep en Postgres; la ejecución se
-      pausa en AWAITING_APPROVAL tras el paso del writer para revisión humana.
-      El writer puede regenerarse con feedback del revisor sin volver a ejecutar
-      los nodos anteriores.
-  - q: ¿Por qué Sonar usa prompt caching de Anthropic?
+      pausa en AWAITING_APPROVAL tras el paso de redacción para revisión humana.
+      El redactor puede regenerarse con feedback del revisor sin volver a
+      ejecutar los nodos anteriores.
+  - q: ¿Por qué Sonar usa Anthropic prompt caching?
     a: >-
       Los mensajes de sistema se cachean en cada nodo. En ejecuciones repetidas
       sobre el mismo workspace, esto reduce los tokens de entrada
-      aproximadamente un 70%, lo que se traduce directamente en mejoras de
-      latencia y costo a medida que crece el corpus de contexto del workspace.
+      aproximadamente un 70%, lo que se traduce en mejoras de latencia y costo a
+      medida que crece el corpus de contexto del workspace.
 _source:
-  hash: af0475481e218288
+  hash: 5c75b7aa1d127086
   locale: en
-  translatedAt: '2026-06-01T04:51:20.636Z'
+  translatedAt: '2026-07-05T03:01:09.793Z'
 ---
 ## Qué hace
 
@@ -78,37 +82,43 @@ Un representante de ventas sube una grabación de llamada. Unos veinte segundos 
 1. Investigación sobre la empresa del prospecto (Tavily + Claude Haiku 4.5)
 2. Análisis estructurado de la llamada — temas, puntos de dolor, objeciones, tareas pendientes, sentimiento (Claude Sonnet 4.6)
 3. Un próximo paso recomendado con puntos de conversación y urgencia (Claude Sonnet 4.6)
-4. Un borrador de email de seguimiento con citas entre corchetes que enlazan a segmentos del transcript (Claude Sonnet 4.6)
+4. Un borrador de correo de seguimiento con citas entre corchetes que vinculan a segmentos de la transcripción (Claude Sonnet 4.6)
 
-El revisor ve una UI de vista dividida: el email a la izquierda, el transcript a la derecha. Al pasar el cursor sobre una cita, se resalta el segmento correspondiente. El revisor puede aprobar, editar el cuerpo directamente o regenerar el writer con feedback. La regeneración reutiliza el estado previo de research, analysis y strategy; solo vuelve a ejecutarse el writer.
+<ProjectImage src="/src/assets/projects/sonar/dashboard.png" alt="Dashboard del workspace de Sonar mostrando conteos de leads, llamadas y ejecuciones de agentes junto con ejecuciones recientes y leads recientes." caption="El dashboard del workspace: leads, llamadas y ejecuciones de agentes de un vistazo." size="wide" />
+
+El revisor ve una UI de vista dividida: el correo a la izquierda, la transcripción a la derecha. Al pasar el cursor sobre una cita se resalta el segmento correspondiente. El revisor puede aprobar, editar el cuerpo directamente o regenerar el redactor con feedback. La regeneración reutiliza el estado previo de investigación, análisis y estrategia; solo vuelve a ejecutarse el redactor.
+
+<ProjectImage src="/src/assets/projects/sonar/cited-email.png" alt="Pantalla de aprobación de correo en Sonar: un borrador de seguimiento a la izquierda con chips de citas numerados, y la transcripción de la llamada a la derecha con los segmentos citados marcados." caption="Aprobar y enviar: cada afirmación del borrador enlaza al segmento de la transcripción del que proviene." size="wide" />
 
 ## Por qué lo construí
 
-No es un producto — es un proyecto personal. Quería un único codebase que ejercitara el stack moderno de IA de punta a punta: orquestación multi-agente con estado persistente, manejo real de audio, tool use estructurado, prompt caching y la forma B2B multi-tenant. La revisión de llamadas de ventas fue el dominio elegido porque el flujo es genuinamente lineal con rollback, que es el punto ideal para grafos de agentes.
+No es un producto — es un proyecto personal. Quería un único codebase que ejercitara el stack moderno de IA de punta a punta: orquestación multi-agente con estado persistente, manejo real de audio, tool use estructurado, prompt caching y la forma B2B multi-tenant. La revisión de llamadas de ventas fue el dominio porque el flujo de trabajo es genuinamente lineal con rollback, que es el punto ideal para grafos de agentes.
 
 ## Cómo funciona
 
 ### Orquestación multi-agente
 
-- Cuatro nodos secuenciales (research, transcription, analysis, strategy, writer)
-- Cada nodo devuelve output estructurado mediante Anthropic tool use + un schema Zod. Sin outputs de texto libre.
-- Cada paso escribe una fila `AgentRunStep`. La ejecución se pausa en `AWAITING_APPROVAL` tras el paso del writer.
-- El prompt caching de Anthropic está habilitado en los mensajes de sistema — reducción de ~70% en tokens de entrada en ejecuciones repetidas.
-- La regeneración del writer reutiliza el estado de los nodos anteriores.
+- Cinco nodos secuenciales: transcripción, luego investigación, análisis, estrategia y redacción.
+- Cada nodo de agente devuelve output estructurado mediante Anthropic tool use + un esquema Zod. Sin outputs de texto libre.
+- Cada paso escribe una fila `AgentRunStep`. La ejecución se pausa en `AWAITING_APPROVAL` tras el paso de redacción.
+- Anthropic prompt caching está habilitado en los mensajes de sistema — ~70% de reducción de tokens de entrada en ejecuciones repetidas.
+- La regeneración del redactor reutiliza el estado de los nodos anteriores.
 - Ejecución en background mediante el route handler `after()` de Next.js 16 (`maxDuration = 300`).
+
+<ProjectImage src="/src/assets/projects/sonar/agent-run.png" alt="Visor de ejecución de agentes de Sonar mostrando los cinco nodos del pipeline — transcripción, investigación, análisis, estrategia, redacción — con el estado por nodo mientras la ejecución está en curso." caption="El visor de ejecución: cada nodo reporta su estado en vivo; la ejecución se pausa para aprobación tras el redactor." size="wide" />
 
 ### Procesamiento de audio
 
-- La subida por drag-and-drop va directo del navegador a Supabase Storage mediante URL firmada. El servidor no interviene en la subida.
+- La carga por drag-and-drop va del navegador a Supabase Storage mediante URL firmada. El servidor no está en la ruta de carga.
 - Groq Whisper Large v3 transcribe con timestamps a nivel de segmento.
 - El tipo MIME y el límite de 100 MB se aplican tanto en el server action como en la política del bucket.
-- El writer recibe los segmentos del transcript etiquetados con índices entre corchetes; las citas referencian esos índices.
+- El redactor recibe los segmentos de la transcripción etiquetados con índices entre corchetes; las citas referencian esos índices.
 - La UI de vista dividida desplaza el segmento citado a la vista al pasar el cursor.
 
 ### B2B multi-tenant
 
-Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), invitaciones, API keys, log de auditoría. Tres capas de aislamiento — scoping por fila en Postgres, guards a nivel de aplicación en cada server action y políticas de bucket en Supabase Storage con clave por workspace ID.
+Workspaces, roles (`OWNER`, `ADMIN`, `MEMBER`), invitaciones, API keys, log de auditoría, facturación con Stripe y seguimiento de entregas mediante Resend. Tres capas de aislamiento — scoping por fila en Postgres, guards a nivel de aplicación en cada server action y políticas de bucket en Supabase Storage con clave por workspace ID.
 
 ## Estado
 
-En desarrollo activo. El pipeline de agentes y la tenencia por workspace están funcionando; el pulido de UI y el demo en vivo están en curso.
+En vivo en [sonar.picoral.me](https://sonar.picoral.me). El pipeline de agentes, la tenencia por workspace y la entrega de seguimientos funcionan de punta a punta; un walkthrough en Loom es lo siguiente.
