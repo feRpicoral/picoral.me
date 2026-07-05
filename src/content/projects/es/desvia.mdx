@@ -1,0 +1,101 @@
+---
+slug: desvia
+title: Desvia
+tagline: >-
+  App de navegación GPS para Brasil (iOS y Android) cuya diferencia son las
+  áreas privadas que vos dibujás en el mapa para evitar cuando sea posible o
+  nunca entrar — con tráfico en tiempo real y navegación paso a paso.
+summary: >-
+  App de navegación GPS con tráfico en tiempo real para Brasil, desarrollada de
+  forma independiente en mobile, backend y web. Su diferenciador son áreas
+  privadas dibujadas por el usuario que una ruta puede evitar cuando sea posible
+  o nunca cruzar — validadas contra los polígonos dibujados en PostGIS antes de
+  usar la ruta. Tráfico en tiempo real y navegación paso a paso incluidos.
+status: live
+role: 'Solo — producto, mobile, backend, web'
+period:
+  start: 2026-06
+stack:
+  - Expo / React Native
+  - Mapbox Navigation SDK
+  - NestJS
+  - Fly.io
+  - Prisma 7
+  - Supabase Postgres + PostGIS
+  - GraphHopper
+  - Google Places
+  - Astro
+  - PostHog
+links:
+  live: 'https://desvia.app'
+featured: true
+order: 9
+hasCaseStudy: true
+seo:
+  description: >-
+    App de navegación GPS para Brasil con tráfico en tiempo real y navegación
+    paso a paso, diferenciada por áreas privadas que vos dibujás para evitar
+    cuando sea posible o nunca cruzar.
+  keywords:
+    - navigation app
+    - turn-by-turn
+    - real-time traffic
+    - route avoidance
+    - PostGIS
+    - Brazil
+    - Expo React Native
+faq:
+  - q: ¿Qué es Desvia?
+    a: >-
+      Desvia es una app de navegación GPS para Brasil, en iOS y Android, con
+      tráfico en tiempo real y navegación paso a paso. Su diferencia es que
+      podés dibujar áreas privadas en el mapa — una feria, una obra, un barrio —
+      y hacer que tu ruta las evite.
+  - q: ¿Cuál es la diferencia entre "evitar" y "nunca entrar"?
+    a: >-
+      "Evitar si es posible" es una preferencia — la ruta bordea el área cuando
+      hay una alternativa razonable. "Nunca entrar" es una regla — el camino
+      nunca cruza esa área, sin excepciones. Vos elegís por área qué tan
+      estricta debe ser la ruta.
+  - q: ¿Dónde se guardan mis áreas?
+    a: >-
+      Las áreas están vinculadas a tu cuenta, así que te siguen en todos tus
+      dispositivos y podés editarlas o eliminarlas cuando quieras. No se venden
+      ni se comparten con terceros para publicidad.
+  - q: ¿Cómo elige Desvia la ruta?
+    a: >-
+      Combina tiempo, distancia y tráfico en tiempo real con tus áreas
+      restringidas. Entre los caminos que respetan tus reglas, recomienda el más
+      rápido y muestra alternativas cuando existen.
+_source:
+  hash: bb42872819d17594
+  locale: en
+  translatedAt: '2026-07-05T02:59:37.286Z'
+---
+## Qué hace
+
+Desvia es navegación paso a paso con un control que las apps grandes no tienen: áreas que vos mismo dibujás. Tocás el mapa, trazás una zona que preferís no cruzar, elegís qué tan estricta es y manejás. La ruta se recalcula para respetarla, con tráfico en tiempo real e indicaciones claras por voz en todo momento.
+
+<ProjectImage src="/src/assets/projects/desvia/navigation.png" alt="Pantalla de navegación de Desvia en un celular: un mapa con una ruta al Aeroporto de Congonhas, una tarjeta de ETA de 22 minutos, y etiquetas que dicen 'Contorna 1 área sua — Feira de domingo' y 'Trânsito livre'." caption="Navegando con una ruta que bordea una de las áreas propias del conductor — una feria de domingo — mientras el tráfico está despejado." size="prose" />
+
+## Por qué la construí
+
+Todas las apps de navegación optimizan por tiempo y tráfico; ninguna te deja decir "simplemente no me lleves por ahí". Las zonas que un conductor quiere evitar — una feria semanal, una intersección caótica, una calle donde no se siente seguro — son personales y locales, y dicen mucho sobre la rutina de alguien, así que Desvia las trata como privadas por defecto. Lo interesante de la ingeniería es hacer que una zona de evitación sea una restricción de ruteo de primera clase que realmente se cumple, no una sugerencia que el router ignora en silencio.
+
+## Cómo funciona
+
+### Dos niveles de área, vos en control
+
+Las áreas tienen dos intensidades. **Evitar si es posible** es la solicitud suave — la ruta bordea el área cuando hay una alternativa razonable, pero puede entrar como último recurso. **Nunca entrar** es la regla firme — el camino nunca cruza esa área, sin excepciones. Las mismas áreas te acompañan en cada ruta.
+
+### Ruteo que respeta los polígonos
+
+Las rutas candidatas vienen de GraphHopper; el backend luego valida cada una contra los polígonos dibujados por el conductor en Supabase Postgres con PostGIS antes de ofrecerla, así una área de "nunca entrar" se cumple en lugar de esperarse. Entre las rutas que pasan, Desvia recomienda la más rápida y muestra alternativas cuando existen.
+
+### Un GPS de verdad alrededor de eso
+
+Tráfico en tiempo real que ajusta el ETA mientras manejás, indicaciones paso a paso en tarjeta grande con voz, y lugares guardados — casa, trabajo, los frecuentes — para iniciar una ruta sin escribir nada.
+
+## Estado
+
+En lanzamiento temprano — la app está en prueba de campo en Porto Alegre, y está disponible en el [App Store](https://apps.apple.com/app/id6775706412) y [Google Play](https://play.google.com/store/apps/details?id=app.desvia), con el sitio de marketing en vivo en [desvia.app](https://desvia.app).
