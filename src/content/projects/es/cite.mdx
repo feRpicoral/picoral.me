@@ -4,14 +4,16 @@ title: Cite
 tagline: >-
   Proyecto personal explorando RAG agéntico. Cada respuesta está respaldada por
   citas en línea; al hacer clic en una se abre el documento fuente en la región
-  exacta que la generó.
+  exacta que la generó, y un juez automatizado evalúa si la fuente realmente
+  sustenta la afirmación.
 summary: >-
-  Una app de chat con recuperación aumentada donde cada respuesta del modelo
-  está respaldada por citas en línea. Al hacer clic en una cita se abre el
-  documento fuente en la región exacta — página, párrafo o fragmento de texto —
-  que generó la respuesta. Construida para aprender recuperación agéntica y UX
-  de visor de documentos sincronizado.
-status: in-development
+  Una app de chat con RAG donde cada respuesta del modelo viene respaldada por
+  citas en línea. Al hacer clic en una cita, se abre el documento fuente en la
+  región exacta — página, párrafo o fragmento de texto — que generó la
+  respuesta, y un juez LLM etiqueta cada cita como Supported, Partial o
+  Unsupported. Construida para aprender recuperación agéntica, anclaje de citas
+  y UX de visor de documentos sincronizado.
+status: live
 role: 'Solo — diseño, ingeniería'
 period:
   start: 2026-03
@@ -20,54 +22,94 @@ stack:
   - TypeScript
   - Tailwind v4
   - shadcn/ui (Radix Nova)
-  - Anthropic SDK
-  - PostgreSQL with pgvector
+  - Anthropic SDK (Sonnet 4.6 + Haiku 4.5)
+  - Voyage 3 Large embeddings + Voyage Rerank 2.5
+  - LlamaParse
+  - Supabase (Auth + Postgres + pgvector)
+  - Prisma
+  - Inngest
   - Yarn 4
 links:
-  live: 'https://cite-eosin.vercel.app'
+  live: 'https://cite.picoral.me'
   repo: 'https://github.com/feRpicoral/cite'
 featured: true
 order: 3
 hasCaseStudy: true
 seo:
   description: >-
-    Un proyecto personal. RAG agéntico con citas en línea clicables y un visor
-    de documentos sincronizado que salta a la región fuente exacta.
+    Un proyecto personal. RAG agéntico con citas en línea clicables, un visor de
+    documentos sincronizado que salta a la región fuente exacta, y un juez LLM
+    que evalúa cada cita.
   keywords:
     - agentic RAG
     - retrieval-augmented generation
     - citation grounding
     - document viewer
     - pgvector
+    - citation verification
 faq:
   - q: ¿Qué es Cite?
     a: >-
-      Cite es una aplicación de chat con recuperación aumentada agéntica. Los
+      Cite es una aplicación de chat con recuperación agéntica aumentada. Los
       equipos suben sus documentos y hacen preguntas en lenguaje natural. Cada
       respuesta está respaldada por citas en línea — al hacer clic en una se
       abre el documento fuente en la región exacta que generó la respuesta, con
       el fragmento relevante resaltado.
   - q: ¿En qué se diferencia Cite de un chatbot RAG típico?
     a: >-
-      Dos cosas. Primero, el paso de recuperación es agéntico — el modelo puede
-      planificar e iterar recuperaciones antes de responder, en lugar de hacer
-      una única búsqueda por similitud top-k. Segundo, la cita es la interfaz,
-      no una nota al pie. Las citas son elementos clicables que desplazan
-      sincrónicamente el visor de documentos hasta el fragmento citado, así la
-      verificación es un clic en lugar de una búsqueda.
+      Dos cosas. Primero, la recuperación es agéntica — el modelo planifica e
+      itera búsquedas híbridas de vectores + palabras clave con reranking antes
+      de responder, en lugar de una única búsqueda por similitud top-k. Segundo,
+      la cita es la interfaz, no una nota al pie. Las citas son elementos
+      clicables que desplazan sincrónicamente el visor de documentos hasta el
+      fragmento citado, así la verificación es un clic en lugar de una búsqueda.
+  - q: ¿Cómo se verifican las citas?
+    a: >-
+      Un juez automatizado compara cada afirmación citada con su pasaje fuente y
+      la etiqueta como Supported, Partial o Unsupported, con un puntaje de
+      confianza y un razonamiento breve. Convierte el "confía en el modelo" en
+      "revisa la evidencia".
+  - q: ¿Qué formatos de archivo puede procesar Cite?
+    a: >-
+      PDF, DOCX, HTML y Markdown, hasta 100 MB cada uno. LlamaParse se encarga
+      del análisis de PDFs con reconocimiento de diseño; Cite divide en
+      fragmentos, genera embeddings con Voyage 3 Large y los indexa, mostrando
+      el estado de ingesta por documento.
 _source:
-  hash: 6e4b31cd4d179254
+  hash: b7e02efad5947333
   locale: en
-  translatedAt: '2026-06-01T04:49:30.559Z'
+  translatedAt: '2026-07-05T02:59:43.989Z'
 ---
 ## Qué hace
 
-Los equipos suben sus documentos — PDFs, Word, Markdown, transcripciones — y chatean con ellos en lenguaje natural. Cada respuesta está respaldada por citas en línea. Al hacer clic en una cita se abre el documento fuente en la región exacta que generó la respuesta, con el fragmento relevante resaltado.
+Los equipos suben sus documentos — PDFs, Word, HTML, Markdown — y chatean con ellos en lenguaje natural. Cada respuesta está respaldada por citas en línea. Al hacer clic en una cita se abre el documento fuente en la región exacta que generó la respuesta, con el fragmento relevante resaltado, y un juez automatizado evalúa si esa fuente realmente sustenta la afirmación.
+
+<ProjectImage src="/src/assets/projects/cite/cited-answer.png" alt="Vista de respuesta de Cite: una pregunta y la respuesta de Cite con chips de citas numerados, junto a un panel fuente que muestra el pasaje exacto resaltado, marcado como Supported con un puntaje de confianza de 0.92." caption="Cada afirmación lleva una cita; el panel fuente muestra el pasaje exacto, calificado Supported · 0.92 por el juez." size="chart" />
 
 ## Por qué lo construí
 
-No es un producto — es un proyecto personal. Los chatbots RAG sin citas son inverificables. El respaldo con citas hace que el output del modelo sea comprobable, que es el punto central de usar un sistema de recuperación. También quería diseñar una UI donde la cita sea la interacción principal, no una nota al pie — el visor de documentos tiene el mismo peso que el chat.
+No es un producto — es un proyecto personal. Los chatbots RAG sin citas son infalsificables. El anclaje de citas hace que el output del modelo sea verificable, que es el punto central de usar un sistema de recuperación. También quería diseñar una UI donde la cita sea la interacción principal, no una nota al pie — el visor de documentos tiene el mismo peso que el chat — y cerrar el ciclo con un juez que evalúe si la fuente citada realmente sustenta la afirmación.
+
+## Cómo funciona
+
+### Recuperación agéntica
+
+El modelo planifica e itera recuperaciones antes de responder: búsqueda híbrida de vectores + palabras clave sobre pgvector, descomposición de subconsultas para preguntas de múltiples partes, y Voyage Rerank 2.5 sobre el conjunto de candidatos. Ejecuta una verificación de suficiencia antes de responder — o declara que no puede.
+
+### El visor de citas
+
+Al hacer clic en una cita se abre la fuente en un panel lateral, desplazado hasta el fragmento preciso — un bounding box en una página PDF (vía análisis de diseño de LlamaParse) o un rango de texto en HTML — resaltado en el flujo de evidencia. Un panel redimensionable vuelve a su posición cuando terminás.
+
+<ProjectImage src="/src/assets/projects/cite/citation-viewer.png" alt="Visor de documentos de Cite mostrando la página 12 de un PDF de MSA con la cláusula citada resaltada y anclada al marcador de cita 1." caption="Al hacer clic en una cita, el visor salta a la página y el fragmento exacto de donde proviene." size="chart" />
+
+### Auditoría de citas
+
+Un juez automatizado califica cada cita como Supported, Partial o Unsupported, con un puntaje de confianza y un razonamiento breve. Los administradores tienen un dashboard para revisar las débiles — filtrar por afirmaciones no respaldadas en contexto, con razonamiento por cita en lugar de un único número opaco.
+
+### Colaboración y tenencia
+
+Presencia en vivo, sincronización de mensajes en tiempo real y comentarios en hilo sobre mensajes y regiones del documento mantienen al equipo trabajando sobre una única fuente de verdad. Los documentos permanecen dentro del workspace de la organización, visibles solo para los miembros según su rol. La interfaz está disponible en inglés y portugués brasileño.
 
 ## Estado
 
-En desarrollo activo. El pipeline de recuperación y la UI de chat funcionan de punta a punta; la lógica de anclaje de regiones del visor de documentos es el foco actual.
+Disponible en [cite.picoral.me](https://cite.picoral.me). El pipeline de recuperación agéntica, el visor de citas y el juez funcionan de punta a punta; el foco actual es pulir la colaboración.

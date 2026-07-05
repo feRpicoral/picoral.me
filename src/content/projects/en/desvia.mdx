@@ -1,0 +1,80 @@
+---
+slug: desvia
+title: Desvia
+tagline: A driving-navigation app for Brazil (iOS and Android) whose difference is private map areas you draw to avoid when possible or never enter — with real-time traffic and turn-by-turn on top.
+summary: A traffic-aware driving-navigation app for Brazil, built solo across mobile, backend, and web. Its differentiator is private, user-drawn map areas that a route can either avoid when possible or never enter — enforced against the drawn polygons in PostGIS before a route is used. Real-time traffic and turn-by-turn guidance on top.
+status: live
+role: Solo — product, mobile, backend, web
+period:
+  start: '2026-06'
+stack:
+  - Expo / React Native
+  - Mapbox Navigation SDK
+  - NestJS
+  - Fly.io
+  - Prisma 7
+  - Supabase Postgres + PostGIS
+  - GraphHopper
+  - Google Places
+  - Astro
+  - PostHog
+links:
+  live: https://desvia.app
+featured: true
+order: 9
+hasCaseStudy: true
+seo:
+  description: A traffic-aware driving-navigation app for Brazil with real-time traffic and turn-by-turn, differentiated by private map areas you draw to avoid when possible or never enter.
+  keywords:
+    - navigation app
+    - turn-by-turn
+    - real-time traffic
+    - route avoidance
+    - PostGIS
+    - Brazil
+    - Expo React Native
+faq:
+  - q: What is Desvia?
+    a: Desvia is a driving-navigation app for Brazil, on iOS and Android, with real-time traffic and turn-by-turn guidance. Its difference is that you can draw private areas on the map — a street market, a construction zone, a neighborhood — and have your route steer around them.
+  - q: What's the difference between "avoid" and "never enter"?
+    a: >-
+      "Avoid if possible" is a preference — the route goes around whenever there's a reasonable alternative. "Never enter" is a rule — the path never crosses that area, no exceptions. You pick per area how hard the route should insist.
+  - q: Where are my areas stored?
+    a: Areas are tied to your account so they follow you across devices, and you can edit or delete them anytime. They aren't sold or shared with third parties for advertising.
+  - q: How does Desvia choose the route?
+    a: It combines time, distance, and real-time traffic with your restricted areas. Among the paths that respect your rules, it recommends the fastest and shows alternatives when they exist.
+---
+
+## What it does
+
+Desvia is turn-by-turn navigation with one control the big apps don't have: areas you draw yourself. Tap the map, trace a region you'd rather not cross, choose how strict it is, and drive. The route recalculates to respect it, with real-time traffic and clear, spoken maneuvers the whole way.
+
+<ProjectImage src="/src/assets/projects/desvia/draw-area.png" alt="Desvia's area-drawing screen on a phone: a polygon traced over the map with draggable amber points and a 'Concluir contorno' button." caption="Drawing an area: tap the map to trace the region you'd rather not cross." size="phone" />
+
+## Why I built it
+
+Every navigation app optimizes for time and traffic; none of them let you say "just don't take me through there." The regions a driver wants to avoid — a weekly market, a chaotic intersection, a stretch they don't feel safe on — are personal and local, and they say a lot about someone's routine, so Desvia treats them as private by default. The interesting engineering is making an avoidance a first-class routing constraint that's actually enforced, not a hint the router quietly ignores.
+
+## How it works
+
+### Two levels of area, you in control
+
+Areas come in two strengths. **Avoid if possible** is the gentle request — the route goes around whenever there's a reasonable alternative, but may enter as a last resort. **Never enter** is the firm rule — the path never crosses that area, no exceptions. The same areas travel with you across every route.
+
+<ProjectImage src="/src/assets/projects/desvia/time-warning.png" alt="Desvia alert screen: 'Entrando em Feira de domingo', active now and valid until 14h, explaining that an avoid-if-possible area couldn't be skipped so it is taking the shorter route." caption="An 'avoid if possible' area only bites in its time window — Desvia says so when a route has to pass through." size="phone" />
+
+### Routing that respects the polygons
+
+Candidate routes come from GraphHopper; the backend then validates each one against the driver's drawn polygons in Supabase Postgres with PostGIS before it's offered, so a "never enter" area is enforced rather than hoped for. Among the routes that pass, Desvia recommends the fastest and surfaces alternatives when they exist.
+
+<ProjectImage src="/src/assets/projects/desvia/route.png" alt="Desvia route screen to Aeroporto de Congonhas offering two options: a recommended 22-minute route that goes around the area, and a faster 19-minute route flagged for cutting through 'Feira'." caption="Two routes on offer: the recommended one goes around your area; the faster one that cuts through is flagged." size="phone" />
+
+### A real GPS around it
+
+Real-time traffic that adjusts the ETA as you drive, large-card turn-by-turn maneuvers with voice, and saved places — home, work, the regulars — to start a route without typing.
+
+<ProjectImage src="/src/assets/projects/desvia/map.png" alt="Desvia home screen on a phone: a map with a saved avoid-area outlined in dashed amber, a 'Para onde vamos?' search bar, and Casa, Trabalho and Áreas shortcuts above recent destinations." caption="The home screen: saved places, recent destinations, and your areas one tap away." size="phone" />
+
+## Status
+
+In early rollout — the app is field-testing in Porto Alegre, and is on the [App Store](https://apps.apple.com/app/id6775706412) and [Google Play](https://play.google.com/store/apps/details?id=app.desvia), with the marketing site live at [desvia.app](https://desvia.app).

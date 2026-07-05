@@ -1,0 +1,132 @@
+---
+slug: quotahit
+title: QuotaHit
+tagline: >-
+  Un SaaS en producción para representantes comerciales autónomos en Brasil —
+  encontrá empresas para visitar, armá la ruta del día con tráfico en tiempo
+  real y costo de combustible, y convertí un audio de WhatsApp post-visita en un
+  registro confirmado.
+summary: >-
+  Un SaaS en producción para representantes comerciales autónomos en Brasil.
+  Encuentra empresas para visitar desde los registros públicos de la Receita
+  Federal, arma una ruta diaria optimizada con tráfico en tiempo real y
+  estimación de costo de combustible, y convierte un audio de WhatsApp
+  post-visita en un registro de visita o gasto confirmado — con un CRM de
+  cadencia de revisitas e informes de ventas y gastos, todo en una sola app
+  Next.js.
+status: live
+role: 'Solo — producto, diseño, ingeniería'
+period:
+  start: 2026-06
+stack:
+  - Next.js 16
+  - React 19
+  - TypeScript
+  - Tailwind v4
+  - Prisma 7
+  - Supabase
+  - Google Maps & Routes
+  - Google BigQuery
+  - OpenAI (transcription)
+  - WhatsApp Cloud API
+  - Mercado Pago
+  - TanStack Query
+  - dnd-kit
+  - Vercel
+links:
+  live: 'https://quotahit.app'
+featured: true
+order: 8
+hasCaseStudy: true
+seo:
+  description: >-
+    Un SaaS en producción para representantes comerciales autónomos en Brasil —
+    prospección con datos de la Receita Federal, rutas optimizadas por
+    combustible y un asistente de WhatsApp que registra visitas y gastos.
+  keywords:
+    - field sales SaaS
+    - route optimization
+    - prospecting
+    - representante comercial
+    - WhatsApp assistant
+    - CNPJ prospecting
+    - Brazil
+faq:
+  - q: ¿Qué es QuotaHit?
+    a: >-
+      QuotaHit es un SaaS que corre en el navegador para representantes
+      comerciales autónomos en Brasil. Encuentra empresas para visitar, arma una
+      ruta diaria optimizada por combustible con tráfico en tiempo real, y
+      convierte un audio de WhatsApp post-visita en un registro de visita o
+      gasto confirmado — con un CRM de cadencia de revisitas e informes
+      semanales.
+  - q: ¿De dónde vienen los datos de las empresas?
+    a: >-
+      De los registros públicos de la Receita Federal — CNPJ, razón social,
+      código CNAE, dirección, tamaño y situación registral — enriquecidos con
+      datos públicos como teléfono y sitio web cuando están disponibles. La
+      prospección corre sobre Google BigQuery.
+  - q: ¿Cómo funciona el asistente de WhatsApp?
+    a: >-
+      Mandás un audio o un texto corto al número de QuotaHit después de una
+      visita. Lo transcribe y estructura en un registro de visita, nuevo cliente
+      o gasto que queda esperando tu confirmación en la app. Nada se guarda sin
+      que lo revises.
+  - q: ¿Qué tan confiable es el costo de combustible?
+    a: >-
+      Es una estimación basada en el consumo de tu auto (km/L) y el precio
+      promedio semanal de combustible de tu región. Podés ajustar el precio por
+      litro en cualquier ruta, y la navegación abre en Google Maps o Waze.
+  - q: ¿Tengo que instalar una app?
+    a: >-
+      No. QuotaHit corre en el navegador del celular y la computadora, sin nada
+      que instalar, y las actualizaciones llegan al instante.
+_source:
+  hash: 103cf73d9d694154
+  locale: en
+  translatedAt: '2026-07-05T03:00:59.339Z'
+---
+## Qué hace
+
+QuotaHit concentra el día de un representante en una sola herramienta. Desde la oficina, prospecta empresas en su nicho y región; en la calle, sigue una ruta optimizada y registra cada visita con un audio. Cuatro cosas en una sola app:
+
+1. **Prospección** — buscá empresas en los registros públicos por código CNAE y ciudad, filtrá por tamaño y seleccioná prospectos directamente en el mapa con un lazo.
+2. **Ruteo** — combiná clientes y prospectos en una ruta de hasta 25 paradas, optimizada con tráfico en tiempo real y con una estimación real del costo de combustible antes de salir.
+3. **Un asistente de WhatsApp** — mandá un audio después de la visita; se convierte en un registro estructurado de visita, pedido o gasto que espera tu confirmación.
+4. **Informes** — ventas semanales, conversión por visita, gastos por categoría y cuánto ahorró la optimización de rutas en combustible.
+
+<ProjectImage src="/src/assets/projects/quotahit/prospecting.png" alt="Pantalla de prospección de QuotaHit: una lista y un mapa divididos con empresas filtradas por CNAE y ciudad, con dos filas seleccionadas y un polígono de lazo dibujado sobre los pines del mapa." caption="Prospección: filtrá por nicho y ciudad, luego seleccioná empresas del mapa con un lazo y mandálas a una ruta." size="chart" />
+
+## Por qué lo construí
+
+Los representantes comerciales autónomos en Brasil manejan toda su operación con una libreta y WhatsApp: qué empresas visitar, en qué orden, qué se habló, cuánto costó. QuotaHit es un producto real construido para esa persona — la que pasa el día en la calle — no un CRM genérico pegado a su flujo de trabajo. Las partes difíciles e interesantes son las que realmente les ahorran tiempo: convertir datos públicos de empresas en una buena lista de visitas, optimizar una ruta real contra el tráfico y el combustible, y eliminar la carga de datos dejando que un audio sea el registro.
+
+## Cómo funciona
+
+### Prospección desde registros públicos
+
+La búsqueda de empresas corre sobre Google BigQuery con datos públicos de la Receita Federal — CNPJ, CNAE, dirección, tamaño, situación — para que el representante filtre exactamente los negocios que vale la pena visitar y los seleccione dibujando en el mapa. Cada cliente y prospecto muestra un Street View de su local en su tarjeta.
+
+### Optimización de rutas con costo de combustible
+
+Las rutas combinan clientes con revisita pendiente y nuevos prospectos, optimizan el orden de las paradas con tráfico en tiempo real a través de Google Routes, y muestran distancia, tiempo y estimación de costo de combustible antes de que el representante salga — calculado con el consumo de su auto y el precio promedio semanal de la región. Las paradas se reordenan arrastrando; la navegación pasa a Google Maps o Waze.
+
+<ProjectImage src="/src/assets/projects/quotahit/routes.png" alt="Constructor de rutas de QuotaHit: una lista de siete paradas reordenables con arrastre junto a una ruta optimizada en el mapa, con distancia total, tiempo con tráfico y costo de combustible." caption="La ruta del día: arrastrá para reordenar, optimizada con tráfico en tiempo real y con el costo real de combustible antes de salir." size="chart" />
+
+### Un asistente de WhatsApp que elimina la carga de datos
+
+Después de una visita, el representante manda un audio o un texto corto al número de QuotaHit. La transcripción de OpenAI más un paso de estructuración lo convierten en una visita, pedido, seguimiento o gasto — que espera una confirmación con un toque en la app. Los recordatorios de revisita llegan por el mismo hilo de WhatsApp.
+
+<ProjectImage src="/src/assets/projects/quotahit/whatsapp-assistant.png" alt="Pantalla del asistente de WhatsApp de QuotaHit: un QR para abrir el chat junto a una conversación donde un audio se convierte en un registro de visita estructurado y dos gastos esperando confirmación." caption="Hablás y queda escrito: un audio se convierte en una visita o gasto estructurado, guardado solo después de que confirmás." size="chart" />
+
+### Informe de la semana
+
+Ventas y ticket promedio, costo por visita, gastos por categoría, combustible ahorrado por la optimización y cobertura del portfolio — cuántos clientes están al día versus atrasados.
+
+<ProjectImage src="/src/assets/projects/quotahit/reports.png" alt="Dashboard de informes de QuotaHit: tarjetas de ventas, ticket promedio, gastos, combustible ahorrado y kilómetros sobre gráficos semanales de ventas, conversión, gastos por categoría y cobertura del portfolio." caption="La semana en números: ventas, conversión por visita, gastos y combustible ahorrado por el ruteo." size="chart" />
+
+Todo se despliega como una sola app Next.js en `quotahit.app`, en Vercel en São Paulo (región `gru1`), con jobs programados en Supabase `pg_cron` y suscripciones cobradas por Mercado Pago (Pix o tarjeta).
+
+## Estado
+
+En vivo en [quotahit.app](https://quotahit.app), con 7 días de prueba gratis en cualquier plan.

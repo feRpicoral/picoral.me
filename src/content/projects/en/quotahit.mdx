@@ -1,0 +1,96 @@
+---
+slug: quotahit
+title: QuotaHit
+tagline: A shipped SaaS for Brazil's solo field-sales reps — find companies to visit, build the day's route with live traffic and fuel cost, and turn a post-visit WhatsApp voice note into a confirmed record.
+summary: A production SaaS for autonomous sales reps (representantes comerciais) in Brazil. It finds companies to visit from public Receita Federal registries, builds an optimized day-route with live traffic and fuel-cost estimates, and turns a post-visit WhatsApp audio into a confirmed visit or expense record — paired with a revisit-cadence CRM and sales and expense reporting, all in one Next.js app.
+status: live
+role: Solo — product, design, engineering
+period:
+  start: '2026-06'
+stack:
+  - Next.js 16
+  - React 19
+  - TypeScript
+  - Tailwind v4
+  - Prisma 7
+  - Supabase
+  - Google Maps & Routes
+  - Google BigQuery
+  - OpenAI (transcription)
+  - WhatsApp Cloud API
+  - Mercado Pago
+  - TanStack Query
+  - dnd-kit
+  - Vercel
+links:
+  live: https://quotahit.app
+featured: true
+order: 8
+hasCaseStudy: true
+seo:
+  description: A production SaaS for Brazil's autonomous field-sales reps — prospecting from Receita Federal data, fuel-aware route optimization, and a WhatsApp assistant that logs visits and expenses.
+  keywords:
+    - field sales SaaS
+    - route optimization
+    - prospecting
+    - representante comercial
+    - WhatsApp assistant
+    - CNPJ prospecting
+    - Brazil
+faq:
+  - q: What is QuotaHit?
+    a: QuotaHit is a browser-based SaaS for Brazil's autonomous field-sales reps. It finds companies to visit, builds a fuel-aware day-route with live traffic, and turns a post-visit WhatsApp voice note into a confirmed visit or expense — with a revisit-cadence CRM and weekly reporting on top.
+  - q: Where does the company data come from?
+    a: From public Receita Federal registries — CNPJ, legal name, CNAE code, address, company size, and registration status — enriched with public details like phone and website when available. Prospecting runs on Google BigQuery.
+  - q: How does the WhatsApp assistant work?
+    a: You send an audio or a short text to QuotaHit's number after a visit. It transcribes and structures it into a visit, a new client, or an expense record that waits for your confirmation in the app. Nothing is saved without your review.
+  - q: How reliable is the fuel cost?
+    a: It's an estimate based on your car's consumption (km/L) and your region's weekly average fuel price. You can adjust the price per litre on any route, and navigation opens in Google Maps or Waze.
+  - q: Do I need to install an app?
+    a: No. QuotaHit runs in the browser on phone and desktop, so there's nothing to install and updates ship instantly.
+---
+
+## What it does
+
+QuotaHit compresses a field rep's day into one tool. From the desk, the rep prospects companies in their niche and region; on the road, they follow an optimized route and log each visit with a voice note. Four things happen in one app:
+
+1. **Prospecting** — search public company registries by CNAE code and city, filter by size, and lasso-select prospects straight off the map.
+2. **Routing** — mix clients and prospects into a route of up to 25 stops, optimized for live traffic, with a real fuel-cost estimate before the car starts.
+3. **A WhatsApp assistant** — send an audio after the visit; it becomes a structured visit, order, or expense record awaiting confirmation.
+4. **Reporting** — weekly sales, conversion per visit, expenses by category, and how much route optimization saved on fuel.
+
+<ProjectImage src="/src/assets/projects/quotahit/prospecting.png" alt="QuotaHit prospecting screen: a split list and map of companies filtered by CNAE and city, with two rows selected and a lasso polygon drawn over map pins." caption="Prospecting: filter by niche and city, then lasso companies off the map and send them to a route." size="chart" />
+
+## Why I built it
+
+Brazil's autonomous sales reps run their whole operation out of a notebook and WhatsApp: which companies to visit, in what order, what was said, what it cost. QuotaHit is a real product built for that person — the one who lives on the street all day — not a generic CRM bolted onto their workflow. The hard, interesting parts are the ones that actually save them time: turning raw public company data into a good visit list, optimizing a real route against traffic and fuel, and removing data entry entirely by letting a voice note become the record.
+
+## How it works
+
+### Prospecting from public registries
+
+Company search runs on Google BigQuery over public Receita Federal data — CNPJ, CNAE, address, size, status — so a rep can filter to exactly the businesses worth a visit and select them by drawing on the map. Each client and prospect carries a Street View of its storefront on its card.
+
+### Fuel-aware route optimization
+
+Routes mix clients due for a revisit with new prospects, optimize the stop order against live traffic through Google Routes, and show distance, time, and a fuel-cost estimate before the rep leaves — computed from their car's consumption and the region's weekly average fuel price. Stops are drag-to-reorder; navigation hands off to Google Maps or Waze.
+
+<ProjectImage src="/src/assets/projects/quotahit/routes.png" alt="QuotaHit route builder: a drag-to-reorder list of seven stops beside an optimized route on the map, with total distance, time-with-traffic, and fuel cost." caption="The day's route: drag to reorder, optimized against live traffic, with a real fuel cost before you drive." size="chart" />
+
+### A WhatsApp assistant that removes data entry
+
+After a visit, the rep sends an audio or a one-line text to QuotaHit's number. OpenAI transcription plus a structuring step turn it into a visit, order, follow-up, or expense — which waits for a one-tap confirmation in the app. Revisit reminders come back through the same WhatsApp thread.
+
+<ProjectImage src="/src/assets/projects/quotahit/whatsapp-assistant.png" alt="QuotaHit WhatsApp assistant screen: a QR to open the chat beside a conversation where a voice note becomes a structured visit record and two expenses awaiting confirmation." caption="Speak, and it writes: a voice note becomes a structured visit or expense, saved only after you confirm." size="chart" />
+
+### Reporting the week
+
+Sales and average ticket, cost per visit, expenses by category, fuel saved by optimization, and portfolio coverage — how many clients are on-cadence versus overdue.
+
+<ProjectImage src="/src/assets/projects/quotahit/reports.png" alt="QuotaHit reports dashboard: sales, average ticket, expenses, fuel saved, and kilometres tiles above weekly sales, conversion, expense-by-category, and portfolio-coverage charts." caption="The week in numbers: sales, conversion per visit, expenses, and fuel saved by routing." size="chart" />
+
+The whole thing ships as one Next.js app on `quotahit.app`, deployed on Vercel in São Paulo (region `gru1`), with scheduled jobs on Supabase `pg_cron` and subscriptions billed through Mercado Pago (Pix or card).
+
+## Status
+
+Live at [quotahit.app](https://quotahit.app), with a 7-day free trial on any plan.

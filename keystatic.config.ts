@@ -51,6 +51,7 @@ const projectImage = block({
         { label: 'Prose', value: 'prose' },
         { label: 'Chart', value: 'chart' },
         { label: 'Wide', value: 'wide' },
+        { label: 'Phone', value: 'phone' },
       ],
       defaultValue: 'prose',
     }),
