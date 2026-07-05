@@ -117,11 +117,7 @@ async function buildContact(): Promise<string> {
     `Source: ${SITE.url}/contact`,
     entry && mdxToMarkdown(entry.body ?? ''),
     `## ${t('contact.social.title')}`,
-    [
-      `- Email: ${SITE.emailUser} [at] ${SITE.emailDomain}`,
-      `- GitHub: ${SITE.socials.github}`,
-      `- LinkedIn: ${SITE.socials.linkedin}`,
-    ].join('\n'),
+    [`- GitHub: ${SITE.socials.github}`, `- LinkedIn: ${SITE.socials.linkedin}`].join('\n'),
   ]);
 }
 
