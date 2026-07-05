@@ -74,3 +74,11 @@ const fullTitle =
 {isEnabled('blog') && (
   <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — RSS`} href="/rss.xml" />
 )}
+{/* Markdown twin for LLM/answer-engine ingestion. Only the default-locale, indexable pages have one (see src/pages/[...slug].md.ts). */}
+{locale === SITE.defaultLocale && !noindex && (
+  <link
+    rel="alternate"
+    type="text/markdown"
+    href={new URL(canonicalPath === '/' ? '/index.md' : `${canonicalPath}.md`, SITE.url).toString()}
+  />
+)}

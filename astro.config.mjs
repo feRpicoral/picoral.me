@@ -25,6 +25,13 @@ export default defineConfig({
   site: SITE_URL,
   output: 'static',
   trailingSlash: 'never',
+  // The `.md` twins are English-only; appending `.md` to a localized URL resolves
+  // to the English markdown rather than 404ing. The Vercel adapter emits these as
+  // real redirects.
+  redirects: {
+    '/pt/[...slug].md': { status: 307, destination: '/[...slug].md' },
+    '/es/[...slug].md': { status: 307, destination: '/[...slug].md' },
+  },
   adapter: vercel({
     imageService: true,
   }),
