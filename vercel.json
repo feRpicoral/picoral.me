@@ -46,24 +46,6 @@
     },
     {
       "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "relay.picoral.me" }],
-      "destination": "https://picoral.me/projects/relay",
-      "permanent": false
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "sonar.picoral.me" }],
-      "destination": "https://picoral.me/projects/sonar",
-      "permanent": false
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "cite.picoral.me" }],
-      "destination": "https://picoral.me/projects/cite",
-      "permanent": false
-    },
-    {
-      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "recurra.picoral.me" }],
       "destination": "https://picoral.me/projects/recurra",
       "permanent": false
