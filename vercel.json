@@ -45,6 +45,12 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "forge\\.picoral\\.me" }],
+      "destination": "https://picoral.me/projects/forge",
+      "permanent": false
+    },
     { "source": "/github", "destination": "https://github.com/feRpicoral", "permanent": false },
     {
       "source": "/linkedin",
