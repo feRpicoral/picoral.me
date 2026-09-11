@@ -46,7 +46,7 @@
   ],
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "forge\\.picoral\\.me" }],
       "destination": "https://picoral.me/projects/forge",
       "permanent": false
